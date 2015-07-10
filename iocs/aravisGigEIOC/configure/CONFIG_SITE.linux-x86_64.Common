@@ -1,0 +1,4 @@
+CROSS_COMPILER_TARGET_ARCHS =
+HDF5_LIB = /dls_sw/prod/tools/RHEL6-x86_64/hdf5/1-8-11/prefix/lib
+SZIP_LIB = /dls_sw/prod/tools/RHEL6-x86_64/szip/2-1/prefix/lib
+
