@@ -6,6 +6,8 @@ O.*/
 /dbd/
 /db/
 /data/
+/iocs/example/
+/iocs/example_sim/
 /iocs/*/bin/
 /iocs/*/lib/
 /iocs/*/dbd/
