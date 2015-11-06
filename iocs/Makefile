@@ -1,12 +1,16 @@
 TOP = ..
 include $(TOP)/configure/CONFIG
+-include $(TOP)/etc/makeIocs/Makefile.iocs
 
 DIRS := $(wildcard *IOC)
+DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard $(IOCS)))
 
 include $(TOP)/configure/RULES_TOP
 
 uninstallTargets = $(foreach dir, $(DIRS), $(dir)$(DIVIDER)uninstall)
 uninstall: $(uninstallTargets)
+	$(RM) -rf $(IOC_DIRS)
+    
 define UNINSTALL_template
 $(1)$(DIVIDER)uninstall:
 	$(MAKE) -C $(1) uninstall

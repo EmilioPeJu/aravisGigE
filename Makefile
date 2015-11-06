@@ -1,10 +1,12 @@
 #Makefile at top of application tree
 TOP = .
 include $(TOP)/configure/CONFIG
+BUILD_IOCS=YES
 DIRS := $(DIRS) configure
 DIRS := $(DIRS) vendor
 DIRS := $(DIRS) aravisGigEApp
 aravisGigEApp_DEPEND_DIRS += vendor
+DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard etc))
 ifeq ($(BUILD_IOCS), YES)
 DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard iocs))
 iocs_DEPEND_DIRS += aravisGigEApp
