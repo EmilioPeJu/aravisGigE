@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Aravis Reference Manual: ArvDomNodeList</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="Aravis Reference Manual">
+<link rel="up" href="ch08.html" title="DOM">
+<link rel="prev" href="ArvDomNode.html" title="ArvDomNode">
+<link rel="next" href="aravis-ArvDomNamedNodeMap.html" title="ArvDomNamedNodeMap">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#aravis-ArvDomNodeList.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch08.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="ArvDomNode.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="aravis-ArvDomNamedNodeMap.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="aravis-ArvDomNodeList"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="aravis-ArvDomNodeList.top_of_page"></a>ArvDomNodeList</span></h2>
+<p>ArvDomNodeList</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="aravis-ArvDomNodeList.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvDomNodeList.html#arv-dom-node-list-get-item" title="arv_dom_node_list_get_item ()">arv_dom_node_list_get_item</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">unsigned <span class="returnvalue">int</span>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvDomNodeList.html#arv-dom-node-list-get-length" title="arv_dom_node_list_get_length ()">arv_dom_node_list_get_length</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/gobject/unstable/gobject-Type-Information.html#GType"><span class="returnvalue">GType</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvDomNodeList.html#arv-dom-node-list-get-type" title="arv_dom_node_list_get_type ()">arv_dom_node_list_get_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="aravis-ArvDomNodeList.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="aravis-ArvDomNodeList.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="arv-dom-node-list-get-item"></a><h3>arv_dom_node_list_get_item ()</h3>
+<pre class="programlisting"><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+arv_dom_node_list_get_item (<em class="parameter"><code><span class="type">ArvDomNodeList</span> *list</code></em>,
+                            <em class="parameter"><code>unsigned <span class="type">int</span> index</code></em>);</pre>
+<p>Get one of the item of <em class="parameter"><code>list</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.3.6.3.5.2.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>list</p></td>
+<td class="parameter_description"><p>a <span class="type">ArvDomNodeList</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>index</p></td>
+<td class="parameter_description"><p>item index</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.6.3.5.2.6"></a><h4>Returns</h4>
+<p> item corresponding to index, NULL on error. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-list-get-length"></a><h3>arv_dom_node_list_get_length ()</h3>
+<pre class="programlisting">unsigned <span class="returnvalue">int</span>
+arv_dom_node_list_get_length (<em class="parameter"><code><span class="type">ArvDomNodeList</span> *list</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-list-get-type"></a><h3>arv_dom_node_list_get_type ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/gobject/unstable/gobject-Type-Information.html#GType"><span class="returnvalue">GType</span></a>
+arv_dom_node_list_get_type (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="aravis-ArvDomNodeList.other_details"></a><h2>Types and Values</h2>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.21</div>
+</body>
+</html>

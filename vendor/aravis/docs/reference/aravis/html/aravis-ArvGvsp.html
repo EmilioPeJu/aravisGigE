@@ -1,0 +1,678 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Aravis Reference Manual: ArvGvsp</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="Aravis Reference Manual">
+<link rel="up" href="ch06.html" title="Ethernet cameras">
+<link rel="prev" href="aravis-ArvGvcp.html" title="ArvGvcp">
+<link rel="next" href="ch07.html" title="Fake camera">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#aravis-ArvGvsp.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch06.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="aravis-ArvGvcp.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="ch07.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="aravis-ArvGvsp"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="aravis-ArvGvsp.top_of_page"></a>ArvGvsp</span></h2>
+<p>ArvGvsp — Gvsp packet handling (stream)</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="aravis-ArvGvsp.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<span class="returnvalue">char</span> *
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-to-string" title="arv_gvsp_packet_to_string ()">arv_gvsp_packet_to_string</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">size_t</span>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-get-data-size" title="arv_gvsp_packet_get_data_size ()">arv_gvsp_packet_get_data_size</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-get-frame-id" title="arv_gvsp_packet_get_frame_id ()">arv_gvsp_packet_get_frame_id</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-get-height" title="arv_gvsp_packet_get_height ()">arv_gvsp_packet_get_height</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-get-packet-id" title="arv_gvsp_packet_get_packet_id ()">arv_gvsp_packet_get_packet_id</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="aravis-ArvGvsp.html#ArvGvspPacketType" title="enum ArvGvspPacketType"><span class="returnvalue">ArvGvspPacketType</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-get-packet-type" title="arv_gvsp_packet_get_packet_type ()">arv_gvsp_packet_get_packet_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="aravis-ArvGvsp.html#ArvGvspContentType" title="enum ArvGvspContentType"><span class="returnvalue">ArvGvspContentType</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-get-content-type" title="arv_gvsp_packet_get_content_type ()">arv_gvsp_packet_get_content_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="aravis-ArvGvsp.html#ArvGvspPayloadType" title="enum ArvGvspPayloadType"><span class="returnvalue">ArvGvspPayloadType</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-get-payload-type" title="arv_gvsp_packet_get_payload_type ()">arv_gvsp_packet_get_payload_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="ArvBuffer.html#ArvPixelFormat" title="ArvPixelFormat"><span class="returnvalue">ArvPixelFormat</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-get-pixel-format" title="arv_gvsp_packet_get_pixel_format ()">arv_gvsp_packet_get_pixel_format</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-get-timestamp" title="arv_gvsp_packet_get_timestamp ()">arv_gvsp_packet_get_timestamp</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-get-width" title="arv_gvsp_packet_get_width ()">arv_gvsp_packet_get_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-get-x-offset" title="arv_gvsp_packet_get_x_offset ()">arv_gvsp_packet_get_x_offset</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-get-y-offset" title="arv_gvsp_packet_get_y_offset ()">arv_gvsp_packet_get_y_offset</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-debug" title="arv_gvsp_packet_debug ()">arv_gvsp_packet_debug</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="returnvalue">ArvGvspPacket</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-new-data-block" title="arv_gvsp_packet_new_data_block ()">arv_gvsp_packet_new_data_block</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="returnvalue">ArvGvspPacket</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-new-data-leader" title="arv_gvsp_packet_new_data_leader ()">arv_gvsp_packet_new_data_leader</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="returnvalue">ArvGvspPacket</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvsp.html#arv-gvsp-packet-new-data-trailer" title="arv_gvsp_packet_new_data_trailer ()">arv_gvsp_packet_new_data_trailer</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="aravis-ArvGvsp.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="aravis-ArvGvsp.html#ArvGvspPayloadType" title="enum ArvGvspPayloadType">ArvGvspPayloadType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="aravis-ArvGvsp.html#ArvGvspPacketType" title="enum ArvGvspPacketType">ArvGvspPacketType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="aravis-ArvGvsp.html#ArvGvspContentType" title="enum ArvGvspContentType">ArvGvspContentType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="aravis-ArvGvsp.html#ArvGvspDataLeader" title="ArvGvspDataLeader">ArvGvspDataLeader</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="aravis-ArvGvsp.html#ArvGvspDataTrailer" title="ArvGvspDataTrailer">ArvGvspDataTrailer</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="aravis-ArvGvsp.html#ArvGvspHeader" title="ArvGvspHeader">ArvGvspHeader</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket">ArvGvspPacket</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="aravis-ArvGvsp.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="aravis-ArvGvsp.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="arv-gvsp-packet-to-string"></a><h3>arv_gvsp_packet_to_string ()</h3>
+<pre class="programlisting"><span class="returnvalue">char</span> *
+arv_gvsp_packet_to_string (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="type">ArvGvspPacket</span></a> *packet</code></em>,
+                           <em class="parameter"><code><span class="type">size_t</span> packet_size</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-get-data-size"></a><h3>arv_gvsp_packet_get_data_size ()</h3>
+<pre class="programlisting"><span class="returnvalue">size_t</span>
+arv_gvsp_packet_get_data_size (<em class="parameter"><code><span class="type">size_t</span> packet_size</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-get-frame-id"></a><h3>arv_gvsp_packet_get_frame_id ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
+arv_gvsp_packet_get_frame_id (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="type">ArvGvspPacket</span></a> *packet</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-get-height"></a><h3>arv_gvsp_packet_get_height ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+arv_gvsp_packet_get_height (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="type">ArvGvspPacket</span></a> *packet</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-get-packet-id"></a><h3>arv_gvsp_packet_get_packet_id ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
+arv_gvsp_packet_get_packet_id (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="type">ArvGvspPacket</span></a> *packet</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-get-packet-type"></a><h3>arv_gvsp_packet_get_packet_type ()</h3>
+<pre class="programlisting"><a class="link" href="aravis-ArvGvsp.html#ArvGvspPacketType" title="enum ArvGvspPacketType"><span class="returnvalue">ArvGvspPacketType</span></a>
+arv_gvsp_packet_get_packet_type (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="type">ArvGvspPacket</span></a> *packet</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-get-content-type"></a><h3>arv_gvsp_packet_get_content_type ()</h3>
+<pre class="programlisting"><a class="link" href="aravis-ArvGvsp.html#ArvGvspContentType" title="enum ArvGvspContentType"><span class="returnvalue">ArvGvspContentType</span></a>
+arv_gvsp_packet_get_content_type (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="type">ArvGvspPacket</span></a> *packet</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-get-payload-type"></a><h3>arv_gvsp_packet_get_payload_type ()</h3>
+<pre class="programlisting"><a class="link" href="aravis-ArvGvsp.html#ArvGvspPayloadType" title="enum ArvGvspPayloadType"><span class="returnvalue">ArvGvspPayloadType</span></a>
+arv_gvsp_packet_get_payload_type (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="type">ArvGvspPacket</span></a> *packet</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-get-pixel-format"></a><h3>arv_gvsp_packet_get_pixel_format ()</h3>
+<pre class="programlisting"><a class="link" href="ArvBuffer.html#ArvPixelFormat" title="ArvPixelFormat"><span class="returnvalue">ArvPixelFormat</span></a>
+arv_gvsp_packet_get_pixel_format (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="type">ArvGvspPacket</span></a> *packet</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-get-timestamp"></a><h3>arv_gvsp_packet_get_timestamp ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
+arv_gvsp_packet_get_timestamp (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="type">ArvGvspPacket</span></a> *packet</code></em>,
+                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> timestamp_tick_frequency</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-get-width"></a><h3>arv_gvsp_packet_get_width ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+arv_gvsp_packet_get_width (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="type">ArvGvspPacket</span></a> *packet</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-get-x-offset"></a><h3>arv_gvsp_packet_get_x_offset ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+arv_gvsp_packet_get_x_offset (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="type">ArvGvspPacket</span></a> *packet</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-get-y-offset"></a><h3>arv_gvsp_packet_get_y_offset ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+arv_gvsp_packet_get_y_offset (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="type">ArvGvspPacket</span></a> *packet</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-debug"></a><h3>arv_gvsp_packet_debug ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+arv_gvsp_packet_debug (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="type">ArvGvspPacket</span></a> *packet</code></em>,
+                       <em class="parameter"><code><span class="type">size_t</span> packet_size</code></em>,
+                       <em class="parameter"><code><span class="type">ArvDebugLevel</span> level</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-new-data-block"></a><h3>arv_gvsp_packet_new_data_block ()</h3>
+<pre class="programlisting"><a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="returnvalue">ArvGvspPacket</span></a> *
+arv_gvsp_packet_new_data_block (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> frame_id</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> packet_id</code></em>,
+                                <em class="parameter"><code><span class="type">size_t</span> size</code></em>,
+                                <em class="parameter"><code><span class="type">void</span> *data</code></em>,
+                                <em class="parameter"><code><span class="type">void</span> *buffer</code></em>,
+                                <em class="parameter"><code><span class="type">size_t</span> *buffer_size</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-new-data-leader"></a><h3>arv_gvsp_packet_new_data_leader ()</h3>
+<pre class="programlisting"><a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="returnvalue">ArvGvspPacket</span></a> *
+arv_gvsp_packet_new_data_leader (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> frame_id</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> packet_id</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> timestamp</code></em>,
+                                 <em class="parameter"><code><a class="link" href="ArvBuffer.html#ArvPixelFormat" title="ArvPixelFormat"><span class="type">ArvPixelFormat</span></a> pixel_format</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> width</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> height</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> x_offset</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> y_offset</code></em>,
+                                 <em class="parameter"><code><span class="type">void</span> *buffer</code></em>,
+                                 <em class="parameter"><code><span class="type">size_t</span> *buffer_size</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvsp-packet-new-data-trailer"></a><h3>arv_gvsp_packet_new_data_trailer ()</h3>
+<pre class="programlisting"><a class="link" href="aravis-ArvGvsp.html#ArvGvspPacket" title="ArvGvspPacket"><span class="returnvalue">ArvGvspPacket</span></a> *
+arv_gvsp_packet_new_data_trailer (<em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> frame_id</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> packet_id</code></em>,
+                                  <em class="parameter"><code><span class="type">void</span> *buffer</code></em>,
+                                  <em class="parameter"><code><span class="type">size_t</span> *buffer_size</code></em>);</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="aravis-ArvGvsp.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="ArvGvspPayloadType"></a><h3>enum ArvGvspPayloadType</h3>
+<div class="refsect3">
+<a name="id-1.3.4.6.7.2.3"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-PAYLOAD-TYPE-IMAGE:CAPS"></a>ARV_GVSP_PAYLOAD_TYPE_IMAGE</p></td>
+<td class="enum_member_description">
+<p>image data</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-PAYLOAD-TYPE-RAWDATA:CAPS"></a>ARV_GVSP_PAYLOAD_TYPE_RAWDATA</p></td>
+<td class="enum_member_description">
+<p>raw data</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-PAYLOAD-TYPE-FILE:CAPS"></a>ARV_GVSP_PAYLOAD_TYPE_FILE</p></td>
+<td class="enum_member_description">
+<p>file</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-PAYLOAD-TYPE-CHUNK-DATA:CAPS"></a>ARV_GVSP_PAYLOAD_TYPE_CHUNK_DATA</p></td>
+<td class="enum_member_description">
+<p>chunk data</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-PAYLOAD-TYPE-EXTENDED-CHUNK-DATA:CAPS"></a>ARV_GVSP_PAYLOAD_TYPE_EXTENDED_CHUNK_DATA</p></td>
+<td class="enum_member_description">
+<p>extended chunk data</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-PAYLOAD-TYPE-JPEG:CAPS"></a>ARV_GVSP_PAYLOAD_TYPE_JPEG</p></td>
+<td class="enum_member_description">
+<p>JPEG data</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-PAYLOAD-TYPE-JPEG2000:CAPS"></a>ARV_GVSP_PAYLOAD_TYPE_JPEG2000</p></td>
+<td class="enum_member_description">
+<p>JPEG2000 data</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-PAYLOAD-TYPE-H264:CAPS"></a>ARV_GVSP_PAYLOAD_TYPE_H264</p></td>
+<td class="enum_member_description">
+<p>h264 data</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-PAYLOAD-TYPE-MULTIZONE-IMAGE:CAPS"></a>ARV_GVSP_PAYLOAD_TYPE_MULTIZONE_IMAGE</p></td>
+<td class="enum_member_description">
+<p>multizone image</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="ArvGvspPacketType"></a><h3>enum ArvGvspPacketType</h3>
+<div class="refsect3">
+<a name="id-1.3.4.6.7.3.3"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-PACKET-TYPE-OK:CAPS"></a>ARV_GVSP_PACKET_TYPE_OK</p></td>
+<td class="enum_member_description">
+<p>valid packet</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-PACKET-TYPE-RESEND:CAPS"></a>ARV_GVSP_PACKET_TYPE_RESEND</p></td>
+<td class="enum_member_description">
+<p>resent packet (BlackFly PointGrey camera support)</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-PACKET-TYPE-ERROR:CAPS"></a>ARV_GVSP_PACKET_TYPE_ERROR</p></td>
+<td class="enum_member_description">
+<p>error packet, indicating invalid resend request</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="ArvGvspContentType"></a><h3>enum ArvGvspContentType</h3>
+<div class="refsect3">
+<a name="id-1.3.4.6.7.4.3"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-CONTENT-TYPE-DATA-LEADER:CAPS"></a>ARV_GVSP_CONTENT_TYPE_DATA_LEADER</p></td>
+<td class="enum_member_description">
+<p>leader packet</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-CONTENT-TYPE-DATA-TRAILER:CAPS"></a>ARV_GVSP_CONTENT_TYPE_DATA_TRAILER</p></td>
+<td class="enum_member_description">
+<p>trailer packet</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ARV-GVSP-CONTENT-TYPE-DATA-BLOCK:CAPS"></a>ARV_GVSP_CONTENT_TYPE_DATA_BLOCK</p></td>
+<td class="enum_member_description">
+<p>data packet</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="ArvGvspDataLeader"></a><h3>ArvGvspDataLeader</h3>
+<pre class="programlisting">typedef struct {
+	guint32 payload_type;
+	guint32 timestamp_high;
+	guint32 timestamp_low;
+	guint32 pixel_format;
+	guint32 width;
+	guint32 height;
+	guint32 x_offset;
+	guint32 y_offset;
+} ArvGvspDataLeader;
+</pre>
+<p>GVSP data leader packet data area.</p>
+<div class="refsect3">
+<a name="id-1.3.4.6.7.5.5"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="ArvGvspDataLeader.payload-type"></a>payload_type</code></em>;</p></td>
+<td class="struct_member_description"><p>ID of the payload type</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="ArvGvspDataLeader.timestamp-high"></a>timestamp_high</code></em>;</p></td>
+<td class="struct_member_description"><p>most significant bits of frame timestamp</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="ArvGvspDataLeader.timestamp-low"></a>timestamp_low</code></em>;</p></td>
+<td class="struct_member_description"><p>least significant bits of frame timestamp_low</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="ArvGvspDataLeader.pixel-format"></a>pixel_format</code></em>;</p></td>
+<td class="struct_member_description"><p>a <a class="link" href="ArvBuffer.html#ArvPixelFormat" title="ArvPixelFormat"><span class="type">ArvPixelFormat</span></a> identifier</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="ArvGvspDataLeader.width"></a>width</code></em>;</p></td>
+<td class="struct_member_description"><p>frame width, in pixels</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="ArvGvspDataLeader.height"></a>height</code></em>;</p></td>
+<td class="struct_member_description"><p>frame height, in pixels</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="ArvGvspDataLeader.x-offset"></a>x_offset</code></em>;</p></td>
+<td class="struct_member_description"><p>frame x offset, in pixels</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="ArvGvspDataLeader.y-offset"></a>y_offset</code></em>;</p></td>
+<td class="struct_member_description"><p>frame y offset, in pixels</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="ArvGvspDataTrailer"></a><h3>ArvGvspDataTrailer</h3>
+<pre class="programlisting">typedef struct {
+	guint32 data0;
+	guint32 data1;
+} ArvGvspDataTrailer;
+</pre>
+<p>GVSP data trailer packet data area.</p>
+<div class="refsect3">
+<a name="id-1.3.4.6.7.6.5"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="ArvGvspDataTrailer.data0"></a>data0</code></em>;</p></td>
+<td class="struct_member_description"><p>unused</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="ArvGvspDataTrailer.data1"></a>data1</code></em>;</p></td>
+<td class="struct_member_description"><p>unused</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="ArvGvspHeader"></a><h3>ArvGvspHeader</h3>
+<pre class="programlisting">typedef struct {
+	guint16 packet_type;
+	guint16 frame_id;
+	guint32 packet_infos;
+} ArvGvspHeader;
+</pre>
+<p>GVSP packet header structure.</p>
+<div class="refsect3">
+<a name="id-1.3.4.6.7.7.5"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> <em class="structfield"><code><a name="ArvGvspHeader.packet-type"></a>packet_type</code></em>;</p></td>
+<td class="struct_member_description"><p>a <a class="link" href="aravis-ArvGvsp.html#ArvGvspPacketType" title="enum ArvGvspPacketType"><span class="type">ArvGvspPacketType</span></a> identifier</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> <em class="structfield"><code><a name="ArvGvspHeader.frame-id"></a>frame_id</code></em>;</p></td>
+<td class="struct_member_description"><p>frame identifier</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> <em class="structfield"><code><a name="ArvGvspHeader.packet-infos"></a>packet_infos</code></em>;</p></td>
+<td class="struct_member_description"><p><a class="link" href="aravis-ArvGvsp.html#ArvGvspContentType" title="enum ArvGvspContentType"><span class="type">ArvGvspContentType</span></a> and packet identifier in a 32 bit value</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="ArvGvspPacket"></a><h3>ArvGvspPacket</h3>
+<pre class="programlisting">typedef struct {
+	ArvGvspHeader header;
+	guint8 data[];
+} ArvGvspPacket;
+</pre>
+<p>GVSP packet structure.</p>
+<div class="refsect3">
+<a name="id-1.3.4.6.7.8.5"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><a class="link" href="aravis-ArvGvsp.html#ArvGvspHeader" title="ArvGvspHeader"><span class="type">ArvGvspHeader</span></a> <em class="structfield"><code><a name="ArvGvspPacket.header"></a>header</code></em>;</p></td>
+<td class="struct_member_description"><p>common GVSP packet header</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> <em class="structfield"><code><a name="ArvGvspPacket.data"></a>data</code></em>[];</p></td>
+<td class="struct_member_description"><p>data byte array</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.21</div>
+</body>
+</html>

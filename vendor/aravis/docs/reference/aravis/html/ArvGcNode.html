@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Aravis Reference Manual: ArvGcNode</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="Aravis Reference Manual">
+<link rel="up" href="ch05.html" title="Genicam">
+<link rel="prev" href="ArvGc.html" title="ArvGc">
+<link rel="next" href="ArvGcPropertyNode.html" title="ArvGcPropertyNode">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#ArvGcNode.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#ArvGcNode.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch05.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="ArvGc.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="ArvGcPropertyNode.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="ArvGcNode"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="ArvGcNode.top_of_page"></a>ArvGcNode</span></h2>
+<p>ArvGcNode — Base class for all Genicam nodes</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="ArvGcNode.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody><tr>
+<td class="function_type">
+<a class="link" href="ArvGc.html" title="ArvGc"><span class="returnvalue">ArvGc</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvGcNode.html#arv-gc-node-get-genicam" title="arv_gc_node_get_genicam ()">arv_gc_node_get_genicam</a> <span class="c_punctuation">()</span>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="ArvGcNode.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="ArvGcNode.html#ArvGcNode-struct" title="ArvGcNode">ArvGcNode</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="ArvGcNode.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> <a class="link" href="ArvDomNode.html" title="ArvDomNode">ArvDomNode</a>
+        <span class="lineart">╰──</span> <a class="link" href="ArvDomElement.html" title="ArvDomElement">ArvDomElement</a>
+            <span class="lineart">╰──</span> ArvGcNode
+                <span class="lineart">├──</span> <a class="link" href="ArvGcPropertyNode.html" title="ArvGcPropertyNode">ArvGcPropertyNode</a>
+                <span class="lineart">╰──</span> <a class="link" href="ArvGcFeatureNode.html" title="ArvGcFeatureNode">ArvGcFeatureNode</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="ArvGcNode.description"></a><h2>Description</h2>
+<p><a class="link" href="ArvGcNode.html" title="ArvGcNode"><span class="type">ArvGcNode</span></a> provides a base class for the implementation of the different
+types of Genicam nodes.</p>
+</div>
+<div class="refsect1">
+<a name="ArvGcNode.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="arv-gc-node-get-genicam"></a><h3>arv_gc_node_get_genicam ()</h3>
+<pre class="programlisting"><a class="link" href="ArvGc.html" title="ArvGc"><span class="returnvalue">ArvGc</span></a> *
+arv_gc_node_get_genicam (<em class="parameter"><code><a class="link" href="ArvGcNode.html" title="ArvGcNode"><span class="type">ArvGcNode</span></a> *gc_node</code></em>);</pre>
+<p>Retrieves the parent genicam document of <em class="parameter"><code>gc_node</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.3.3.3.7.2.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>gc_node</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvGcNode.html" title="ArvGcNode"><span class="type">ArvGcNode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.3.3.7.2.6"></a><h4>Returns</h4>
+<p> the parent <a class="link" href="ArvGc.html" title="ArvGc"><span class="type">ArvGc</span></a>. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="ArvGcNode.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="ArvGcNode-struct"></a><h3>ArvGcNode</h3>
+<pre class="programlisting">typedef struct _ArvGcNode ArvGcNode;</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.21</div>
+</body>
+</html>

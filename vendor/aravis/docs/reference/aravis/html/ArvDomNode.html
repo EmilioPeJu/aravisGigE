@@ -1,0 +1,670 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Aravis Reference Manual: ArvDomNode</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="Aravis Reference Manual">
+<link rel="up" href="ch08.html" title="DOM">
+<link rel="prev" href="ch08.html" title="DOM">
+<link rel="next" href="aravis-ArvDomNodeList.html" title="ArvDomNodeList">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#ArvDomNode.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#ArvDomNode.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch08.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="ch08.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="aravis-ArvDomNodeList.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="ArvDomNode"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="ArvDomNode.top_of_page"></a>ArvDomNode</span></h2>
+<p>ArvDomNode — Base class for DOM nodes</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="ArvDomNode.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">const <span class="returnvalue">char</span> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-get-node-name" title="arv_dom_node_get_node_name ()">arv_dom_node_get_node_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">char</span> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-get-node-value" title="arv_dom_node_get_node_value ()">arv_dom_node_get_node_value</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-set-node-value" title="arv_dom_node_set_node_value ()">arv_dom_node_set_node_value</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">ArvDomNodeType</span>
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-get-node-type" title="arv_dom_node_get_node_type ()">arv_dom_node_get_node_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-get-parent-node" title="arv_dom_node_get_parent_node ()">arv_dom_node_get_parent_node</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">ArvDomNodeList</span> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-get-child-nodes" title="arv_dom_node_get_child_nodes ()">arv_dom_node_get_child_nodes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-get-first-child" title="arv_dom_node_get_first_child ()">arv_dom_node_get_first_child</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-get-last-child" title="arv_dom_node_get_last_child ()">arv_dom_node_get_last_child</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-get-previous-sibling" title="arv_dom_node_get_previous_sibling ()">arv_dom_node_get_previous_sibling</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-get-next-sibling" title="arv_dom_node_get_next_sibling ()">arv_dom_node_get_next_sibling</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">ArvDomNamedNodeMap</span> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-get-attributes" title="arv_dom_node_get_attributes ()">arv_dom_node_get_attributes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-insert-before" title="arv_dom_node_insert_before ()">arv_dom_node_insert_before</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-replace-child" title="arv_dom_node_replace_child ()">arv_dom_node_replace_child</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-append-child" title="arv_dom_node_append_child ()">arv_dom_node_append_child</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-remove-child" title="arv_dom_node_remove_child ()">arv_dom_node_remove_child</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-has-child-nodes" title="arv_dom_node_has_child_nodes ()">arv_dom_node_has_child_nodes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-changed" title="arv_dom_node_changed ()">arv_dom_node_changed</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="ArvDomDocument.html" title="ArvDomDocument"><span class="returnvalue">ArvDomDocument</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvDomNode.html#arv-dom-node-get-owner-document" title="arv_dom_node_get_owner_document ()">arv_dom_node_get_owner_document</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="ArvDomNode.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="ArvDomNode.html#ArvDomNode-struct" title="ArvDomNode">ArvDomNode</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="ArvDomNode.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> ArvDomNode
+        <span class="lineart">├──</span> <a class="link" href="ArvDomElement.html" title="ArvDomElement">ArvDomElement</a>
+        <span class="lineart">╰──</span> <a class="link" href="ArvDomDocument.html" title="ArvDomDocument">ArvDomDocument</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="ArvDomNode.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="ArvDomNode.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="arv-dom-node-get-node-name"></a><h3>arv_dom_node_get_node_name ()</h3>
+<pre class="programlisting">const <span class="returnvalue">char</span> *
+arv_dom_node_get_node_name (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>);</pre>
+<p>Gets the node name.</p>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.2.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.2.6"></a><h4>Returns</h4>
+<p> the node name.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-get-node-value"></a><h3>arv_dom_node_get_node_value ()</h3>
+<pre class="programlisting">const <span class="returnvalue">char</span> *
+arv_dom_node_get_node_value (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>);</pre>
+<p>Gets the node value.</p>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.3.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.3.6"></a><h4>Returns</h4>
+<p> the node value.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-set-node-value"></a><h3>arv_dom_node_set_node_value ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+arv_dom_node_set_node_value (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>,
+                             <em class="parameter"><code>const <span class="type">char</span> *new_value</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-get-node-type"></a><h3>arv_dom_node_get_node_type ()</h3>
+<pre class="programlisting"><span class="returnvalue">ArvDomNodeType</span>
+arv_dom_node_get_node_type (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-get-parent-node"></a><h3>arv_dom_node_get_parent_node ()</h3>
+<pre class="programlisting"><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+arv_dom_node_get_parent_node (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>);</pre>
+<p>Get the parent node of <em class="parameter"><code>self</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.6.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.6.6"></a><h4>Returns</h4>
+<p> <em class="parameter"><code>self</code></em>
+parent. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-get-child-nodes"></a><h3>arv_dom_node_get_child_nodes ()</h3>
+<pre class="programlisting"><span class="returnvalue">ArvDomNodeList</span> *
+arv_dom_node_get_child_nodes (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>);</pre>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.7.4"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.7.5"></a><h4>Returns</h4>
+<p> a <span class="type">ArvDomNodeList</span>, NULL on error. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-get-first-child"></a><h3>arv_dom_node_get_first_child ()</h3>
+<pre class="programlisting"><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+arv_dom_node_get_first_child (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>);</pre>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.8.4"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.8.5"></a><h4>Returns</h4>
+<p> <em class="parameter"><code>self</code></em>
+first child. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-get-last-child"></a><h3>arv_dom_node_get_last_child ()</h3>
+<pre class="programlisting"><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+arv_dom_node_get_last_child (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>);</pre>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.9.4"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.9.5"></a><h4>Returns</h4>
+<p> <em class="parameter"><code>self</code></em>
+last child. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-get-previous-sibling"></a><h3>arv_dom_node_get_previous_sibling ()</h3>
+<pre class="programlisting"><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+arv_dom_node_get_previous_sibling (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>);</pre>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.10.4"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.10.5"></a><h4>Returns</h4>
+<p> <em class="parameter"><code>self</code></em>
+previous sibling. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-get-next-sibling"></a><h3>arv_dom_node_get_next_sibling ()</h3>
+<pre class="programlisting"><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+arv_dom_node_get_next_sibling (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>);</pre>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.11.4"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.11.5"></a><h4>Returns</h4>
+<p> <em class="parameter"><code>self</code></em>
+next sibling. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-get-attributes"></a><h3>arv_dom_node_get_attributes ()</h3>
+<pre class="programlisting"><span class="returnvalue">ArvDomNamedNodeMap</span> *
+arv_dom_node_get_attributes (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-insert-before"></a><h3>arv_dom_node_insert_before ()</h3>
+<pre class="programlisting"><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+arv_dom_node_insert_before (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>,
+                            <em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *new_child</code></em>,
+                            <em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *ref_child</code></em>);</pre>
+<p>Inserts the node <em class="parameter"><code>new_child</code></em>
+ before the existing child node <em class="parameter"><code>ref_child</code></em>
+. If
+<em class="parameter"><code>ref_child</code></em>
+ is null, insert <em class="parameter"><code>new_child</code></em>
+ at the end of the list of children.
+If the <em class="parameter"><code>new_child</code></em>
+ is already in the tree, it is first removed.</p>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.13.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>new_child</p></td>
+<td class="parameter_description"><p> node to insert. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>ref_child</p></td>
+<td class="parameter_description"><p> reference node, i.e., the node before which the new node must be inserted. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.13.6"></a><h4>Returns</h4>
+<p> the inserted node. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-replace-child"></a><h3>arv_dom_node_replace_child ()</h3>
+<pre class="programlisting"><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+arv_dom_node_replace_child (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>,
+                            <em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *new_child</code></em>,
+                            <em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *old_child</code></em>);</pre>
+<p>Replaces the child node <em class="parameter"><code>old_child</code></em>
+ with <em class="parameter"><code>new_child</code></em>
+ in the list of children,
+and returns the <em class="parameter"><code>old_child</code></em>
+ node.
+If the <em class="parameter"><code>new_child</code></em>
+ is already in the tree, it is first removed.</p>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.14.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>new_child</p></td>
+<td class="parameter_description"><p> a replacement node. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>old_child</p></td>
+<td class="parameter_description"><p> node to replace. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.14.6"></a><h4>Returns</h4>
+<p> the replaced node. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-append-child"></a><h3>arv_dom_node_append_child ()</h3>
+<pre class="programlisting"><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+arv_dom_node_append_child (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>,
+                           <em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *new_child</code></em>);</pre>
+<p>Adds the node <em class="parameter"><code>new_child</code></em>
+ to the end of the list of children of this node.
+If the <em class="parameter"><code>new_child</code></em>
+ is already in the tree, it is first removed.</p>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.15.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>new_child</p></td>
+<td class="parameter_description"><p> node to append. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.15.6"></a><h4>Returns</h4>
+<p> the added node. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-remove-child"></a><h3>arv_dom_node_remove_child ()</h3>
+<pre class="programlisting"><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="returnvalue">ArvDomNode</span></a> *
+arv_dom_node_remove_child (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>,
+                           <em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *old_child</code></em>);</pre>
+<p>Removes the child node indicated by <em class="parameter"><code>old_child</code></em>
+ from the list of children, and returns it.</p>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.16.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>old_child</p></td>
+<td class="parameter_description"><p> node to remove. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.16.6"></a><h4>Returns</h4>
+<p> the removed node. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-has-child-nodes"></a><h3>arv_dom_node_has_child_nodes ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+arv_dom_node_has_child_nodes (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-changed"></a><h3>arv_dom_node_changed ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+arv_dom_node_changed (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-dom-node-get-owner-document"></a><h3>arv_dom_node_get_owner_document ()</h3>
+<pre class="programlisting"><a class="link" href="ArvDomDocument.html" title="ArvDomDocument"><span class="returnvalue">ArvDomDocument</span></a> *
+arv_dom_node_get_owner_document (<em class="parameter"><code><a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a> *self</code></em>);</pre>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.19.4"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvDomNode.html" title="ArvDomNode"><span class="type">ArvDomNode</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.3.6.2.7.19.5"></a><h4>Returns</h4>
+<p> <em class="parameter"><code>self</code></em>
+owner document. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="ArvDomNode.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="ArvDomNode-struct"></a><h3>ArvDomNode</h3>
+<pre class="programlisting">typedef struct _ArvDomNode ArvDomNode;</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.21</div>
+</body>
+</html>

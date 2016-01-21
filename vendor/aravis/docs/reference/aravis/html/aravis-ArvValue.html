@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Aravis Reference Manual: ArvValue</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="Aravis Reference Manual">
+<link rel="up" href="ch09.html" title="Utils">
+<link rel="prev" href="aravis-ArvStr.html" title="ArvStr">
+<link rel="next" href="aravis-ArvZip.html" title="ArvZip">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#aravis-ArvValue.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch09.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="aravis-ArvStr.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="aravis-ArvZip.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="aravis-ArvValue"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="aravis-ArvValue.top_of_page"></a>ArvValue</span></h2>
+<p>ArvValue — An int64/double value storage</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="aravis-ArvValue.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<span class="returnvalue">ArvValue</span> *
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvValue.html#arv-value-new-double" title="arv_value_new_double ()">arv_value_new_double</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">ArvValue</span> *
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvValue.html#arv-value-new-int64" title="arv_value_new_int64 ()">arv_value_new_int64</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvValue.html#arv-value-free" title="arv_value_free ()">arv_value_free</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvValue.html#arv-value-copy" title="arv_value_copy ()">arv_value_copy</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvValue.html#arv-value-set-int64" title="arv_value_set_int64 ()">arv_value_set_int64</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvValue.html#arv-value-set-double" title="arv_value_set_double ()">arv_value_set_double</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="returnvalue">gint64</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvValue.html#arv-value-get-int64" title="arv_value_get_int64 ()">arv_value_get_int64</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">double</span>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvValue.html#arv-value-get-double" title="arv_value_get_double ()">arv_value_get_double</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvValue.html#arv-value-holds-int64" title="arv_value_holds_int64 ()">arv_value_holds_int64</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">double</span>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvValue.html#arv-value-holds-double" title="arv_value_holds_double ()">arv_value_holds_double</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="aravis-ArvValue.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="aravis-ArvValue.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="arv-value-new-double"></a><h3>arv_value_new_double ()</h3>
+<pre class="programlisting"><span class="returnvalue">ArvValue</span> *
+arv_value_new_double (<em class="parameter"><code><span class="type">double</span> v_double</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-value-new-int64"></a><h3>arv_value_new_int64 ()</h3>
+<pre class="programlisting"><span class="returnvalue">ArvValue</span> *
+arv_value_new_int64 (<em class="parameter"><code><span class="type">double</span> v_int64</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-value-free"></a><h3>arv_value_free ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+arv_value_free (<em class="parameter"><code><span class="type">ArvValue</span> *value</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-value-copy"></a><h3>arv_value_copy ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+arv_value_copy (<em class="parameter"><code><span class="type">ArvValue</span> *to</code></em>,
+                <em class="parameter"><code>const <span class="type">ArvValue</span> *from</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-value-set-int64"></a><h3>arv_value_set_int64 ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+arv_value_set_int64 (<em class="parameter"><code><span class="type">ArvValue</span> *value</code></em>,
+                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> v_int64</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-value-set-double"></a><h3>arv_value_set_double ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+arv_value_set_double (<em class="parameter"><code><span class="type">ArvValue</span> *value</code></em>,
+                      <em class="parameter"><code><span class="type">double</span> v_double</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-value-get-int64"></a><h3>arv_value_get_int64 ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64"><span class="returnvalue">gint64</span></a>
+arv_value_get_int64 (<em class="parameter"><code><span class="type">ArvValue</span> *value</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-value-get-double"></a><h3>arv_value_get_double ()</h3>
+<pre class="programlisting"><span class="returnvalue">double</span>
+arv_value_get_double (<em class="parameter"><code><span class="type">ArvValue</span> *value</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-value-holds-int64"></a><h3>arv_value_holds_int64 ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+arv_value_holds_int64 (<em class="parameter"><code><span class="type">ArvValue</span> *value</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-value-holds-double"></a><h3>arv_value_holds_double ()</h3>
+<pre class="programlisting"><span class="returnvalue">double</span>
+arv_value_holds_double (<em class="parameter"><code><span class="type">ArvValue</span> *value</code></em>);</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="aravis-ArvValue.other_details"></a><h2>Types and Values</h2>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.21</div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Aravis Reference Manual: Object Hierarchy</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="Aravis Reference Manual">
+<link rel="up" href="aravis-reference.html" title="Part II. Aravis API reference">
+<link rel="prev" href="aravis-ArvZip.html" title="ArvZip">
+<link rel="next" href="api-index-full.html" title="API Index">
+<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="aravis-reference.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="aravis-ArvZip.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="api-index-full.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="chapter">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="object-tree"></a>Object Hierarchy</h2></div></div></div>
+<pre class="screen">
+    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">├──</span> <a class="link" href="ArvBuffer.html" title="ArvBuffer">ArvBuffer</a>
+    <span class="lineart">├──</span> <a class="link" href="ArvCamera.html" title="ArvCamera">ArvCamera</a>
+    <span class="lineart">├──</span> <a class="link" href="ArvDevice.html" title="ArvDevice">ArvDevice</a>
+    <span class="lineart">│</span>   <span class="lineart">├──</span> <a class="link" href="ArvFakeDevice.html" title="ArvFakeDevice">ArvFakeDevice</a>
+    <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="ArvGvDevice.html" title="ArvGvDevice">ArvGvDevice</a>
+    <span class="lineart">├──</span> <a class="link" href="ArvChunkParser.html" title="ArvChunkParser">ArvChunkParser</a>
+    <span class="lineart">├──</span> <a class="link" href="ArvEvaluator.html" title="ArvEvaluator">ArvEvaluator</a>
+    <span class="lineart">├──</span> <a class="link" href="ArvFakeCamera.html" title="ArvFakeCamera">ArvFakeCamera</a>
+    <span class="lineart">├──</span> <a class="link" href="ArvInterface.html" title="ArvInterface">ArvInterface</a>
+    <span class="lineart">│</span>   <span class="lineart">├──</span> <a class="link" href="ArvFakeInterface.html" title="ArvFakeInterface">ArvFakeInterface</a>
+    <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="ArvGvInterface.html" title="ArvGvInterface">ArvGvInterface</a>
+    <span class="lineart">├──</span> <a class="link" href="ArvStream.html" title="ArvStream">ArvStream</a>
+    <span class="lineart">│</span>   <span class="lineart">├──</span> <a class="link" href="ArvFakeStream.html" title="ArvFakeStream">ArvFakeStream</a>
+    <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="ArvGvStream.html" title="ArvGvStream">ArvGvStream</a>
+    <span class="lineart">╰──</span> <a class="link" href="ArvDomNode.html" title="ArvDomNode">ArvDomNode</a>
+        <span class="lineart">├──</span> <a class="link" href="ArvDomElement.html" title="ArvDomElement">ArvDomElement</a>
+        <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="ArvGcNode.html" title="ArvGcNode">ArvGcNode</a>
+        <span class="lineart">│</span>       <span class="lineart">├──</span> <a class="link" href="ArvGcPropertyNode.html" title="ArvGcPropertyNode">ArvGcPropertyNode</a>
+        <span class="lineart">│</span>       <span class="lineart">│</span>   <span class="lineart">├──</span> <a class="link" href="ArvGcIndexNode.html" title="ArvGcIndexNode">ArvGcIndexNode</a>
+        <span class="lineart">│</span>       <span class="lineart">│</span>   <span class="lineart">├──</span> <a class="link" href="ArvGcInvalidatorNode.html" title="ArvGcInvalidatorNode">ArvGcInvalidatorNode</a>
+        <span class="lineart">│</span>       <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="ArvGcVariableNode.html" title="ArvGcVariableNode">ArvGcVariableNode</a>
+        <span class="lineart">│</span>       <span class="lineart">╰──</span> <a class="link" href="ArvGcFeatureNode.html" title="ArvGcFeatureNode">ArvGcFeatureNode</a>
+        <span class="lineart">│</span>           <span class="lineart">├──</span> <a class="link" href="ArvGcEnumEntry.html" title="ArvGcEnumEntry">ArvGcEnumEntry</a>
+        <span class="lineart">│</span>           <span class="lineart">├──</span> <a class="link" href="ArvGcRegisterDescriptionNode.html" title="ArvGcRegisterDescriptionNode">ArvGcRegisterDescriptionNode</a>
+        <span class="lineart">│</span>           <span class="lineart">├──</span> <a class="link" href="ArvGcGroupNode.html" title="ArvGcGroupNode">ArvGcGroupNode</a>
+        <span class="lineart">│</span>           <span class="lineart">├──</span> <a class="link" href="ArvGcBoolean.html" title="ArvGcBoolean">ArvGcBoolean</a>
+        <span class="lineart">│</span>           <span class="lineart">├──</span> <a class="link" href="ArvGcCategory.html" title="ArvGcCategory">ArvGcCategory</a>
+        <span class="lineart">│</span>           <span class="lineart">├──</span> <a class="link" href="ArvGcCommand.html" title="ArvGcCommand">ArvGcCommand</a>
+        <span class="lineart">│</span>           <span class="lineart">├──</span> <a class="link" href="ArvGcConverter.html" title="ArvGcConverter">ArvGcConverter</a>
+        <span class="lineart">│</span>           <span class="lineart">├──</span> <a class="link" href="ArvGcEnumeration.html" title="ArvGcEnumeration">ArvGcEnumeration</a>
+        <span class="lineart">│</span>           <span class="lineart">├──</span> <a class="link" href="ArvGcFloatNode.html" title="ArvGcFloatNode">ArvGcFloatNode</a>
+        <span class="lineart">│</span>           <span class="lineart">├──</span> <a class="link" href="ArvGcIntegerNode.html" title="ArvGcIntegerNode">ArvGcIntegerNode</a>
+        <span class="lineart">│</span>           <span class="lineart">├──</span> <a class="link" href="ArvGcPort.html" title="ArvGcPort">ArvGcPort</a>
+        <span class="lineart">│</span>           <span class="lineart">├──</span> <a class="link" href="ArvGcRegisterNode.html" title="ArvGcRegisterNode">ArvGcRegisterNode</a>
+        <span class="lineart">│</span>           <span class="lineart">├──</span> <a class="link" href="ArvGcStructEntryNode.html" title="ArvGcStructEntryNode">ArvGcStructEntryNode</a>
+        <span class="lineart">│</span>           <span class="lineart">╰──</span> <a class="link" href="ArvGcSwissKnife.html" title="ArvGcSwissKnife">ArvGcSwissKnife</a>
+        <span class="lineart">╰──</span> <a class="link" href="ArvDomDocument.html" title="ArvDomDocument">ArvDomDocument</a>
+            <span class="lineart">╰──</span> <a class="link" href="ArvGc.html" title="ArvGc">ArvGc</a>
+    <a href="https://developer.gnome.org/gobject/unstable/GTypeModule.html">GInterface</a>
+    <span class="lineart">├──</span> <a class="link" href="ArvGcInteger.html" title="ArvGcInteger">ArvGcInteger</a>
+    <span class="lineart">├──</span> <a class="link" href="ArvGcFloat.html" title="ArvGcFloat">ArvGcFloat</a>
+    <span class="lineart">├──</span> <a class="link" href="ArvGcString.html" title="ArvGcString">ArvGcString</a>
+    <span class="lineart">╰──</span> <a class="link" href="ArvGcRegister.html" title="ArvGcRegister">ArvGcRegister</a>
+</pre>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.21</div>
+</body>
+</html>
