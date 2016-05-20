@@ -8,7 +8,7 @@
 	<!--<aravisGigE.aravisCamera ADDR="0" CLASS="PSL_SCMOS" ID="Photonic Science-zero" P="PSL" PORT="PSL.CAM" R=":CAM:" TIMEOUT="1"/>-->
 	<!--<aravisGigE.aravisCamera ADDR="0" BUFFERS="50" CLASS="PGR_Flea3" ID="Point Grey Research-11211667" P="FLEA3" PORT="FLEA3.CAM" R=":CAM" TIMEOUT="1"/>-->
 	<!--<aravisGigE.aravisCamera ADDR="0" CLASS="PGR_Blackfly_13E4C-CS" ID="Point Grey Research-13331424" P="BLACKFLY" PORT="BLACKFLY.CAM" R=":CAM" TIMEOUT="1"/>-->
-	<aravisGigE.aravisCamera ADDR="0" CLASS="AVT_Mako_1_52" ID="Allied Vision Technologies-50-0536871585" P="MAKO" PORT="MAKO.CAM" R=":CAM:" TIMEOUT="1"/>
+	<aravisGigE.aravisCamera ADDR="0" CLASS="AVT_Mako_1_52" ID="Allied Vision Technologies-50-0536879855" P="MAKO" PORT="MAKO.CAM" R=":CAM:" TIMEOUT="1"/>
 	<!--<ADCore.NDColorConvert ADDR="0" Enabled="1" NDARRAY_ADDR="0" NDARRAY_PORT="CVC.CAM" P="CVC" PORT="CVC.CC1" R=":CC1:" TIMEOUT="1"/>-->
 	<!--<ADCore.NDColorConvert ADDR="0" Enabled="1" NDARRAY_ADDR="0" NDARRAY_PORT="CVC.CC1" P="CVC" PORT="CVC.CC2" R=":CC2:" TIMEOUT="1"/>-->
 	<!--<ADCore.NDColorConvert ADDR="0" Enabled="1" NDARRAY_ADDR="0" NDARRAY_PORT="GC1020C.CAM" P="GC1020C" PORT="GC1020C.CC" R=":CC:" TIMEOUT="1"/>-->
