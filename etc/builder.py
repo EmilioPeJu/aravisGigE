@@ -34,7 +34,7 @@ class aravisCamera(AsynPort):
     # __init__ arguments
     ArgInfo = _SpecificTemplate.ArgInfo + makeArgInfo(__init__,
         PORT    = Simple('Port name for the camera', str),
-        ID      = Simple('Cam ip address, MAC address, or ID <manufacturer>-<serial>, (e.g. Prosilica-02-2166A-06844)', str),
+        ID      = Simple('Cam ip address, hostname, MAC address, or ID <manufacturer>-<serial>, (e.g. Prosilica-02-2166A-06844)', str),
         CLASS   = Choice('Camera class for custom commands',
                          ["AVT_Manta_1_42", "AVT_Manta_1_44", "AVT_Manta_1_44_4",
                           "AVT_Mako_1_52", "Prosilica_GC", "Baumer_TXG",
