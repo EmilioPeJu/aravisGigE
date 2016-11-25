@@ -25,6 +25,7 @@
  * @short_description: Gigabit ethernet camera interface
  */
 
+#include <arpa/inet.h>
 #include <arvgvinterface.h>
 #include <arvgvdevice.h>
 #include <arvgvcp.h>
@@ -36,9 +37,11 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <net/if.h>
+#include <netdb.h>
 #include <ifaddrs.h>
 #include <stdlib.h>
 #include <string.h>
+
 
 /* ArvGvDiscoverSocket implementation */
 
@@ -466,8 +469,9 @@ static GInetAddress * arv_gv_interface_camera_locate(ArvGvInterface *gv_interfac
 	return interface_address;
 }
 
+
 static ArvDevice *
-arv_gv_interface_open_device (ArvInterface *interface, const char *device_id)
+_open_device (ArvInterface *interface, const char *device_id)
 {
 	ArvGvInterface *gv_interface;
 	ArvDevice *device = NULL;
@@ -485,29 +489,64 @@ arv_gv_interface_open_device (ArvInterface *interface, const char *device_id)
 	} else
 		device_infos = g_hash_table_lookup (gv_interface->priv->devices, device_id);
 
-	if (device_infos == NULL) {
-	   /* This is probably an IP address */
-	   device_address = g_inet_address_new_from_string(device_id);
-	   if (device_address != NULL) {
-		   /* Try and find an interface that the camera will respond on */
-		   GInetAddress *interface_address = arv_gv_interface_camera_locate(gv_interface, device_address);
-		   if (interface_address != NULL) {
-			   device = arv_gv_device_new (interface_address, device_address);
-			   g_object_unref (interface_address);
-		   }
-		   g_object_unref (device_address);
-		   return device;
-	   }
-	}
+    if (device_infos == NULL) {
+        // Try if this is a hostname/IP address
+        struct addrinfo hints;
+        struct addrinfo *servinfo, *endpoint;
+        memset(&hints, 0, sizeof(hints));
+        hints.ai_family = AF_INET;
+        hints.ai_socktype = SOCK_STREAM;
 
-	if (device_infos == NULL)
-		return NULL;
+        if (getaddrinfo(device_id, "http", &hints, &servinfo) != 0) {
+
+            return NULL;
+        }
+
+        for (endpoint=servinfo; endpoint!=NULL; endpoint=endpoint->ai_next) {
+            char ipstr[INET_ADDRSTRLEN];
+            struct sockaddr_in *ip = (struct sockaddr_in *)endpoint->ai_addr;
+
+            inet_ntop(endpoint->ai_family, &ip->sin_addr, ipstr, sizeof(ipstr));
+
+            device_address = g_inet_address_new_from_string(ipstr);
+            if (device_address != NULL) {
+                /* Try and find an interface that the camera will respond on */
+                GInetAddress *interface_address = 
+                    arv_gv_interface_camera_locate(gv_interface, device_address);
+                if (interface_address != NULL) {
+                    device = arv_gv_device_new (interface_address, device_address);
+                    g_object_unref (interface_address);
+                }
+            }
+            g_object_unref (device_address);
+            if (device != NULL) {
+                break;
+            }
+        }
+        freeaddrinfo(servinfo);
+        return device;
+    }
+
 
 	device_address = _device_infos_to_ginetaddress (device_infos);
 	device = arv_gv_device_new (device_infos->interface_address, device_address);
 	g_object_unref (device_address);
 
 	return device;
+}
+
+static ArvDevice *
+arv_gv_interface_open_device (ArvInterface *interface, const char *device_id)
+{
+	ArvDevice *device;
+
+	device = _open_device (interface, device_id);
+	if (ARV_IS_DEVICE (device))
+		return device;
+
+	arv_gv_interface_discover (ARV_GV_INTERFACE (interface));
+
+	return _open_device (interface, device_id);
 }
 
 static ArvInterface *gv_interface = NULL;

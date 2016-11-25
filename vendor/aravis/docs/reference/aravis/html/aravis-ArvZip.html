@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Aravis Reference Manual: ArvZip</title>
+<title>ArvZip: Aravis Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Aravis Reference Manual">
 <link rel="up" href="ch09.html" title="Utils">
 <link rel="prev" href="aravis-ArvValue.html" title="ArvValue">
-<link rel="next" href="object-tree.html" title="Object Hierarchy">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<link rel="next" href="ch10.html" title="Object Hierarchy">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,7 +20,7 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch09.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="aravis-ArvValue.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="object-tree.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="ch10.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="aravis-ArvZip"></a><div class="titlepage"></div>
@@ -64,7 +64,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <a href="https://developer.gnome.org/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *
+<td class="function_type">const <a href="/usr/share/gtk-doc/html/glibglib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="aravis-ArvZip.html#arv-zip-get-file-list" title="arv_zip_get_file_list ()">arv_zip_get_file_list</a> <span class="c_punctuation">()</span>
@@ -99,7 +99,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
+<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="aravis-ArvZip.html#arv-guint16-from-unaligned-le-ptr" title="arv_guint16_from_unaligned_le_ptr ()">arv_guint16_from_unaligned_le_ptr</a> <span class="c_punctuation">()</span>
@@ -107,7 +107,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="aravis-ArvZip.html#arv-guint32-from-unaligned-le-ptr" title="arv_guint32_from_unaligned_le_ptr ()">arv_guint32_from_unaligned_le_ptr</a> <span class="c_punctuation">()</span>
@@ -139,8 +139,9 @@
 <pre class="programlisting"><a class="link" href="aravis-ArvZip.html#ArvZip" title="ArvZip"><span class="returnvalue">ArvZip</span></a> *
 arv_zip_new (<em class="parameter"><code>const <span class="type">void</span> *buffer</code></em>,
              <em class="parameter"><code><span class="type">size_t</span> size</code></em>);</pre>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.7.8.6.2.4"></a><h4>Parameters</h4>
+<a name="arv-zip-new.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -155,12 +156,15 @@ arv_zip_new (<em class="parameter"><code>const <span class="type">void</span> *b
 </tr>
 <tr>
 <td class="parameter_name"><p>size</p></td>
-<td class="parameter_description"><p>size of the zipped data
-Return value: a new <a class="link" href="aravis-ArvZip.html#ArvZip" title="ArvZip"><span class="type">ArvZip</span></a> instance</p></td>
+<td class="parameter_description"><p>size of the zipped data</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
+<div class="refsect3">
+<a name="arv-zip-new.returns"></a><h4>Returns</h4>
+<p> a new <a class="link" href="aravis-ArvZip.html#ArvZip" title="ArvZip"><span class="type">ArvZip</span></a> instance</p>
 </div>
 </div>
 <hr>
@@ -180,7 +184,7 @@ arv_zip_get_file (<em class="parameter"><code><a class="link" href="aravis-ArvZi
 <hr>
 <div class="refsect2">
 <a name="arv-zip-get-file-list"></a><h3>arv_zip_get_file_list ()</h3>
-<pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *
+<pre class="programlisting">const <a href="/usr/share/gtk-doc/html/glibglib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *
 arv_zip_get_file_list (<em class="parameter"><code><a class="link" href="aravis-ArvZip.html#ArvZip" title="ArvZip"><span class="type">ArvZip</span></a> *zip</code></em>);</pre>
 </div>
 <hr>
@@ -210,13 +214,13 @@ arv_zip_file_get_uncompressed_size (<em class="parameter"><code><span class="typ
 <hr>
 <div class="refsect2">
 <a name="arv-guint16-from-unaligned-le-ptr"></a><h3>arv_guint16_from_unaligned_le_ptr ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
 arv_guint16_from_unaligned_le_ptr (<em class="parameter"><code>const <span class="type">char</span> *ptr</code></em>,
-                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint16"><span class="type">gint16</span></a> offset</code></em>);</pre>
+                                   <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint16"><span class="type">gint16</span></a> offset</code></em>);</pre>
 <p>See <em class="parameter"><code>arv_guint32_from_unaligned_le_ptr</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.7.8.6.10.5"></a><h4>Parameters</h4>
+<a name="arv-guint16-from-unaligned-le-ptr.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -239,17 +243,16 @@ arv_guint16_from_unaligned_le_ptr (<em class="parameter"><code>const <span class
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.7.8.6.10.6"></a><h4>Returns</h4>
+<a name="arv-guint16-from-unaligned-le-ptr.returns"></a><h4>Returns</h4>
 <p> a guint16 in machine endianess</p>
-<p></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-guint32-from-unaligned-le-ptr"></a><h3>arv_guint32_from_unaligned_le_ptr ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
 arv_guint32_from_unaligned_le_ptr (<em class="parameter"><code>const <span class="type">char</span> *ptr</code></em>,
-                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> offset</code></em>);</pre>
+                                   <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint32"><span class="type">gint32</span></a> offset</code></em>);</pre>
 <p>Here's an excerpt of the ARM documentation:</p>
 <p>"Unaligned data access in C and C++ code</p>
 <p>It can be necessary to access unaligned data in memory, for example,
@@ -267,7 +270,7 @@ rotated result rather than performing a true unaligned word load.
 Generally, this rotation is not what the programmer expects.</p>
 <p>On ARMv6 and later architectures, unaligned access is fully supported."</p>
 <div class="refsect3">
-<a name="id-1.3.7.8.6.11.9"></a><h4>Parameters</h4>
+<a name="arv-guint32-from-unaligned-le-ptr.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -290,9 +293,8 @@ Generally, this rotation is not what the programmer expects.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.7.8.6.11.10"></a><h4>Returns</h4>
+<a name="arv-guint32-from-unaligned-le-ptr.returns"></a><h4>Returns</h4>
 <p> a guint32 in machine endianess</p>
-<p></p>
 </div>
 </div>
 </div>
@@ -305,7 +307,6 @@ Generally, this rotation is not what the programmer expects.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

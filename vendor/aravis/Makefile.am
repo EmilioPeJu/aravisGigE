@@ -24,13 +24,13 @@ SUBDIRS += tests po docs
 
 aravisdocdir = ${prefix}/doc/aravis-@ARAVIS_API_VERSION@
 aravisdoc_DATA = 	\
-	README		\
+	README.md	\
 	COPYING		\
 	ChangeLog 	\
 	AUTHORS		\
 	NEWS
 
-EXTRA_DIST += m4/introspection.m4
+EXTRA_DIST += m4/introspection.m4 README.md
 
 # Copy all the spec files. Of cource, only one is actually used.
 dist-hook:

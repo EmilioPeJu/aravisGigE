@@ -217,6 +217,34 @@ arv_dom_node_type_get_type (void)
 	return the_type;
 }
 
+#include "arvgc.h"
+
+GType
+arv_gc_error_get_type (void)
+{
+	static GType the_type = 0;
+
+	if (the_type == 0)
+	{
+		static const GEnumValue values[] = {
+			{ ARV_GC_ERROR_PROPERTY_NOT_DEFINED,
+			  "ARV_GC_ERROR_PROPERTY_NOT_DEFINED",
+			  "property-not-defined" },
+			{ ARV_GC_ERROR_PVALUE_NOT_DEFINED,
+			  "ARV_GC_ERROR_PVALUE_NOT_DEFINED",
+			  "pvalue-not-defined" },
+			{ ARV_GC_ERROR_INVALID_PVALUE,
+			  "ARV_GC_ERROR_INVALID_PVALUE",
+			  "invalid-pvalue" },
+			{ 0, NULL, NULL }
+		};
+		the_type = g_enum_register_static (
+				g_intern_static_string ("ArvGcError"),
+				values);
+	}
+	return the_type;
+}
+
 #include "arvgcpropertynode.h"
 
 GType

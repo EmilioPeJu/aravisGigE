@@ -35,6 +35,11 @@ GType arv_debug_level_get_type	(void) G_GNUC_CONST;
 #define ARV_TYPE_DOM_NODE_TYPE	(arv_dom_node_type_get_type())
 GType arv_dom_node_type_get_type	(void) G_GNUC_CONST;
 
+/* Enumerations from "arvgc.h" */
+
+#define ARV_TYPE_GC_ERROR	(arv_gc_error_get_type())
+GType arv_gc_error_get_type	(void) G_GNUC_CONST;
+
 /* Enumerations from "arvgcpropertynode.h" */
 
 #define ARV_TYPE_GC_PROPERTY_NODE_TYPE	(arv_gc_property_node_type_get_type())

@@ -98,6 +98,7 @@ arv_buffer_get_user_data
 arv_buffer_get_data
 arv_buffer_get_chunk_data
 arv_buffer_get_timestamp
+arv_buffer_set_timestamp
 arv_buffer_get_frame_id
 arv_buffer_get_payload_type
 arv_buffer_get_status
@@ -247,6 +248,9 @@ ARV_GC_PORT_GET_CLASS
 <SUBSECTION Private>
 ArvGcPortPrivate
 ArvGcPortClass
+ARV_GC_ERROR
+ArvGcError
+arv_gc_error_quark
 </SECTION>
 
 <SECTION>

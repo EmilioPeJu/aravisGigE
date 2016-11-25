@@ -67,7 +67,8 @@ typedef enum {
 	ARV_CAMERA_VENDOR_DALSA,
 	ARV_CAMERA_VENDOR_PROSILICA,
 	ARV_CAMERA_VENDOR_TIS,
-	ARV_CAMERA_VENDOR_POINT_GREY
+	ARV_CAMERA_VENDOR_POINT_GREY,
+	ARV_CAMERA_VENDOR_RICOH	
 } ArvCameraVendor;
 
 typedef enum {
@@ -78,7 +79,8 @@ typedef enum {
 	ARV_CAMERA_SERIES_DALSA,
 	ARV_CAMERA_SERIES_PROSILICA,
 	ARV_CAMERA_SERIES_TIS,
-	ARV_CAMERA_SERIES_POINT_GREY
+	ARV_CAMERA_SERIES_POINT_GREY,
+	ARV_CAMERA_SERIES_RICOH
 } ArvCameraSeries;
 
 static GObjectClass *parent_class = NULL;
@@ -90,9 +92,9 @@ struct _ArvCameraPrivate {
 	ArvCameraVendor vendor;
 	ArvCameraSeries series;
 
-	gboolean use_gain_raw;
-	gboolean use_exposure_time_abs;
-	gboolean use_acquisition_frame_rate_abs;
+	gboolean has_gain;
+	gboolean has_exposure_time;
+	gboolean has_acquisition_frame_rate;
 };
 
 enum
@@ -651,8 +653,10 @@ arv_camera_set_frame_rate (ArvCamera *camera, double frame_rate)
 			arv_device_set_string_feature_value (camera->priv->device, "TriggerSelector", "FrameStart");
 			arv_device_set_string_feature_value (camera->priv->device, "TriggerMode", "Off");
 			arv_device_set_integer_feature_value (camera->priv->device, "AcquisitionFrameRateEnable", 1);
-			arv_device_set_float_feature_value (camera->priv->device, "AcquisitionFrameRateAbs",
-							    frame_rate);
+			arv_device_set_float_feature_value (camera->priv->device,
+							    camera->priv->has_acquisition_frame_rate ?
+							    "AcquisitionFrameRate":
+							    "AcquisitionFrameRateAbs", frame_rate);
 			break;
 		case ARV_CAMERA_VENDOR_PROSILICA:
 			arv_device_set_string_feature_value (camera->priv->device, "TriggerSelector",
@@ -695,13 +699,14 @@ arv_camera_set_frame_rate (ArvCamera *camera, double frame_rate)
 			arv_device_set_float_feature_value (camera->priv->device, "AcquisitionFrameRate", frame_rate);
 			break;
 		case ARV_CAMERA_VENDOR_DALSA:
+		case ARV_CAMERA_VENDOR_RICOH:
 		case ARV_CAMERA_VENDOR_UNKNOWN:
 			arv_device_set_string_feature_value (camera->priv->device, "TriggerSelector", "FrameStart");
 			arv_device_set_string_feature_value (camera->priv->device, "TriggerMode", "Off");
 			arv_device_set_float_feature_value (camera->priv->device,
-							    camera->priv->use_acquisition_frame_rate_abs ?
-							    "AcquisitionFrameRateAbs":
-							    "AcquisitionFrameRate", frame_rate);
+							    camera->priv->has_acquisition_frame_rate ?
+							    "AcquisitionFrameRate":
+							    "AcquisitionFrameRateAbs", frame_rate);
 			break;
 	}
 }
@@ -723,7 +728,6 @@ arv_camera_get_frame_rate (ArvCamera *camera)
 	g_return_val_if_fail (ARV_IS_CAMERA (camera), -1.0);
 
 	switch (camera->priv->vendor) {
-		case ARV_CAMERA_VENDOR_BASLER:
 		case ARV_CAMERA_VENDOR_PROSILICA:
 			return arv_device_get_float_feature_value (camera->priv->device, "AcquisitionFrameRateAbs");
 		case ARV_CAMERA_VENDOR_TIS:
@@ -741,11 +745,13 @@ arv_camera_get_frame_rate (ArvCamera *camera)
 				return arv_device_get_float_feature_value (camera->priv->device, "FPS");
 		case ARV_CAMERA_VENDOR_POINT_GREY:
 		case ARV_CAMERA_VENDOR_DALSA:
+		case ARV_CAMERA_VENDOR_RICOH:
+		case ARV_CAMERA_VENDOR_BASLER:
 		case ARV_CAMERA_VENDOR_UNKNOWN:
 			return arv_device_get_float_feature_value (camera->priv->device,
-								   camera->priv->use_acquisition_frame_rate_abs ?
-								   "AcquisitionFrameRateAbs":
-								   "AcquisitionFrameRate");
+								   camera->priv->has_acquisition_frame_rate ?
+								   "AcquisitionFrameRate":
+								   "AcquisitionFrameRateAbs");
 	}
 
 	return -1.0;
@@ -800,17 +806,18 @@ arv_camera_get_frame_rate_bounds (ArvCamera *camera, double *min, double *max)
 			} else
 				arv_device_get_float_feature_bounds (camera->priv->device, "FPS", min, max);
 			break;
-		case ARV_CAMERA_VENDOR_BASLER:
 		case ARV_CAMERA_VENDOR_PROSILICA:
 			arv_device_get_float_feature_bounds (camera->priv->device, "AcquisitionFrameRateAbs", min, max);
 			break;
 		case ARV_CAMERA_VENDOR_POINT_GREY:
 		case ARV_CAMERA_VENDOR_DALSA:
+		case ARV_CAMERA_VENDOR_RICOH:
+		case ARV_CAMERA_VENDOR_BASLER:
 		case ARV_CAMERA_VENDOR_UNKNOWN:
 			arv_device_get_float_feature_bounds (camera->priv->device,
-							     camera->priv->use_exposure_time_abs ?
-							     "AcquisitionFrameRateAbs":
-							     "AcquisitionFrameRate",
+							     camera->priv->has_acquisition_frame_rate ?
+							     "AcquisitionFrameRate":
+							     "AcquisitionFrameRateAbs",
 							     min, max);
 			break;
 	}
@@ -939,12 +946,16 @@ arv_camera_set_exposure_time (ArvCamera *camera, double exposure_time_us)
 							    exposure_time_us);
 			arv_device_set_integer_feature_value (camera->priv->device, "ExposureTimeRaw", 1);
 			break;
+		case ARV_CAMERA_SERIES_RICOH:
+			arv_device_set_integer_feature_value (camera->priv->device, "ExposureTimeRaw",
+							    exposure_time_us);
+			break;
 		case ARV_CAMERA_SERIES_BASLER_ACE:
 		default:
 			arv_device_set_float_feature_value (camera->priv->device,
-							    camera->priv->use_exposure_time_abs ?
-							    "ExposureTimeAbs" :
-							    "ExposureTime", exposure_time_us);
+							    camera->priv->has_exposure_time ?
+							    "ExposureTime" :
+							    "ExposureTimeAbs", exposure_time_us);
 			break;
 	}
 }
@@ -962,11 +973,16 @@ double
 arv_camera_get_exposure_time (ArvCamera *camera)
 {
 	g_return_val_if_fail (ARV_IS_CAMERA (camera), 0.0);
-
-	return arv_device_get_float_feature_value (camera->priv->device,
-						   camera->priv->use_exposure_time_abs ?
-						   "ExposureTimeAbs" : 
-						   "ExposureTime");
+	
+	switch (camera->priv->series) {
+		case ARV_CAMERA_SERIES_RICOH:
+			return arv_device_get_integer_feature_value (camera->priv->device,"ExposureTimeRaw");
+		default:
+			return arv_device_get_float_feature_value (camera->priv->device,
+						   camera->priv->has_exposure_time ?
+						   "ExposureTime" : 
+						   "ExposureTimeAbs");
+	}
 }
 
 /**
@@ -989,22 +1005,30 @@ arv_camera_get_exposure_time_bounds (ArvCamera *camera, double *min, double *max
 
 	switch (camera->priv->series) {
 		case ARV_CAMERA_SERIES_BASLER_SCOUT:
-			arv_device_get_float_feature_bounds (camera->priv->device, "ExposureTimeBaseAbs", min, max);
+			arv_device_get_float_feature_bounds (camera->priv->device,
+							     camera->priv->has_exposure_time ?
+							     "ExposureTime" :
+							     "ExposureTimeBaseAbs",
+							     min, max);
 			break;
 		case ARV_CAMERA_SERIES_BASLER_ACE:
-			arv_device_get_integer_feature_bounds (camera->priv->device, "ExposureTimeRaw",
-							       &int_min,
-							       &int_max);
-			if (min != NULL)
-				*min = int_min;
-			if (max != NULL)
-				*max = int_max;
+			if (camera->priv->has_exposure_time) {
+				arv_device_get_float_feature_bounds (camera->priv->device, "ExposureTime", min, max);
+			} else {
+				arv_device_get_integer_feature_bounds (camera->priv->device, "ExposureTimeRaw",
+								       &int_min,
+								       &int_max);
+				if (min != NULL)
+					*min = int_min;
+				if (max != NULL)
+					*max = int_max;
+			}
 			break;
 		default:
 			arv_device_get_float_feature_bounds (camera->priv->device,
-							     camera->priv->use_exposure_time_abs ?
-							     "ExposureTimeAbs" :
-							     "ExposureTime",
+							     camera->priv->has_exposure_time ?
+							     "ExposureTime" :
+							     "ExposureTimeAbs",
 							     min, max);
 			break;
 	}
@@ -1065,10 +1089,10 @@ arv_camera_set_gain (ArvCamera *camera, double gain)
 	if (gain < 0)
 		return;
 
-	if (camera->priv->use_gain_raw)
-		arv_device_set_integer_feature_value (camera->priv->device, "GainRaw", gain);
-	else
+	if (camera->priv->has_gain)
 		arv_device_set_float_feature_value (camera->priv->device, "Gain", gain);
+	else
+		arv_device_set_integer_feature_value (camera->priv->device, "GainRaw", gain);
 }
 
 /**
@@ -1085,10 +1109,10 @@ arv_camera_get_gain (ArvCamera *camera)
 {
 	g_return_val_if_fail (ARV_IS_CAMERA (camera), 0.0);
 
-	if (camera->priv->use_gain_raw)
-		return arv_device_get_integer_feature_value (camera->priv->device, "GainRaw");
+	if (camera->priv->has_gain)
+		return arv_device_get_float_feature_value (camera->priv->device, "Gain");
 
-	return arv_device_get_float_feature_value (camera->priv->device, "Gain");
+	return arv_device_get_integer_feature_value (camera->priv->device, "GainRaw");
 }
 
 /**
@@ -1109,18 +1133,19 @@ arv_camera_get_gain_bounds (ArvCamera *camera, double *min, double *max)
 
 	g_return_if_fail (ARV_IS_CAMERA (camera));
 
-	if (camera->priv->use_gain_raw) {
-		arv_device_get_integer_feature_bounds (camera->priv->device, "GainRaw", &min64, &max64);
-
-		if (min != NULL)
-			*min = min64;
-		if (max != NULL)
-			*max = max64;
-
+	if (camera->priv->has_gain) {
+		arv_device_get_float_feature_bounds (camera->priv->device, "Gain", min, max);
 		return;
 	}
+	
+	arv_device_get_integer_feature_bounds (camera->priv->device, "GainRaw", &min64, &max64);
 
-	arv_device_get_float_feature_bounds (camera->priv->device, "Gain", min, max);
+	if (min != NULL)
+		*min = min64;
+	if (max != NULL)
+		*max = max64;
+
+	return;
 }
 
 /**
@@ -1214,18 +1239,19 @@ arv_camera_is_frame_rate_available (ArvCamera *camera)
 	g_return_val_if_fail (ARV_IS_CAMERA (camera), FALSE);
 
 	switch (camera->priv->vendor) {
-		case ARV_CAMERA_VENDOR_BASLER:
 		case ARV_CAMERA_VENDOR_PROSILICA:
 			return arv_device_get_feature (camera->priv->device, "AcquisitionFrameRateAbs") != NULL;
 		case ARV_CAMERA_VENDOR_TIS:
 			return arv_device_get_feature (camera->priv->device, "FPS") != NULL;
 		case ARV_CAMERA_VENDOR_POINT_GREY:
 		case ARV_CAMERA_VENDOR_DALSA:
+		case ARV_CAMERA_VENDOR_RICOH:
+		case ARV_CAMERA_VENDOR_BASLER:
 		case ARV_CAMERA_VENDOR_UNKNOWN:
 			return arv_device_get_feature (camera->priv->device,
-						       camera->priv->use_acquisition_frame_rate_abs ?
-						       "AcquisitionFrameRateAbs":
-						       "AcquisitionFrameRate") != NULL;
+						       camera->priv->has_acquisition_frame_rate ?
+						       "AcquisitionFrameRate":
+						       "AcquisitionFrameRateAbs") != NULL;
 	}
 
 	return FALSE;
@@ -1245,9 +1271,9 @@ arv_camera_is_exposure_time_available (ArvCamera *camera)
 	g_return_val_if_fail (ARV_IS_CAMERA (camera), FALSE);
 
 	return arv_device_get_feature (camera->priv->device,
-				       camera->priv->use_exposure_time_abs ?
-				       "ExposureTimeAbs" :
-				       "ExposureTime") != NULL;
+				       camera->priv->has_exposure_time ?
+				       "ExposureTime" :
+				       "ExposureTimeAbs") != NULL;
 }
 
 /**
@@ -1281,10 +1307,10 @@ arv_camera_is_gain_available (ArvCamera *camera)
 {
 	g_return_val_if_fail (ARV_IS_CAMERA (camera), FALSE);
 
-	if (camera->priv->use_gain_raw)
-		return arv_device_get_feature (camera->priv->device, "GainRaw") != NULL;
+	if (camera->priv->has_gain)
+		return arv_device_get_feature (camera->priv->device, "Gain") != NULL;
 
-	return arv_device_get_feature (camera->priv->device, "Gain") != NULL;
+	return arv_device_get_feature (camera->priv->device, "GainRaw") != NULL;
 }
 
 /**
@@ -1721,6 +1747,9 @@ arv_camera_constructor (GType gtype, guint n_properties, GObjectConstructParam *
 	} else if (g_strcmp0 (vendor_name, "Point Grey Research") == 0) {
 		vendor = ARV_CAMERA_VENDOR_POINT_GREY;
 		series = ARV_CAMERA_SERIES_POINT_GREY;
+	} else if (g_strcmp0 (vendor_name, "Ricoh Company, Ltd.") == 0) {
+		vendor = ARV_CAMERA_VENDOR_RICOH;
+		series = ARV_CAMERA_SERIES_RICOH;
 	} else {
 		vendor = ARV_CAMERA_VENDOR_UNKNOWN;
 		series = ARV_CAMERA_SERIES_UNKNOWN;
@@ -1729,10 +1758,10 @@ arv_camera_constructor (GType gtype, guint n_properties, GObjectConstructParam *
 	camera->priv->vendor = vendor;
 	camera->priv->series = series;
 
-	camera->priv->use_gain_raw = !ARV_IS_GC_FLOAT (arv_device_get_feature (camera->priv->device, "Gain"));
-	camera->priv->use_exposure_time_abs = !ARV_IS_GC_FLOAT (arv_device_get_feature (camera->priv->device, "ExposureTime"));
-	camera->priv->use_acquisition_frame_rate_abs = !ARV_IS_GC_FLOAT (arv_device_get_feature (camera->priv->device,
-												 "AcquisitionFrameRate"));
+	camera->priv->has_gain = ARV_IS_GC_FLOAT (arv_device_get_feature (camera->priv->device, "Gain"));
+	camera->priv->has_exposure_time = ARV_IS_GC_FLOAT (arv_device_get_feature (camera->priv->device, "ExposureTime"));
+	camera->priv->has_acquisition_frame_rate = ARV_IS_GC_FLOAT (arv_device_get_feature (camera->priv->device,
+											    "AcquisitionFrameRate"));
 
     return object;
 }

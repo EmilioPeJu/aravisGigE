@@ -35,6 +35,12 @@
 #include <arvdebug.h>
 #include <string.h>
 
+typedef enum {
+	ARV_GC_CONVERTER_NODE_TYPE_VALUE,
+	ARV_GC_CONVERTER_NODE_TYPE_MIN,
+	ARV_GC_CONVERTER_NODE_TYPE_MAX
+} ArvGcConverterNodeType;
+
 static GObjectClass *parent_class = NULL;
 
 /* ArvDomNode implementation */
@@ -74,6 +80,9 @@ arv_gc_converter_post_new_child (ArvDomNode *self, ArvDomNode *child)
 			case ARV_GC_PROPERTY_NODE_TYPE_EXPRESSION:
 			case ARV_GC_PROPERTY_NODE_TYPE_CONSTANT:
 				arv_warning_genicam ("[GcConverter::post_new_child] Constant and Expression not yet implemented");
+				break;
+			case ARV_GC_PROPERTY_NODE_TYPE_UNIT:
+				node->unit = property_node;
 				break;
 			default:
 				ARV_DOM_NODE_CLASS (parent_class)->post_new_child (self, child);
@@ -161,8 +170,8 @@ arv_gc_converter_class_init (ArvGcConverterClass *this_class)
 
 /* ArvGcInteger interface implementation */
 
-static void
-_update_from_variables (ArvGcConverter *gc_converter, GError **error)
+static gboolean
+_update_from_variables (ArvGcConverter *gc_converter, ArvGcConverterNodeType node_type, GError **error)
 {
 	ArvGcNode *node = NULL;
 	GError *local_error = NULL;
@@ -176,7 +185,7 @@ _update_from_variables (ArvGcConverter *gc_converter, GError **error)
 
 	if (local_error != NULL) {
 		g_propagate_error (error, local_error);
-		return;
+		return FALSE;
 	}
 
 	arv_evaluator_set_expression (gc_converter->formula_from, expression);
@@ -192,7 +201,7 @@ _update_from_variables (ArvGcConverter *gc_converter, GError **error)
 
 			if (local_error != NULL) {
 				g_propagate_error (error, local_error);
-				return;
+				return FALSE;
 			}
 
 			arv_evaluator_set_int64_variable (gc_converter->formula_from,
@@ -205,7 +214,7 @@ _update_from_variables (ArvGcConverter *gc_converter, GError **error)
 
 			if (local_error != NULL) {
 				g_propagate_error (error, local_error);
-				return;
+				return FALSE;
 			}
 
 			arv_evaluator_set_double_variable (gc_converter->formula_from,
@@ -220,29 +229,71 @@ _update_from_variables (ArvGcConverter *gc_converter, GError **error)
 		if (arv_gc_feature_node_get_value_type (ARV_GC_FEATURE_NODE (node)) == G_TYPE_INT64) {
 			gint64 value;
 
-			value = arv_gc_integer_get_value (ARV_GC_INTEGER (node), &local_error);
+			switch (node_type) {
+				case ARV_GC_CONVERTER_NODE_TYPE_MIN:
+					value = arv_gc_integer_get_min (ARV_GC_INTEGER (node), &local_error);
+					break;
+				case ARV_GC_CONVERTER_NODE_TYPE_MAX:
+					value = arv_gc_integer_get_max (ARV_GC_INTEGER (node), &local_error);
+					break;
+				default:
+					value = arv_gc_integer_get_value (ARV_GC_INTEGER (node), &local_error);
+					break;
+			}
 
 			if (local_error != NULL) {
 				g_propagate_error (error, local_error);
-				return;
+				return FALSE;
 			}
 
 			arv_evaluator_set_int64_variable (gc_converter->formula_from, "TO", value);
 		} else if (arv_gc_feature_node_get_value_type (ARV_GC_FEATURE_NODE (node)) == G_TYPE_DOUBLE) {
 			double value;
 
-			value = arv_gc_float_get_value (ARV_GC_FLOAT (node), &local_error);
+			switch (node_type) {
+				case ARV_GC_CONVERTER_NODE_TYPE_MIN:
+					value = arv_gc_float_get_min (ARV_GC_FLOAT (node), &local_error);
+					break;
+				case ARV_GC_CONVERTER_NODE_TYPE_MAX:
+					value = arv_gc_float_get_max (ARV_GC_FLOAT (node), &local_error);
+					break;
+				default:
+					value =  arv_gc_float_get_value (ARV_GC_FLOAT (node), &local_error);
+					break;
+			}
 
 			if (local_error != NULL) {
 				g_propagate_error (error, local_error);
-				return;
+				return FALSE;
 			}
 
 			arv_evaluator_set_double_variable (gc_converter->formula_from, "TO", value);
-		} else
+		} else {
 			arv_warning_genicam ("[GcConverter::set_value] Invalid pValue node '%s'",
 					     gc_converter->value);
+			g_set_error (error, ARV_GC_ERROR, ARV_GC_ERROR_INVALID_PVALUE,
+				     "pValue node '%s' of '%s' is invalid",
+				     arv_gc_property_node_get_string (gc_converter->value, NULL),
+				     arv_gc_feature_node_get_name (ARV_GC_FEATURE_NODE (gc_converter)));
+			return FALSE;
+		}
+	} else {
+		g_set_error (error, ARV_GC_ERROR, ARV_GC_ERROR_PVALUE_NOT_DEFINED,
+			     "pValue node of '%s' converter is not defined",
+			     arv_gc_feature_node_get_name (ARV_GC_FEATURE_NODE (gc_converter)));
+		return FALSE;
 	}
+
+	return TRUE;
+}
+
+static const char *
+_get_unit (ArvGcConverter *gc_converter, GError **error)
+{
+	if (gc_converter->unit == NULL)
+		return NULL;
+
+	return arv_gc_property_node_get_string (ARV_GC_PROPERTY_NODE (gc_converter->unit), error);
 }
 
 static void
@@ -326,19 +377,78 @@ _update_to_variables (ArvGcConverter *gc_converter, GError **error)
 }
 
 static gint64
-arv_gc_converter_get_integer_value (ArvGcInteger *gc_integer, GError **error)
+_get_node_integer_value (ArvGcInteger *gc_integer, ArvGcConverterNodeType node_type, GError **error)
 {
 	ArvGcConverter *gc_converter = ARV_GC_CONVERTER (gc_integer);
 	GError *local_error = NULL;
 
-	_update_from_variables (gc_converter, &local_error);
+	if (!_update_from_variables (gc_converter, node_type, &local_error)) {
+		if (local_error != NULL) 
+			g_propagate_error (error, local_error);
 
-	if (local_error != NULL) {
-		g_propagate_error (error, local_error);
-		return 0;
+		switch (node_type) {
+			case ARV_GC_CONVERTER_NODE_TYPE_MIN:
+				return G_MININT64;
+			case ARV_GC_CONVERTER_NODE_TYPE_MAX:
+				return G_MAXINT64;
+			default:
+				return 0;
+		}
 	}
 
 	return arv_evaluator_evaluate_as_int64 (gc_converter->formula_from, NULL);
+}
+
+static gint64
+arv_gc_converter_get_integer_value (ArvGcInteger *gc_integer, GError **error)
+{
+	return _get_node_integer_value (gc_integer, ARV_GC_CONVERTER_NODE_TYPE_VALUE, error);
+}
+
+static gint64
+arv_gc_converter_get_integer_min (ArvGcInteger *gc_integer, GError **error)
+{
+	GError *local_error = NULL;
+	gint64 a, b;
+
+	/* TODO: we should use the Slope node here, instead of using MIN (min, max) */
+
+	a = _get_node_integer_value (gc_integer, ARV_GC_CONVERTER_NODE_TYPE_MIN, &local_error);
+	if (local_error != NULL) {
+		g_propagate_error (error, local_error);
+		return G_MININT64;
+	}
+
+	b = _get_node_integer_value (gc_integer, ARV_GC_CONVERTER_NODE_TYPE_MAX, &local_error);
+	if (local_error != NULL) {
+		g_propagate_error (error, local_error);
+		return G_MININT64;
+	}
+
+	return MIN (a, b);
+}
+
+static gint64
+arv_gc_converter_get_integer_max (ArvGcInteger *gc_integer, GError **error)
+{
+	GError *local_error = NULL;
+	gint64 a, b;
+
+	/* TODO: we should use the Slope node here, instead of using MAX (min, max) */
+
+	a = _get_node_integer_value (gc_integer, ARV_GC_CONVERTER_NODE_TYPE_MIN, &local_error);
+	if (local_error != NULL) {
+		g_propagate_error (error, local_error);
+		return G_MAXINT64;
+	}
+
+	b = _get_node_integer_value (gc_integer, ARV_GC_CONVERTER_NODE_TYPE_MAX, &local_error);
+	if (local_error != NULL) {
+		g_propagate_error (error, local_error);
+		return G_MAXINT64;
+	}
+
+	return MAX (a, b);
 }
 
 static void
@@ -352,27 +462,101 @@ arv_gc_converter_set_integer_value (ArvGcInteger *gc_integer, gint64 value, GErr
 	_update_to_variables (gc_converter, error);
 }
 
+static const char *
+arv_gc_converter_get_integer_unit (ArvGcInteger *gc_integer, GError **error)
+{
+	return _get_unit (ARV_GC_CONVERTER (gc_integer), error);
+}
+
 static void
 arv_gc_converter_integer_interface_init (ArvGcIntegerInterface *interface)
 {
 	interface->get_value = arv_gc_converter_get_integer_value;
+	interface->get_min = arv_gc_converter_get_integer_min;
+	interface->get_max = arv_gc_converter_get_integer_max;
 	interface->set_value = arv_gc_converter_set_integer_value;
+	interface->get_unit = arv_gc_converter_get_integer_unit;
+}
+
+static double
+_get_node_float_value (ArvGcFloat *gc_float, ArvGcConverterNodeType node_type, GError **error)
+{
+	ArvGcConverter *gc_converter = ARV_GC_CONVERTER (gc_float);
+	GError *local_error = NULL;
+
+	if (!_update_from_variables (gc_converter, node_type, &local_error)) {
+		if (local_error != NULL) 
+			g_propagate_error (error, local_error);
+
+		switch (node_type) {
+			case ARV_GC_CONVERTER_NODE_TYPE_MIN:
+				return -G_MAXDOUBLE;
+			case ARV_GC_CONVERTER_NODE_TYPE_MAX:
+				return G_MAXDOUBLE;
+			default:
+				return 0.0;
+		}
+	}
+
+	return arv_evaluator_evaluate_as_double (gc_converter->formula_from, NULL);
 }
 
 static double
 arv_gc_converter_get_float_value (ArvGcFloat *gc_float, GError **error)
 {
-	ArvGcConverter *gc_converter = ARV_GC_CONVERTER (gc_float);
+	return _get_node_float_value (gc_float, ARV_GC_CONVERTER_NODE_TYPE_VALUE, error);
+}
+
+static double
+arv_gc_converter_get_float_min (ArvGcFloat *gc_float, GError **error)
+{
 	GError *local_error = NULL;
+	double a, b;
 
-	_update_from_variables (gc_converter, &local_error);
+	/* TODO: we should use the Slope node here, instead of using MIN (min, max) */
 
+	a = _get_node_float_value (gc_float, ARV_GC_CONVERTER_NODE_TYPE_MIN, &local_error);
 	if (local_error != NULL) {
 		g_propagate_error (error, local_error);
-		return 0.0;
+		return -G_MAXDOUBLE;
 	}
 
-	return arv_evaluator_evaluate_as_double (gc_converter->formula_from, NULL);
+	b = _get_node_float_value (gc_float, ARV_GC_CONVERTER_NODE_TYPE_MAX, &local_error);
+	if (local_error != NULL) {
+		g_propagate_error (error, local_error);
+		return -G_MAXDOUBLE;
+	}
+
+	return MIN (a, b);
+}
+
+static double
+arv_gc_converter_get_float_max (ArvGcFloat *gc_float, GError **error)
+{
+	GError *local_error = NULL;
+	double a, b;
+
+	/* TODO: we should use the Slope node here, instead of using MAX (min, max) */
+
+	a = _get_node_float_value (gc_float, ARV_GC_CONVERTER_NODE_TYPE_MIN, &local_error);
+	if (local_error != NULL) {
+		g_propagate_error (error, local_error);
+		return G_MAXDOUBLE;
+	}
+
+	b = _get_node_float_value (gc_float, ARV_GC_CONVERTER_NODE_TYPE_MAX, &local_error);
+	if (local_error != NULL) {
+		g_propagate_error (error, local_error);
+		return G_MAXDOUBLE;
+	}
+
+	return MAX (a, b);
+}
+
+static const char *
+arv_gc_converter_get_float_unit (ArvGcFloat *gc_float, GError **error)
+{
+	return _get_unit (ARV_GC_CONVERTER (gc_float), error);
 }
 
 static void
@@ -390,7 +574,10 @@ static void
 arv_gc_converter_float_interface_init (ArvGcFloatInterface *interface)
 {
 	interface->get_value = arv_gc_converter_get_float_value;
+	interface->get_min = arv_gc_converter_get_float_min;
+	interface->get_max = arv_gc_converter_get_float_max;
 	interface->set_value = arv_gc_converter_set_float_value;
+	interface->get_unit = arv_gc_converter_get_float_unit;
 }
 
 G_DEFINE_TYPE_WITH_CODE (ArvGcConverter, arv_gc_converter, ARV_TYPE_GC_FEATURE_NODE,
