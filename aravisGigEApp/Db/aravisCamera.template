@@ -6,6 +6,92 @@
 #% macro, TIMEOUT, Timeout, default 1
 #% macro, ADDR, Asyn Port address, default 0
 
+# This associates a BOY screen with the template
+# % gui, $(PORT), boydetail, aravisGigEApp_opi/aravis_detail.opi, P=$(P), R=$(R), DESC=Camera
+# % gui, $(PORT), boyembed, aravisGigEApp_opi/aravis_embed_box.opi, P=$(P), R=$(R), DESC=Camera
+# % gui, $(PORT), boyembed, aravisGigEApp_opi/aravis_embed.opi, P=$(P), R=$(R), DESC=Camera
+
+# These define what PVs a motor detail screen should contain
+# ADBase things
+# Info
+# % gui, $(PORT), readback, Port name,   $(P)$(R)PortName_RBV
+# % gui, $(PORT), readback, Manufacturer,   $(P)$(R)Manufacturer_RBV
+# % gui, $(PORT), readback, Model,   $(P)$(R)Model_RBV
+# % gui, $(PORT), readback, Detector state,   $(P)$(R)DetectorState_RBV
+# % gui, $(PORT), readback, Status message,   $(P)$(R)StatusMessage_RBV
+# Image
+# % gui, $(PORT), enum, Data type,   $(P)$(R)DataType
+# % gui, $(PORT), readback, Data type,   $(P)$(R)DataType_RBV
+# % gui, $(PORT), enum, Colour mode,   $(P)$(R)ColorMode
+# % gui, $(PORT), readback, Colour mode,   $(P)$(R)ColorMode_RBV
+# % gui, $(PORT), demand, Gain,   $(P)$(R)Gain
+# % gui, $(PORT), readback, Gain,   $(P)$(R)Gain_RBV
+# % gui, $(PORT), readback, Max size X,   $(P)$(R)MaxSizeX_RBV
+# % gui, $(PORT), readback, Max size Y,   $(P)$(R)MaxSizeY_RBV
+# % gui, $(PORT), demand, Binning X,   $(P)$(R)BinX
+# % gui, $(PORT), readback, Binning X,   $(P)$(R)BinX_RBV
+# % gui, $(PORT), demand, Binning Y,   $(P)$(R)BinY
+# % gui, $(PORT), readback, Binning Y,   $(P)$(R)BinY_RBV
+# % gui, $(PORT), demand, Region start X,   $(P)$(R)MinX
+# % gui, $(PORT), readback, Region start X,   $(P)$(R)MinX_RBV
+# % gui, $(PORT), demand, Region start Y,   $(P)$(R)MinY
+# % gui, $(PORT), readback, Region start Y,   $(P)$(R)MinY_RBV
+# % gui, $(PORT), demand, Region size X,   $(P)$(R)SizeX
+# % gui, $(PORT), readback, Region size X,   $(P)$(R)SizeX_RBV
+# % gui, $(PORT), demand, Region size Y,   $(P)$(R)SizeY
+# % gui, $(PORT), readback, Region size Y,   $(P)$(R)SizeY_RBV
+# % gui, $(PORT), readback, Array Size X,   $(P)$(R)ArraySizeX_RBV
+# % gui, $(PORT), readback, Array Size Y,   $(P)$(R)ArraySizeY_RBV
+# % gui, $(PORT), readback, Array Size,   $(P)$(R)ArraySize_RBV
+# Acquisition
+# % gui, $(PORT), demand, Acquire time,   $(P)$(R)AcquireTime
+# % gui, $(PORT), readback, Acquire time,   $(P)$(R)AcquireTime_RBV
+# % gui, $(PORT), demand, Acquire period,   $(P)$(R)AcquirePeriod
+# % gui, $(PORT), readback, Acquire period,   $(P)$(R)AcquirePeriod_RBV
+# % gui, $(PORT), readback, Time remaining,   $(P)$(R)TimeRemaining_RBV
+# % gui, $(PORT), enum, Frame type,   $(P)$(R)FrameType
+# % gui, $(PORT), readback, Frame type,   $(P)$(R)FrameType_RBV
+# % gui, $(PORT), enum, Image mode,   $(P)$(R)ImageMode
+# % gui, $(PORT), readback, Image mode,   $(P)$(R)ImageMode_RBV
+# % gui, $(PORT), demand, Num images,   $(P)$(R)NumImages
+# % gui, $(PORT), readback, Num images,   $(P)$(R)NumImages_RBV
+# % gui, $(PORT), readback, Image counter,   $(P)$(R)NumImagesCounter_RBV
+# % gui, $(PORT), enum, Acquire,   $(P)$(R)Acquire
+# % gui, $(PORT), readback, Acquire,   $(P)$(R)Acquire_RBV
+# % gui, $(PORT), demand, Array counter,   $(P)$(R)ArrayCounter
+# % gui, $(PORT), readback, Array counter,   $(P)$(R)ArrayCounter_RBV
+# % gui, $(PORT), readback, Array rate,   $(P)$(R)ArrayRate_RBV
+# % gui, $(PORT), enum, Array callbacks,   $(P)$(R)ArrayCallbacks
+# % gui, $(PORT), readback, Array callbacks,   $(P)$(R)ArrayCallbacks_RBV
+# % gui, $(PORT), demand, Attributes file,   $(P)$(R)NDAttributesFile
+# Temperature
+# % gui, $(PORT), enum, Shutter mode,   $(P)$(R)ShutterMode
+# % gui, $(PORT), readback, Shutter mode,   $(P)$(R)ShutterMode_RBV
+# % gui, $(PORT), enum, Shutter control,   $(P)$(R)ShutterControl
+# % gui, $(PORT), readback, Shutter control,   $(P)$(R)ShutterControl_RBV
+# % gui, $(PORT), readback, Shutter status,   $(P)$(R)ShutterStatus_RBV
+# % gui, $(PORT), demand, Shutter open delay,   $(P)$(R)ShutterOpenDelay
+# % gui, $(PORT), readback, Shutter open delay,   $(P)$(R)ShutterOpenDelay_RBV
+# % gui, $(PORT), demand, Shutter close delay,   $(P)$(R)ShutterCloseDelay
+# % gui, $(PORT), readback, Shutter close delay,   $(P)$(R)ShutterCloseDelay_RBV
+# % gui, $(PORT), demand, Temperature setpoint,   $(P)$(R)Temperature
+# % gui, $(PORT), readback, Temperature setpoint,   $(P)$(R)Temperature_RBV
+# % gui, $(PORT), readback, Current temperature,   $(P)$(R)Temperature_RBV
+# Memory
+# % gui, $(PORT), readback, Max memory,   $(P)$(R)PoolMaxMem
+# % gui, $(PORT), readback, Max buffers,   $(P)$(R)PoolMaxBuffers
+# % gui, $(PORT), readback, Used memory,   $(P)$(R)PoolUsedMem
+# % gui, $(PORT), readback, Allocated buffers,   $(P)$(R)PoolAllocBuffers
+# % gui, $(PORT), readback, Free buffers,   $(P)$(R)PoolFreeBuffers
+# % gui, $(PORT), readback, Used buffers,   $(P)$(R)PoolUsedBuffers
+# AravisCamera things
+# % gui, $(PORT), enum, Get features, $(P)$(R)GETFEATURES
+# % gui, $(PORT), readback, Get features, $(P)$(R)GETFEATURES_RBV
+# % gui, $(PORT), readback, Completed frames, $(P)$(R)COMPLETED_RBV
+# % gui, $(PORT), readback, Failed frames, $(P)$(R)FAILURES_RBV
+# % gui, $(PORT), readback, Underrun frames, $(P)$(R)UNDERRUNS_RBV
+# % gui, $(PORT), command, Reconnect,  $(P)$(R)RESET
+
 include "ADBase.template"
 
 # All tags starting with gdatag are DLS specific for GDA
