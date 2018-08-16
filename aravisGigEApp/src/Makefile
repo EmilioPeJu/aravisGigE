@@ -18,6 +18,7 @@ aravisCamera_SRCS += aravisCamera.cpp
 
 DBD += aravisCameraSupport.dbd
 
+
 USR_INCLUDES +=  $(addprefix -I, $(GLIB_INCLUDE))
 
 # We need to link against aravis

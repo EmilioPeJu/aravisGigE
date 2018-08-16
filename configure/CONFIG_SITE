@@ -40,3 +40,11 @@ ifdef T_A
   -include $(AREA_DETECTOR)/configure/CONFIG_SITE.Common.$(T_A)
   -include $(AREA_DETECTOR)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH).$(T_A)
 endif
+
+GLIBPREFIX=/dls_sw/prod/tools/RHEL6-x86_64/glib/2-28-8/prefix
+
+USR_INCLUDES += -I$(GLIBPREFIX)/include/glib-2.0
+USR_INCLUDES += -I$(GLIBPREFIX)/lib/glib-2.0/include		
+glib-2.0_DIR = $(GLIBPREFIX)/lib
+
+

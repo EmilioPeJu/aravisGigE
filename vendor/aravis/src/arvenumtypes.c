@@ -3,6 +3,7 @@
 
 #include "arvenumtypes.h"
 #include "arvenums.h"
+
 GType
 arv_gc_name_space_get_type (void)
 {
@@ -25,6 +26,7 @@ arv_gc_name_space_get_type (void)
 	}
 	return the_type;
 }
+
 GType
 arv_gc_access_mode_get_type (void)
 {
@@ -50,6 +52,7 @@ arv_gc_access_mode_get_type (void)
 	}
 	return the_type;
 }
+
 GType
 arv_gc_cachable_get_type (void)
 {
@@ -75,6 +78,7 @@ arv_gc_cachable_get_type (void)
 	}
 	return the_type;
 }
+
 GType
 arv_auto_get_type (void)
 {
@@ -100,6 +104,7 @@ arv_auto_get_type (void)
 	}
 	return the_type;
 }
+
 GType
 arv_acquisition_mode_get_type (void)
 {
@@ -122,7 +127,9 @@ arv_acquisition_mode_get_type (void)
 	}
 	return the_type;
 }
+
 #include "arvdebug.h"
+
 GType
 arv_debug_level_get_type (void)
 {
@@ -154,7 +161,9 @@ arv_debug_level_get_type (void)
 	}
 	return the_type;
 }
+
 #include "arvdomnode.h"
+
 GType
 arv_dom_node_type_get_type (void)
 {
@@ -207,7 +216,9 @@ arv_dom_node_type_get_type (void)
 	}
 	return the_type;
 }
+
 #include "arvgc.h"
+
 GType
 arv_gc_error_get_type (void)
 {
@@ -233,7 +244,9 @@ arv_gc_error_get_type (void)
 	}
 	return the_type;
 }
+
 #include "arvgcpropertynode.h"
+
 GType
 arv_gc_property_node_type_get_type (void)
 {
@@ -382,7 +395,9 @@ arv_gc_property_node_type_get_type (void)
 	}
 	return the_type;
 }
+
 #include "arvgcregisternode.h"
+
 GType
 arv_gc_sign_get_type (void)
 {
@@ -405,6 +420,7 @@ arv_gc_sign_get_type (void)
 	}
 	return the_type;
 }
+
 GType
 arv_gc_register_node_type_get_type (void)
 {
@@ -439,7 +455,9 @@ arv_gc_register_node_type_get_type (void)
 	}
 	return the_type;
 }
+
 #include "arvdevice.h"
+
 GType
 arv_device_status_get_type (void)
 {
@@ -468,7 +486,9 @@ arv_device_status_get_type (void)
 	}
 	return the_type;
 }
+
 #include "arvstream.h"
+
 GType
 arv_stream_callback_type_get_type (void)
 {
@@ -497,7 +517,9 @@ arv_stream_callback_type_get_type (void)
 	}
 	return the_type;
 }
+
 #include "arvbuffer.h"
+
 GType
 arv_buffer_status_get_type (void)
 {
@@ -541,6 +563,7 @@ arv_buffer_status_get_type (void)
 	}
 	return the_type;
 }
+
 GType
 arv_buffer_payload_type_get_type (void)
 {
@@ -587,7 +610,9 @@ arv_buffer_payload_type_get_type (void)
 	}
 	return the_type;
 }
+
 #include "arvchunkparser.h"
+
 GType
 arv_chunk_parser_status_get_type (void)
 {
@@ -619,7 +644,9 @@ arv_chunk_parser_status_get_type (void)
 	}
 	return the_type;
 }
+
 #include "arvgvstream.h"
+
 GType
 arv_gv_stream_socket_buffer_get_type (void)
 {
@@ -642,6 +669,7 @@ arv_gv_stream_socket_buffer_get_type (void)
 	}
 	return the_type;
 }
+
 GType
 arv_gv_stream_packet_resend_get_type (void)
 {
@@ -664,7 +692,9 @@ arv_gv_stream_packet_resend_get_type (void)
 	}
 	return the_type;
 }
+
 #include "arvgvcp.h"
+
 GType
 arv_gvcp_packet_type_get_type (void)
 {
@@ -693,6 +723,7 @@ arv_gvcp_packet_type_get_type (void)
 	}
 	return the_type;
 }
+
 GType
 arv_gvcp_command_get_type (void)
 {
@@ -754,7 +785,9 @@ arv_gvcp_command_get_type (void)
 	}
 	return the_type;
 }
+
 #include "arvgvsp.h"
+
 GType
 arv_gvsp_packet_type_get_type (void)
 {
@@ -780,6 +813,7 @@ arv_gvsp_packet_type_get_type (void)
 	}
 	return the_type;
 }
+
 GType
 arv_gvsp_content_type_get_type (void)
 {
@@ -805,6 +839,7 @@ arv_gvsp_content_type_get_type (void)
 	}
 	return the_type;
 }
+
 GType
 arv_gvsp_payload_type_get_type (void)
 {
@@ -848,6 +883,7 @@ arv_gvsp_payload_type_get_type (void)
 	}
 	return the_type;
 }
+
 
 /* Generated data ends here */
 
