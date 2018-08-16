@@ -31,6 +31,9 @@ extern "C" {
     #include <arv.h>
 }
 
+#define DRIVER_VERSION "2.2.0"
+#define ARAVIS_VERSION "0.4.1"
+
 /* number of raw buffers in our queue */
 #define NRAW 20
 
@@ -288,7 +291,6 @@ aravisCamera::aravisCamera(const char *portName, const char *cameraName,
     const char *functionName = "aravisCamera";
 
     /* glib initialisation */
-    g_thread_init (NULL);
     g_type_init ();
 
     /* Duplicate camera name so we can use it if we reconnect */
@@ -320,6 +322,8 @@ aravisCamera::aravisCamera(const char *portName, const char *cameraName,
     createParam("ARAVIS_RESET",          asynParamInt32,   &AravisReset);
 
     /* Set some initial values for other parameters */
+    setStringParam(NDDriverVersion, DRIVER_VERSION);
+    setStringParam(ADSDKVersion, ARAVIS_VERSION);
     setIntegerParam(ADReverseX, 0);
     setIntegerParam(ADReverseY, 0);
     setIntegerParam(ADImageMode, ADImageContinuous);
@@ -518,7 +522,7 @@ asynStatus aravisCamera::connectToCamera() {
     const char *functionName = "connectToCamera";
     int status = asynSuccess;
     int w, h;
-    const char *vendor, *model;
+    const char *vendor, *model, *deviceID, *firmwareVersion;
 
     /* stop old camera if it exists */
     this->connectionValid = 0;
@@ -558,6 +562,10 @@ asynStatus aravisCamera::connectToCamera() {
     if (vendor) status |= setStringParam (ADManufacturer, vendor);
     model = arv_camera_get_model_name(this->camera);
     if (model) status |= setStringParam (ADModel, model);
+    deviceID = arv_camera_get_device_id(this->camera);
+    if (deviceID) status |= setStringParam (ADSerialNumber, deviceID);
+    firmwareVersion = arv_device_get_string_feature_value(this->device, "DeviceFirmwareVersion");
+    if (firmwareVersion) status |= setStringParam (ADFirmwareVersion, firmwareVersion);
 
     /* Get sensor size */
     arv_camera_get_sensor_size(this->camera, &w, &h);
@@ -1073,13 +1081,9 @@ asynStatus aravisCamera::processBuffer(ArvBuffer *buffer) {
     /* this is a good image, so callback on it */
     if (arrayCallbacks) {
         /* Call the NDArray callback */
-        /* Must release the lock here, or we can get into a deadlock, because we can
-         * block on the plugin lock, and the plugin can be calling us */
-        this->unlock();
         asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
              "%s:%s: calling imageData callback\n", driverName, functionName);
         doCallbacksGenericPointer(pRaw, NDArrayData, 0);
-        this->lock();
     }
 
     /* Report statistics */
@@ -1475,7 +1479,7 @@ asynStatus aravisCamera::getNextFeature() {
         } else if (arv_gc_feature_node_get_value_type(ARV_GC_FEATURE_NODE(node)) == G_TYPE_STRING) {
             stringValue = arv_device_get_string_feature_value(this->device, featureName);
             if (stringValue == NULL) {
-                printf("aravisCamera: Feature %s has NULL value\n", featureName);
+                //printf("aravisCamera: Feature %s has NULL value\n", featureName);
                 status = asynError;
             } else {
                 status |= setStringParam(*index, stringValue);
