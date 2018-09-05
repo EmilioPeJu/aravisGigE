@@ -1,6 +1,9 @@
 TOP = ../..
 include $(TOP)/configure/CONFIG
 
+DIRS += symbol
+DIRS += edl
+
 ADL_DIR = adl
 UI_DIR  = ui/autoconvert
 EDL_DIR = edl/autoconvert
