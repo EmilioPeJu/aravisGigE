@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ArvGvcp: Aravis Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Aravis Reference Manual">
 <link rel="up" href="ch06.html" title="Ethernet cameras">
-<link rel="prev" href="ArvGvStream.html" title="ArvGvStream">
+<link rel="prev" href="aravis-ArvGvFakeCamera.html" title="ArvGvFakeCamera">
 <link rel="next" href="aravis-ArvGvsp.html" title="ArvGvsp">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.28 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -19,7 +19,7 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch06.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="ArvGvStream.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="aravis-ArvGvFakeCamera.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="aravis-ArvGvsp.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
@@ -27,13 +27,13 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="aravis-ArvGvcp.top_of_page"></a>ArvGvcp</span></h2>
-<p>ArvGvcp — Gvcp packet handling (control)</p>
+<p>ArvGvcp — GigEVision control packet handling</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsect1">
 <a name="aravis-ArvGvcp.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -65,7 +65,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="aravis-ArvGvcp.html#arv-gvcp-packet-get-packet-id" title="arv_gvcp_packet_get_packet_id ()">arv_gvcp_packet_get_packet_id</a> <span class="c_punctuation">()</span>
@@ -97,7 +97,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="aravis-ArvGvcp.html#arv-gvcp-packet-get-read-register-ack-value" title="arv_gvcp_packet_get_read_register_ack_value ()">arv_gvcp_packet_get_read_register_ack_value</a> <span class="c_punctuation">()</span>
@@ -141,6 +141,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="aravis-ArvGvcp.html#arv-gvcp-packet-get-write-register-cmd-infos" title="arv_gvcp_packet_get_write_register_cmd_infos ()">arv_gvcp_packet_get_write_register_cmd_infos</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="aravis-ArvGvcp.html#arv-gvcp-packet-get-pending-ack-timeout" title="arv_gvcp_packet_get_pending_ack_timeout ()">arv_gvcp_packet_get_pending_ack_timeout</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -257,7 +265,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="aravis-ArvGvcp.html#arv-gvcp-next-packet-id" title="arv_gvcp_next_packet_id ()">arv_gvcp_next_packet_id</a> <span class="c_punctuation">()</span>
@@ -268,7 +276,7 @@
 </div>
 <div class="refsect1">
 <a name="aravis-ArvGvcp.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -314,7 +322,7 @@ arv_gvcp_packet_free (<em class="parameter"><code><a class="link" href="aravis-A
 arv_gvcp_packet_get_packet_type (<em class="parameter"><code><a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a> *packet</code></em>);</pre>
 <div class="refsect3">
 <a name="arv-gvcp-packet-get-packet-type.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -340,7 +348,7 @@ arv_gvcp_packet_get_packet_type (<em class="parameter"><code><a class="link" hre
 arv_gvcp_packet_get_command (<em class="parameter"><code><a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a> *packet</code></em>);</pre>
 <div class="refsect3">
 <a name="arv-gvcp-packet-get-command.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -362,7 +370,7 @@ arv_gvcp_packet_get_command (<em class="parameter"><code><a class="link" href="a
 <hr>
 <div class="refsect2">
 <a name="arv-gvcp-packet-get-packet-id"></a><h3>arv_gvcp_packet_get_packet_id ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
 arv_gvcp_packet_get_packet_id (<em class="parameter"><code><a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a> *packet</code></em>);</pre>
 </div>
 <hr>
@@ -377,7 +385,7 @@ arv_gvcp_packet_get_read_memory_ack_data
 <a name="arv-gvcp-packet-get-read-memory-ack-size"></a><h3>arv_gvcp_packet_get_read_memory_ack_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">size_t</span>
 arv_gvcp_packet_get_read_memory_ack_size
-                               (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> data_size</code></em>);</pre>
+                               (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> data_size</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -385,13 +393,13 @@ arv_gvcp_packet_get_read_memory_ack_size
 <pre class="programlisting"><span class="returnvalue">void</span>
 arv_gvcp_packet_get_read_memory_cmd_infos
                                (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a> *packet</code></em>,
-                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *address</code></em>,
-                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *size</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *address</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *size</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-gvcp-packet-get-read-register-ack-value"></a><h3>arv_gvcp_packet_get_read_register_ack_value ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
 arv_gvcp_packet_get_read_register_ack_value
                                (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a> *packet</code></em>);</pre>
 </div>
@@ -401,7 +409,7 @@ arv_gvcp_packet_get_read_register_ack_value
 <pre class="programlisting"><span class="returnvalue">void</span>
 arv_gvcp_packet_get_read_register_cmd_infos
                                (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a> *packet</code></em>,
-                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *address</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *address</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -423,8 +431,8 @@ arv_gvcp_packet_get_write_memory_cmd_data
 <pre class="programlisting"><span class="returnvalue">void</span>
 arv_gvcp_packet_get_write_memory_cmd_infos
                                (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a> *packet</code></em>,
-                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *address</code></em>,
-                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *size</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *address</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *size</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -432,28 +440,56 @@ arv_gvcp_packet_get_write_memory_cmd_infos
 <pre class="programlisting"><span class="returnvalue">void</span>
 arv_gvcp_packet_get_write_register_cmd_infos
                                (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a> *packet</code></em>,
-                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *address</code></em>,
-                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *value</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *address</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *value</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gvcp-packet-get-pending-ack-timeout"></a><h3>arv_gvcp_packet_get_pending_ack_timeout ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+arv_gvcp_packet_get_pending_ack_timeout
+                               (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a> *packet</code></em>);</pre>
+<div class="refsect3">
+<a name="arv-gvcp-packet-get-pending-ack-timeout.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>packet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="arv-gvcp-packet-get-pending-ack-timeout.returns"></a><h4>Returns</h4>
+<p> The pending acknowledge timeout stored in <em class="parameter"><code>packet</code></em>
+, in ms.</p>
+</div>
+<p class="since">Since: <a class="link" href="ix04.html#api-index-0.6.0">0.6.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-gvcp-packet-set-packet-id"></a><h3>arv_gvcp_packet_set_packet_id ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 arv_gvcp_packet_set_packet_id (<em class="parameter"><code><a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a> *packet</code></em>,
-                               <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> id</code></em>);</pre>
+                               <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> id</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-gvcp-packet-new-read-memory-cmd"></a><h3>arv_gvcp_packet_new_read_memory_cmd ()</h3>
 <pre class="programlisting"><a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="returnvalue">ArvGvcpPacket</span></a> *
-arv_gvcp_packet_new_read_memory_cmd (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> address</code></em>,
-                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> size</code></em>,
-                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
+arv_gvcp_packet_new_read_memory_cmd (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> address</code></em>,
+                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> size</code></em>,
+                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
                                      <em class="parameter"><code><span class="type">size_t</span> *packet_size</code></em>);</pre>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-read-memory-cmd.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -477,7 +513,7 @@ arv_gvcp_packet_new_read_memory_cmd (<em class="parameter"><code><a href="/usr/s
 </tr>
 <tr>
 <td class="parameter_name"><p>packet_size</p></td>
-<td class="parameter_description"><p> packet size, in bytes. </p></td>
+<td class="parameter_description"><p>packet size, in bytes. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -485,7 +521,7 @@ arv_gvcp_packet_new_read_memory_cmd (<em class="parameter"><code><a href="/usr/s
 </div>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-read-memory-cmd.returns"></a><h4>Returns</h4>
-<p> a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
+<p>a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
 <p>Create a gvcp packet for a memory read command. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -494,14 +530,14 @@ arv_gvcp_packet_new_read_memory_cmd (<em class="parameter"><code><a href="/usr/s
 <div class="refsect2">
 <a name="arv-gvcp-packet-new-read-memory-ack"></a><h3>arv_gvcp_packet_new_read_memory_ack ()</h3>
 <pre class="programlisting"><a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="returnvalue">ArvGvcpPacket</span></a> *
-arv_gvcp_packet_new_read_memory_ack (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> address</code></em>,
-                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> size</code></em>,
-                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
+arv_gvcp_packet_new_read_memory_ack (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> address</code></em>,
+                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> size</code></em>,
+                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
                                      <em class="parameter"><code><span class="type">size_t</span> *packet_size</code></em>);</pre>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-read-memory-ack.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -525,7 +561,7 @@ arv_gvcp_packet_new_read_memory_ack (<em class="parameter"><code><a href="/usr/s
 </tr>
 <tr>
 <td class="parameter_name"><p>packet_size</p></td>
-<td class="parameter_description"><p> packet size, in bytes. </p></td>
+<td class="parameter_description"><p>packet size, in bytes. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -533,7 +569,7 @@ arv_gvcp_packet_new_read_memory_ack (<em class="parameter"><code><a href="/usr/s
 </div>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-read-memory-ack.returns"></a><h4>Returns</h4>
-<p> a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
+<p>a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
 <p>Create a gvcp packet for a memory read acknowledge. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -542,14 +578,14 @@ arv_gvcp_packet_new_read_memory_ack (<em class="parameter"><code><a href="/usr/s
 <div class="refsect2">
 <a name="arv-gvcp-packet-new-write-memory-cmd"></a><h3>arv_gvcp_packet_new_write_memory_cmd ()</h3>
 <pre class="programlisting"><a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="returnvalue">ArvGvcpPacket</span></a> *
-arv_gvcp_packet_new_write_memory_cmd (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> address</code></em>,
-                                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> size</code></em>,
-                                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
+arv_gvcp_packet_new_write_memory_cmd (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> address</code></em>,
+                                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> size</code></em>,
+                                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
                                       <em class="parameter"><code><span class="type">size_t</span> *packet_size</code></em>);</pre>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-write-memory-cmd.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -573,7 +609,7 @@ arv_gvcp_packet_new_write_memory_cmd (<em class="parameter"><code><a href="/usr/
 </tr>
 <tr>
 <td class="parameter_name"><p>packet_size</p></td>
-<td class="parameter_description"><p> packet size, in bytes. </p></td>
+<td class="parameter_description"><p>packet size, in bytes. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -581,7 +617,7 @@ arv_gvcp_packet_new_write_memory_cmd (<em class="parameter"><code><a href="/usr/
 </div>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-write-memory-cmd.returns"></a><h4>Returns</h4>
-<p> a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
+<p>a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
 <p>Create a gvcp packet for a memory write command. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -590,13 +626,13 @@ arv_gvcp_packet_new_write_memory_cmd (<em class="parameter"><code><a href="/usr/
 <div class="refsect2">
 <a name="arv-gvcp-packet-new-write-memory-ack"></a><h3>arv_gvcp_packet_new_write_memory_ack ()</h3>
 <pre class="programlisting"><a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="returnvalue">ArvGvcpPacket</span></a> *
-arv_gvcp_packet_new_write_memory_ack (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> address</code></em>,
-                                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
+arv_gvcp_packet_new_write_memory_ack (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> address</code></em>,
+                                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
                                       <em class="parameter"><code><span class="type">size_t</span> *packet_size</code></em>);</pre>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-write-memory-ack.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -615,7 +651,7 @@ arv_gvcp_packet_new_write_memory_ack (<em class="parameter"><code><a href="/usr/
 </tr>
 <tr>
 <td class="parameter_name"><p>packet_size</p></td>
-<td class="parameter_description"><p> packet size, in bytes. </p></td>
+<td class="parameter_description"><p>packet size, in bytes. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -623,7 +659,7 @@ arv_gvcp_packet_new_write_memory_ack (<em class="parameter"><code><a href="/usr/
 </div>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-write-memory-ack.returns"></a><h4>Returns</h4>
-<p> a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
+<p>a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
 <p>Create a gvcp packet for a memory write acknowledge. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -632,13 +668,13 @@ arv_gvcp_packet_new_write_memory_ack (<em class="parameter"><code><a href="/usr/
 <div class="refsect2">
 <a name="arv-gvcp-packet-new-read-register-cmd"></a><h3>arv_gvcp_packet_new_read_register_cmd ()</h3>
 <pre class="programlisting"><a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="returnvalue">ArvGvcpPacket</span></a> *
-arv_gvcp_packet_new_read_register_cmd (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> address</code></em>,
-                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
+arv_gvcp_packet_new_read_register_cmd (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> address</code></em>,
+                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
                                        <em class="parameter"><code><span class="type">size_t</span> *packet_size</code></em>);</pre>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-read-register-cmd.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -657,7 +693,7 @@ arv_gvcp_packet_new_read_register_cmd (<em class="parameter"><code><a href="/usr
 </tr>
 <tr>
 <td class="parameter_name"><p>packet_size</p></td>
-<td class="parameter_description"><p> packet size, in bytes. </p></td>
+<td class="parameter_description"><p>packet size, in bytes. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -665,7 +701,7 @@ arv_gvcp_packet_new_read_register_cmd (<em class="parameter"><code><a href="/usr
 </div>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-read-register-cmd.returns"></a><h4>Returns</h4>
-<p> a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
+<p>a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
 <p>Create a gvcp packet for a register read command. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -674,13 +710,13 @@ arv_gvcp_packet_new_read_register_cmd (<em class="parameter"><code><a href="/usr
 <div class="refsect2">
 <a name="arv-gvcp-packet-new-read-register-ack"></a><h3>arv_gvcp_packet_new_read_register_ack ()</h3>
 <pre class="programlisting"><a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="returnvalue">ArvGvcpPacket</span></a> *
-arv_gvcp_packet_new_read_register_ack (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> value</code></em>,
-                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
+arv_gvcp_packet_new_read_register_ack (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> value</code></em>,
+                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
                                        <em class="parameter"><code><span class="type">size_t</span> *packet_size</code></em>);</pre>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-read-register-ack.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -699,7 +735,7 @@ arv_gvcp_packet_new_read_register_ack (<em class="parameter"><code><a href="/usr
 </tr>
 <tr>
 <td class="parameter_name"><p>packet_size</p></td>
-<td class="parameter_description"><p> packet size, in bytes. </p></td>
+<td class="parameter_description"><p>packet size, in bytes. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -707,7 +743,7 @@ arv_gvcp_packet_new_read_register_ack (<em class="parameter"><code><a href="/usr
 </div>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-read-register-ack.returns"></a><h4>Returns</h4>
-<p> a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
+<p>a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
 <p>Create a gvcp packet for a register read acknowledge. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -717,14 +753,14 @@ arv_gvcp_packet_new_read_register_ack (<em class="parameter"><code><a href="/usr
 <a name="arv-gvcp-packet-new-write-register-cmd"></a><h3>arv_gvcp_packet_new_write_register_cmd ()</h3>
 <pre class="programlisting"><a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="returnvalue">ArvGvcpPacket</span></a> *
 arv_gvcp_packet_new_write_register_cmd
-                               (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> address</code></em>,
-                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> value</code></em>,
-                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
+                               (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> address</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> value</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
                                 <em class="parameter"><code><span class="type">size_t</span> *packet_size</code></em>);</pre>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-write-register-cmd.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -748,7 +784,7 @@ arv_gvcp_packet_new_write_register_cmd
 </tr>
 <tr>
 <td class="parameter_name"><p>packet_size</p></td>
-<td class="parameter_description"><p> packet size, in bytes. </p></td>
+<td class="parameter_description"><p>packet size, in bytes. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -756,7 +792,7 @@ arv_gvcp_packet_new_write_register_cmd
 </div>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-write-register-cmd.returns"></a><h4>Returns</h4>
-<p> a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
+<p>a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
 <p>Create a gvcp packet for a register write command. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -766,13 +802,13 @@ arv_gvcp_packet_new_write_register_cmd
 <a name="arv-gvcp-packet-new-write-register-ack"></a><h3>arv_gvcp_packet_new_write_register_ack ()</h3>
 <pre class="programlisting"><a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="returnvalue">ArvGvcpPacket</span></a> *
 arv_gvcp_packet_new_write_register_ack
-                               (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> address</code></em>,
-                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
+                               (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> data_index</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
                                 <em class="parameter"><code><span class="type">size_t</span> *packet_size</code></em>);</pre>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-write-register-ack.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -780,8 +816,8 @@ arv_gvcp_packet_new_write_register_ack
 </colgroup>
 <tbody>
 <tr>
-<td class="parameter_name"><p>address</p></td>
-<td class="parameter_description"><p>write address</p></td>
+<td class="parameter_name"><p>data_index</p></td>
+<td class="parameter_description"><p>data index</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -791,7 +827,7 @@ arv_gvcp_packet_new_write_register_ack
 </tr>
 <tr>
 <td class="parameter_name"><p>packet_size</p></td>
-<td class="parameter_description"><p> packet size, in bytes. </p></td>
+<td class="parameter_description"><p>packet size, in bytes. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -799,7 +835,7 @@ arv_gvcp_packet_new_write_register_ack
 </div>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-write-register-ack.returns"></a><h4>Returns</h4>
-<p> a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
+<p>a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
 <p>Create a gvcp packet for a register write acknowledge. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -812,7 +848,7 @@ arv_gvcp_packet_new_discovery_cmd (<em class="parameter"><code><span class="type
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-discovery-cmd.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -820,14 +856,14 @@ arv_gvcp_packet_new_discovery_cmd (<em class="parameter"><code><span class="type
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>size</p></td>
-<td class="parameter_description"><p> packet size, in bytes. </p></td>
+<td class="parameter_description"><p>packet size, in bytes. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-discovery-cmd.returns"></a><h4>Returns</h4>
-<p> a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
+<p>a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
 <p>Create a gvcp packet for a discovery command. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -840,7 +876,7 @@ arv_gvcp_packet_new_discovery_ack (<em class="parameter"><code><span class="type
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-discovery-ack.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -848,14 +884,14 @@ arv_gvcp_packet_new_discovery_ack (<em class="parameter"><code><span class="type
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>packet_size</p></td>
-<td class="parameter_description"><p> packet size, in bytes. </p></td>
+<td class="parameter_description"><p>packet size, in bytes. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-discovery-ack.returns"></a><h4>Returns</h4>
-<p> a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
+<p>a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a></p>
 <p>Create a gvcp packet for a discovery acknowledge. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -864,16 +900,16 @@ arv_gvcp_packet_new_discovery_ack (<em class="parameter"><code><span class="type
 <div class="refsect2">
 <a name="arv-gvcp-packet-new-packet-resend-cmd"></a><h3>arv_gvcp_packet_new_packet_resend_cmd ()</h3>
 <pre class="programlisting"><a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="returnvalue">ArvGvcpPacket</span></a> *
-arv_gvcp_packet_new_packet_resend_cmd (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> frame_id</code></em>,
-                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> first_block</code></em>,
-                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="type">guint32</span></a> last_block</code></em>,
-                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
+arv_gvcp_packet_new_packet_resend_cmd (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> frame_id</code></em>,
+                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> first_block</code></em>,
+                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> last_block</code></em>,
+                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>,
                                        <em class="parameter"><code><span class="type">size_t</span> *packet_size</code></em>);</pre>
 <p>Create a gvcp packet for a packet resend command.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-packet-resend-cmd.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -902,7 +938,7 @@ arv_gvcp_packet_new_packet_resend_cmd (<em class="parameter"><code><a href="/usr
 </tr>
 <tr>
 <td class="parameter_name"><p>packet_size</p></td>
-<td class="parameter_description"><p> packet size, in bytes. </p></td>
+<td class="parameter_description"><p>packet size, in bytes. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -910,7 +946,7 @@ arv_gvcp_packet_new_packet_resend_cmd (<em class="parameter"><code><a href="/usr
 </div>
 <div class="refsect3">
 <a name="arv-gvcp-packet-new-packet-resend-cmd.returns"></a><h4>Returns</h4>
-<p> a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a>. </p>
+<p>a new <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
@@ -923,7 +959,7 @@ arv_gvcp_packet_to_string (<em class="parameter"><code>const <a class="link" hre
  into a human readable string.</p>
 <div class="refsect3">
 <a name="arv-gvcp-packet-to-string.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -938,7 +974,7 @@ arv_gvcp_packet_to_string (<em class="parameter"><code>const <a class="link" hre
 </div>
 <div class="refsect3">
 <a name="arv-gvcp-packet-to-string.returns"></a><h4>Returns</h4>
-<p> A newly allocated string. </p>
+<p>A newly allocated string. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
@@ -949,10 +985,10 @@ arv_gvcp_packet_to_string (<em class="parameter"><code>const <a class="link" hre
 arv_gvcp_packet_debug (<em class="parameter"><code>const <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacket" title="ArvGvcpPacket"><span class="type">ArvGvcpPacket</span></a> *packet</code></em>,
                        <em class="parameter"><code><span class="type">ArvDebugLevel</span> level</code></em>);</pre>
 <p>Dumps the content of <em class="parameter"><code>packet</code></em>
- if level is lower or equal to the current debug level for the gvcp debug category. See <a class="link" href="aravis-ArvDebug.html#arv-debug-enable" title="arv_debug_enable ()"><code class="function">arv_debug_enable()</code></a>.</p>
+ if level is lower or equal to the current debug level for the cp debug category. See <a class="link" href="aravis-ArvDebug.html#arv-debug-enable" title="arv_debug_enable ()"><code class="function">arv_debug_enable()</code></a>.</p>
 <div class="refsect3">
 <a name="arv-gvcp-packet-debug.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -976,8 +1012,8 @@ arv_gvcp_packet_debug (<em class="parameter"><code>const <a class="link" href="a
 <hr>
 <div class="refsect2">
 <a name="arv-gvcp-next-packet-id"></a><h3>arv_gvcp_next_packet_id ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
-arv_gvcp_next_packet_id (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>
+arv_gvcp_next_packet_id (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> packet_id</code></em>);</pre>
 </div>
 </div>
 <div class="refsect1">
@@ -993,7 +1029,7 @@ arv_gvcp_next_packet_id (<em class="parameter"><code><a href="/usr/share/gtk-doc
 <a name="ArvGvcpPacketType"></a><h3>enum ArvGvcpPacketType</h3>
 <div class="refsect3">
 <a name="ArvGvcpPacketType.members"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -1037,7 +1073,7 @@ arv_gvcp_next_packet_id (<em class="parameter"><code><a href="/usr/share/gtk-doc
 <a name="ArvGvcpCommand"></a><h3>enum ArvGvcpCommand</h3>
 <div class="refsect3">
 <a name="ArvGvcpCommand.members"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -1166,7 +1202,7 @@ arv_gvcp_next_packet_id (<em class="parameter"><code><a href="/usr/share/gtk-doc
 <p>GVCP packet header structure.</p>
 <div class="refsect3">
 <a name="ArvGvcpHeader.members"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">
@@ -1174,22 +1210,22 @@ arv_gvcp_next_packet_id (<em class="parameter"><code><a href="/usr/share/gtk-doc
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> <em class="structfield"><code><a name="ArvGvcpHeader.packet-type"></a>packet_type</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> <em class="structfield"><code><a name="ArvGvcpHeader.packet-type"></a>packet_type</code></em>;</p></td>
 <td class="struct_member_description"><p>a <a class="link" href="aravis-ArvGvcp.html#ArvGvcpPacketType" title="enum ArvGvcpPacketType"><span class="type">ArvGvcpPacketType</span></a> identifier</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> <em class="structfield"><code><a name="ArvGvcpHeader.command"></a>command</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> <em class="structfield"><code><a name="ArvGvcpHeader.command"></a>command</code></em>;</p></td>
 <td class="struct_member_description"><p>a <a class="link" href="aravis-ArvGvcp.html#ArvGvcpCommand" title="enum ArvGvcpCommand"><span class="type">ArvGvcpCommand</span></a> identifier</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> <em class="structfield"><code><a name="ArvGvcpHeader.size"></a>size</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> <em class="structfield"><code><a name="ArvGvcpHeader.size"></a>size</code></em>;</p></td>
 <td class="struct_member_description"><p>data size</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint16"><span class="type">guint16</span></a> <em class="structfield"><code><a name="ArvGvcpHeader.id"></a>id</code></em>;</p></td>
+<td class="struct_member_name"><p><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> <em class="structfield"><code><a name="ArvGvcpHeader.id"></a>id</code></em>;</p></td>
 <td class="struct_member_description"><p>packet identifier</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -1208,7 +1244,7 @@ arv_gvcp_next_packet_id (<em class="parameter"><code><a href="/usr/share/gtk-doc
 <p>GVCP packet structure.</p>
 <div class="refsect3">
 <a name="ArvGvcpPacket.members"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">
@@ -1232,6 +1268,6 @@ arv_gvcp_next_packet_id (<em class="parameter"><code><a href="/usr/share/gtk-doc
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.28</div>
 </body>
 </html>

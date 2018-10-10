@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ArvGvDevice: Aravis Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Aravis Reference Manual">
 <link rel="up" href="ch06.html" title="Ethernet cameras">
 <link rel="prev" href="ArvGvInterface.html" title="ArvGvInterface">
 <link rel="next" href="ArvGvStream.html" title="ArvGvStream">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.28 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -28,13 +28,13 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="ArvGvDevice.top_of_page"></a>ArvGvDevice</span></h2>
-<p>ArvGvDevice — Gigabit ethernet camera device</p>
+<p>ArvGvDevice — GigEVision device</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsect1">
 <a name="ArvGvDevice.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -50,7 +50,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="ArvGvDevice.html#arv-gv-device-get-timestamp-tick-frequency" title="arv_gv_device_get_timestamp_tick_frequency ()">arv_gv_device_get_timestamp_tick_frequency</a> <span class="c_punctuation">()</span>
@@ -58,7 +58,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/gioGSocketAddress.html#GSocketAddress-struct"><span class="returnvalue">GSocketAddress</span></a> *
+<a href="/usr/share/gtk-doc/html/gio/GSocketAddress.html#GSocketAddress-struct"><span class="returnvalue">GSocketAddress</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="ArvGvDevice.html#arv-gv-device-get-device-address" title="arv_gv_device_get_device_address ()">arv_gv_device_get_device_address</a> <span class="c_punctuation">()</span>
@@ -66,7 +66,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/gioGSocketAddress.html#GSocketAddress-struct"><span class="returnvalue">GSocketAddress</span></a> *
+<a href="/usr/share/gtk-doc/html/gio/GSocketAddress.html#GSocketAddress-struct"><span class="returnvalue">GSocketAddress</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="ArvGvDevice.html#arv-gv-device-get-interface-address" title="arv_gv_device_get_interface_address ()">arv_gv_device_get_interface_address</a> <span class="c_punctuation">()</span>
@@ -74,7 +74,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="ArvGvDevice.html#arv-gv-device-get-packet-size" title="arv_gv_device_get_packet_size ()">arv_gv_device_get_packet_size</a> <span class="c_punctuation">()</span>
@@ -88,12 +88,36 @@
 <a class="link" href="ArvGvDevice.html#arv-gv-device-set-packet-size" title="arv_gv_device_set_packet_size ()">arv_gv_device_set_packet_size</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
+<tr>
+<td class="function_type">
+<a class="link" href="ArvGvStream.html#ArvGvStreamOption" title="enum ArvGvStreamOption"><span class="returnvalue">ArvGvStreamOption</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="ArvGvDevice.html#arv-gv-device-get-stream-options" title="arv_gv_device_get_stream_options ()">arv_gv_device_get_stream_options</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="ArvGvDevice.html#arv-gv-device-set-stream-options" title="arv_gv_device_set_stream_options ()">arv_gv_device_set_stream_options</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="ArvGvDevice.html#arv-gv-device-auto-packet-size" title="arv_gv_device_auto_packet_size ()">arv_gv_device_auto_packet_size</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect1">
 <a name="ArvGvDevice.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -106,7 +130,7 @@
 </div>
 <div class="refsect1">
 <a name="ArvGvDevice.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
     <span class="lineart">╰──</span> <a class="link" href="ArvDevice.html" title="ArvDevice">ArvDevice</a>
         <span class="lineart">╰──</span> ArvGvDevice
 </pre>
@@ -119,24 +143,24 @@
 <div class="refsect2">
 <a name="arv-gv-device-new"></a><h3>arv_gv_device_new ()</h3>
 <pre class="programlisting"><a class="link" href="ArvDevice.html" title="ArvDevice"><span class="returnvalue">ArvDevice</span></a> *
-arv_gv_device_new (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGInetAddress.html#GInetAddress-struct"><span class="type">GInetAddress</span></a> *interface_address</code></em>,
-                   <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGInetAddress.html#GInetAddress-struct"><span class="type">GInetAddress</span></a> *device_address</code></em>);</pre>
+arv_gv_device_new (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gio/GInetAddress.html#GInetAddress-struct"><span class="type">GInetAddress</span></a> *interface_address</code></em>,
+                   <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gio/GInetAddress.html#GInetAddress-struct"><span class="type">GInetAddress</span></a> *device_address</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-gv-device-get-timestamp-tick-frequency"></a><h3>arv_gv_device_get_timestamp_tick_frequency ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
 arv_gv_device_get_timestamp_tick_frequency
                                (<em class="parameter"><code><a class="link" href="ArvGvDevice.html" title="ArvGvDevice"><span class="type">ArvGvDevice</span></a> *gv_device</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-gv-device-get-device-address"></a><h3>arv_gv_device_get_device_address ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gioGSocketAddress.html#GSocketAddress-struct"><span class="returnvalue">GSocketAddress</span></a> *
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gio/GSocketAddress.html#GSocketAddress-struct"><span class="returnvalue">GSocketAddress</span></a> *
 arv_gv_device_get_device_address (<em class="parameter"><code><a class="link" href="ArvGvDevice.html" title="ArvGvDevice"><span class="type">ArvGvDevice</span></a> *device</code></em>);</pre>
 <div class="refsect3">
 <a name="arv-gv-device-get-device-address.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -151,7 +175,7 @@ arv_gv_device_get_device_address (<em class="parameter"><code><a class="link" hr
 </div>
 <div class="refsect3">
 <a name="arv-gv-device-get-device-address.returns"></a><h4>Returns</h4>
-<p> the device IP address. </p>
+<p>the device IP address. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 <p class="since">Since: <a class="link" href="ix02.html#api-index-0.2.0">0.2.0</a></p>
@@ -159,11 +183,11 @@ arv_gv_device_get_device_address (<em class="parameter"><code><a class="link" hr
 <hr>
 <div class="refsect2">
 <a name="arv-gv-device-get-interface-address"></a><h3>arv_gv_device_get_interface_address ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gioGSocketAddress.html#GSocketAddress-struct"><span class="returnvalue">GSocketAddress</span></a> *
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gio/GSocketAddress.html#GSocketAddress-struct"><span class="returnvalue">GSocketAddress</span></a> *
 arv_gv_device_get_interface_address (<em class="parameter"><code><a class="link" href="ArvGvDevice.html" title="ArvGvDevice"><span class="type">ArvGvDevice</span></a> *device</code></em>);</pre>
 <div class="refsect3">
 <a name="arv-gv-device-get-interface-address.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -178,7 +202,7 @@ arv_gv_device_get_interface_address (<em class="parameter"><code><a class="link"
 </div>
 <div class="refsect3">
 <a name="arv-gv-device-get-interface-address.returns"></a><h4>Returns</h4>
-<p> the device host interface IP address. </p>
+<p>the device host interface IP address. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 <p class="since">Since: <a class="link" href="ix02.html#api-index-0.2.0">0.2.0</a></p>
@@ -186,7 +210,7 @@ arv_gv_device_get_interface_address (<em class="parameter"><code><a class="link"
 <hr>
 <div class="refsect2">
 <a name="arv-gv-device-get-packet-size"></a><h3>arv_gv_device_get_packet_size ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
 arv_gv_device_get_packet_size (<em class="parameter"><code><a class="link" href="ArvGvDevice.html" title="ArvGvDevice"><span class="type">ArvGvDevice</span></a> *gv_device</code></em>);</pre>
 </div>
 <hr>
@@ -194,7 +218,94 @@ arv_gv_device_get_packet_size (<em class="parameter"><code><a class="link" href=
 <a name="arv-gv-device-set-packet-size"></a><h3>arv_gv_device_set_packet_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 arv_gv_device_set_packet_size (<em class="parameter"><code><a class="link" href="ArvGvDevice.html" title="ArvGvDevice"><span class="type">ArvGvDevice</span></a> *gv_device</code></em>,
-                               <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint"><span class="type">guint</span></a> packet_size</code></em>);</pre>
+                               <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> packet_size</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gv-device-get-stream-options"></a><h3>arv_gv_device_get_stream_options ()</h3>
+<pre class="programlisting"><a class="link" href="ArvGvStream.html#ArvGvStreamOption" title="enum ArvGvStreamOption"><span class="returnvalue">ArvGvStreamOption</span></a>
+arv_gv_device_get_stream_options (<em class="parameter"><code><a class="link" href="ArvGvDevice.html" title="ArvGvDevice"><span class="type">ArvGvDevice</span></a> *gv_device</code></em>);</pre>
+<div class="refsect3">
+<a name="arv-gv-device-get-stream-options.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>gv_device</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvGvDevice.html" title="ArvGvDevice"><span class="type">ArvGvDevice</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="arv-gv-device-get-stream-options.returns"></a><h4>Returns</h4>
+<p> options for stream creation</p>
+</div>
+<p class="since">Since: <a class="link" href="ix04.html#api-index-0.6.0">0.6.0</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gv-device-set-stream-options"></a><h3>arv_gv_device_set_stream_options ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+arv_gv_device_set_stream_options (<em class="parameter"><code><a class="link" href="ArvGvDevice.html" title="ArvGvDevice"><span class="type">ArvGvDevice</span></a> *gv_device</code></em>,
+                                  <em class="parameter"><code><a class="link" href="ArvGvStream.html#ArvGvStreamOption" title="enum ArvGvStreamOption"><span class="type">ArvGvStreamOption</span></a> options</code></em>);</pre>
+<p>Sets the option used during stream creation. It must be called before <a class="link" href="ArvDevice.html#arv-device-create-stream" title="arv_device_create_stream ()"><code class="function">arv_device_create_stream()</code></a>.</p>
+<div class="refsect3">
+<a name="arv-gv-device-set-stream-options.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>gv_device</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvGvDevice.html" title="ArvGvDevice"><span class="type">ArvGvDevice</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>options</p></td>
+<td class="parameter_description"><p>options for stream creation</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="ix04.html#api-index-0.6.0">0.6.0</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-gv-device-auto-packet-size"></a><h3>arv_gv_device_auto_packet_size ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+arv_gv_device_auto_packet_size (<em class="parameter"><code><a class="link" href="ArvGvDevice.html" title="ArvGvDevice"><span class="type">ArvGvDevice</span></a> *gv_device</code></em>);</pre>
+<p>Automatically determine the biggest packet size that can be used data
+streaming, and set GevSCPSPacketSize value accordingly. This function relies
+on the GevSCPSFireTestPacket feature. If this feature is not available, the
+packet size will be set to a default value (1500 bytes).</p>
+<div class="refsect3">
+<a name="arv-gv-device-auto-packet-size.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>gv_device</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvGvDevice.html" title="ArvGvDevice"><span class="type">ArvGvDevice</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="arv-gv-device-auto-packet-size.returns"></a><h4>Returns</h4>
+<p> The packet size, in bytes.</p>
+</div>
+<p class="since">Since: <a class="link" href="ix04.html#api-index-0.6.0">0.6.0</a></p>
 </div>
 </div>
 <div class="refsect1">
@@ -206,6 +317,6 @@ arv_gv_device_set_packet_size (<em class="parameter"><code><a class="link" href=
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.28</div>
 </body>
 </html>

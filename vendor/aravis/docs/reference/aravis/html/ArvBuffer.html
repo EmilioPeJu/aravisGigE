@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ArvBuffer: Aravis Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Aravis Reference Manual">
 <link rel="up" href="ch04.html" title="Base">
 <link rel="prev" href="ArvStream.html" title="ArvStream">
 <link rel="next" href="ArvChunkParser.html" title="ArvChunkParser">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.28 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -34,7 +34,7 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="ArvBuffer.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -95,7 +95,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="ArvBuffer.html#arv-buffer-get-timestamp" title="arv_buffer_get_timestamp ()">arv_buffer_get_timestamp</a> <span class="c_punctuation">()</span>
@@ -111,7 +111,23 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="ArvBuffer.html#arv-buffer-get-system-timestamp" title="arv_buffer_get_system_timestamp ()">arv_buffer_get_system_timestamp</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="ArvBuffer.html#arv-buffer-set-system-timestamp" title="arv_buffer_set_system_timestamp ()">arv_buffer_set_system_timestamp</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="ArvBuffer.html#arv-buffer-get-frame-id" title="arv_buffer_get_frame_id ()">arv_buffer_get_frame_id</a> <span class="c_punctuation">()</span>
@@ -135,7 +151,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="ArvBuffer.html#arv-buffer-get-image-height" title="arv_buffer_get_image_height ()">arv_buffer_get_image_height</a> <span class="c_punctuation">()</span>
@@ -159,7 +175,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="ArvBuffer.html#arv-buffer-get-image-width" title="arv_buffer_get_image_width ()">arv_buffer_get_image_width</a> <span class="c_punctuation">()</span>
@@ -167,7 +183,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="ArvBuffer.html#arv-buffer-get-image-x" title="arv_buffer_get_image_x ()">arv_buffer_get_image_x</a> <span class="c_punctuation">()</span>
@@ -175,7 +191,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="ArvBuffer.html#arv-buffer-get-image-y" title="arv_buffer_get_image_y ()">arv_buffer_get_image_y</a> <span class="c_punctuation">()</span>
@@ -192,7 +208,7 @@
 </div>
 <div class="refsect1">
 <a name="ArvBuffer.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -431,7 +447,7 @@
 </div>
 <div class="refsect1">
 <a name="ArvBuffer.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
     <span class="lineart">╰──</span> ArvBuffer
 </pre>
 </div>
@@ -457,13 +473,13 @@ format and time stamp.</p>
 <pre class="programlisting"><a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="returnvalue">ArvBuffer</span></a> *
 arv_buffer_new (<em class="parameter"><code><span class="type">size_t</span> size</code></em>,
                 <em class="parameter"><code><span class="type">void</span> *preallocated</code></em>);</pre>
-<p>Creates a new buffer for the storage of the video stream images. 
+<p>Creates a new buffer for the storage of the video stream images.
 The data space can be either preallocated, and the caller is responsible
 for it's deallocation, or allocated by this function. If it is the case,
 data memory will be freed when the buffer is destroyed.</p>
 <div class="refsect3">
 <a name="arv-buffer-new.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -477,7 +493,7 @@ data memory will be freed when the buffer is destroyed.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>preallocated</p></td>
-<td class="parameter_description"><p> preallocated memory buffer. </p></td>
+<td class="parameter_description"><p>preallocated memory buffer. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -496,8 +512,8 @@ data memory will be freed when the buffer is destroyed.</p>
 arv_buffer_new_full (<em class="parameter"><code><span class="type">size_t</span> size</code></em>,
                      <em class="parameter"><code><span class="type">void</span> *preallocated</code></em>,
                      <em class="parameter"><code><span class="type">void</span> *user_data</code></em>,
-                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> user_data_destroy_func</code></em>);</pre>
-<p>Creates a new buffer for the storage of the video stream images. 
+                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> user_data_destroy_func</code></em>);</pre>
+<p>Creates a new buffer for the storage of the video stream images.
 The data space can be either preallocated, and the caller is responsible
 for it's deallocation, or allocated by this function. If it is the case,
 data memory will be freed when the buffer is destroyed.</p>
@@ -506,7 +522,7 @@ data memory will be freed when the buffer is destroyed.</p>
 user_data when the buffer is destroyed.</p>
 <div class="refsect3">
 <a name="arv-buffer-new-full.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -520,12 +536,12 @@ user_data when the buffer is destroyed.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>preallocated</p></td>
-<td class="parameter_description"><p> preallocated memory buffer. </p></td>
+<td class="parameter_description"><p>preallocated memory buffer. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p> a pointer to user data associated to this buffer. </p></td>
+<td class="parameter_description"><p>a pointer to user data associated to this buffer. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -547,12 +563,12 @@ user_data when the buffer is destroyed.</p>
 <a name="arv-buffer-new-allocate"></a><h3>arv_buffer_new_allocate ()</h3>
 <pre class="programlisting"><a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="returnvalue">ArvBuffer</span></a> *
 arv_buffer_new_allocate (<em class="parameter"><code><span class="type">size_t</span> size</code></em>);</pre>
-<p>Creates a new buffer for the storage of the video stream images. 
+<p>Creates a new buffer for the storage of the video stream images.
 The data space is allocated by this function, and will
 be freed when the buffer is destroyed.</p>
 <div class="refsect3">
 <a name="arv-buffer-new-allocate.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -569,7 +585,7 @@ be freed when the buffer is destroyed.</p>
 <a name="arv-buffer-new-allocate.returns"></a><h4>Returns</h4>
 <p> a new <a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a> object</p>
 </div>
-<p class="since">Since: <a class="link" href="ix03.html#api-index-0.2.3">0.2.3</a></p>
+<p class="since">Since: <a class="link" href="ix02.html#api-index-0.2.3">0.2.3</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -579,7 +595,7 @@ arv_buffer_get_user_data (<em class="parameter"><code><a class="link" href="ArvB
 <p>Gets a pointer to user data set by arv_buffer_new_full.</p>
 <div class="refsect3">
 <a name="arv-buffer-get-user-data.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -596,7 +612,7 @@ arv_buffer_get_user_data (<em class="parameter"><code><a class="link" href="ArvB
 <a name="arv-buffer-get-user-data.returns"></a><h4>Returns</h4>
 <p> user data, or NULL if not set.</p>
 </div>
-<p class="since">Since: <a class="link" href="ix04.html#api-index-0.4.0">0.4.0</a></p>
+<p class="since">Since: <a class="link" href="ix03.html#api-index-0.4.0">0.4.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -607,7 +623,7 @@ arv_buffer_get_data (<em class="parameter"><code><a class="link" href="ArvBuffer
 <p>Buffer data accessor.</p>
 <div class="refsect3">
 <a name="arv-buffer-get-data.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -621,7 +637,7 @@ arv_buffer_get_data (<em class="parameter"><code><a class="link" href="ArvBuffer
 </tr>
 <tr>
 <td class="parameter_name"><p>size</p></td>
-<td class="parameter_description"><p> location to store data size, or <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p>location to store data size, or <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -629,22 +645,22 @@ arv_buffer_get_data (<em class="parameter"><code><a class="link" href="ArvBuffer
 </div>
 <div class="refsect3">
 <a name="arv-buffer-get-data.returns"></a><h4>Returns</h4>
-<p> a pointer to the buffer data. </p>
+<p>a pointer to the buffer data. </p>
 <p><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=size][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> guint8]</span></p>
 </div>
-<p class="since">Since: <a class="link" href="ix04.html#api-index-0.4.0">0.4.0</a></p>
+<p class="since">Since: <a class="link" href="ix03.html#api-index-0.4.0">0.4.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-buffer-get-chunk-data"></a><h3>arv_buffer_get_chunk_data ()</h3>
 <pre class="programlisting">const <span class="returnvalue">void</span> *
 arv_buffer_get_chunk_data (<em class="parameter"><code><a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a> *buffer</code></em>,
-                           <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint64"><span class="type">guint64</span></a> chunk_id</code></em>,
+                           <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> chunk_id</code></em>,
                            <em class="parameter"><code><span class="type">size_t</span> *size</code></em>);</pre>
 <p>Chunk data accessor.</p>
 <div class="refsect3">
 <a name="arv-buffer-get-chunk-data.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -663,7 +679,7 @@ arv_buffer_get_chunk_data (<em class="parameter"><code><a class="link" href="Arv
 </tr>
 <tr>
 <td class="parameter_name"><p>size</p></td>
-<td class="parameter_description"><p> location to store chunk data size, or <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p>location to store chunk data size, or <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -671,23 +687,23 @@ arv_buffer_get_chunk_data (<em class="parameter"><code><a class="link" href="Arv
 </div>
 <div class="refsect3">
 <a name="arv-buffer-get-chunk-data.returns"></a><h4>Returns</h4>
-<p> a pointer to the chunk data. </p>
+<p>a pointer to the chunk data. </p>
 <p><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=size][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> guint8]</span></p>
 </div>
-<p class="since">Since: <a class="link" href="ix04.html#api-index-0.4.0">0.4.0</a></p>
+<p class="since">Since: <a class="link" href="ix03.html#api-index-0.4.0">0.4.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-buffer-get-timestamp"></a><h3>arv_buffer_get_timestamp ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
 arv_buffer_get_timestamp (<em class="parameter"><code><a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a> *buffer</code></em>);</pre>
 <p>Gets the buffer camera timestamp, expressed as nanoseconds. Not all devices
 provide reliable timestamp, which means sometimes its better to rely on the
-buffer completion host local time (given by <em class="parameter"><code>g_get_realtime</code></em>
- for example).</p>
+buffer completion host local time, or to use
+<a class="link" href="ArvBuffer.html#arv-buffer-get-system-timestamp" title="arv_buffer_get_system_timestamp ()"><code class="function">arv_buffer_get_system_timestamp()</code></a>.</p>
 <div class="refsect3">
 <a name="arv-buffer-get-timestamp.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -704,19 +720,19 @@ buffer completion host local time (given by <em class="parameter"><code>g_get_re
 <a name="arv-buffer-get-timestamp.returns"></a><h4>Returns</h4>
 <p> buffer timestamp, in nanoseconds.</p>
 </div>
-<p class="since">Since: <a class="link" href="ix04.html#api-index-0.4.0">0.4.0</a></p>
+<p class="since">Since: <a class="link" href="ix03.html#api-index-0.4.0">0.4.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-buffer-set-timestamp"></a><h3>arv_buffer_set_timestamp ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 arv_buffer_set_timestamp (<em class="parameter"><code><a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a> *buffer</code></em>,
-                          <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint64"><span class="type">guint64</span></a> timestamp_ns</code></em>);</pre>
+                          <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> timestamp_ns</code></em>);</pre>
 <p>Sets the buffer timestamp, which allows to override the timpestamp set by
 the camera, which in some case is incorrect.</p>
 <div class="refsect3">
 <a name="arv-buffer-set-timestamp.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -736,18 +752,78 @@ the camera, which in some case is incorrect.</p>
 </tbody>
 </table></div>
 </div>
-<p class="since">Since: <a class="link" href="ix04.html#api-index-0.4.0">0.4.0</a></p>
+<p class="since">Since: <a class="link" href="ix03.html#api-index-0.4.0">0.4.0</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-buffer-get-system-timestamp"></a><h3>arv_buffer_get_system_timestamp ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
+arv_buffer_get_system_timestamp (<em class="parameter"><code><a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a> *buffer</code></em>);</pre>
+<p>Gets the system timestamp for when the frame was received. Expressed in
+nanoseconds.</p>
+<div class="refsect3">
+<a name="arv-buffer-get-system-timestamp.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>buffer</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="arv-buffer-get-system-timestamp.returns"></a><h4>Returns</h4>
+<p> buffer system timestamp, in nanoseconds.</p>
+</div>
+<p class="since">Since: <a class="link" href="ix04.html#api-index-0.6.0">0.6.0</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-buffer-set-system-timestamp"></a><h3>arv_buffer_set_system_timestamp ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+arv_buffer_set_system_timestamp (<em class="parameter"><code><a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a> *buffer</code></em>,
+                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> timestamp_ns</code></em>);</pre>
+<p>Sets the system timestamp for when the frame was received. Expressed in
+nanoseconds.</p>
+<div class="refsect3">
+<a name="arv-buffer-set-system-timestamp.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>buffer</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>timestamp_ns</p></td>
+<td class="parameter_description"><p>a timestamp, expressed as nanoseconds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="ix04.html#api-index-0.6.0">0.6.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-buffer-get-frame-id"></a><h3>arv_buffer_get_frame_id ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>
 arv_buffer_get_frame_id (<em class="parameter"><code><a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a> *buffer</code></em>);</pre>
 <p>Gets the buffer frame id. For GigEVision devices, valid values are in the
 1..65535 range.</p>
 <div class="refsect3">
 <a name="arv-buffer-get-frame-id.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -764,7 +840,7 @@ arv_buffer_get_frame_id (<em class="parameter"><code><a class="link" href="ArvBu
 <a name="arv-buffer-get-frame-id.returns"></a><h4>Returns</h4>
 <p> frame id, 0 on error.</p>
 </div>
-<p class="since">Since: <a class="link" href="ix04.html#api-index-0.4.0">0.4.0</a></p>
+<p class="since">Since: <a class="link" href="ix03.html#api-index-0.4.0">0.4.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -774,7 +850,7 @@ arv_buffer_get_payload_type (<em class="parameter"><code><a class="link" href="A
 <p>Gets the buffer payload type.</p>
 <div class="refsect3">
 <a name="arv-buffer-get-payload-type.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -791,7 +867,7 @@ arv_buffer_get_payload_type (<em class="parameter"><code><a class="link" href="A
 <a name="arv-buffer-get-payload-type.returns"></a><h4>Returns</h4>
 <p> payload type.</p>
 </div>
-<p class="since">Since: <a class="link" href="ix04.html#api-index-0.4.0">0.4.0</a></p>
+<p class="since">Since: <a class="link" href="ix03.html#api-index-0.4.0">0.4.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -801,7 +877,7 @@ arv_buffer_get_status (<em class="parameter"><code><a class="link" href="ArvBuff
 <p>Gets the buffer acquisition status.</p>
 <div class="refsect3">
 <a name="arv-buffer-get-status.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -818,18 +894,18 @@ arv_buffer_get_status (<em class="parameter"><code><a class="link" href="ArvBuff
 <a name="arv-buffer-get-status.returns"></a><h4>Returns</h4>
 <p> buffer acquisition status.</p>
 </div>
-<p class="since">Since: <a class="link" href="ix04.html#api-index-0.4.0">0.4.0</a></p>
+<p class="since">Since: <a class="link" href="ix03.html#api-index-0.4.0">0.4.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-buffer-get-image-height"></a><h3>arv_buffer_get_image_height ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 arv_buffer_get_image_height (<em class="parameter"><code><a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a> *buffer</code></em>);</pre>
 <p>Gets the image width. This function must only be called on buffer containing a <em class="parameter"><code>ARV_BUFFER_PAYLOAD_TYPE_IMAGE</code></em>
  payload.</p>
 <div class="refsect3">
 <a name="arv-buffer-get-image-height.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -846,7 +922,7 @@ arv_buffer_get_image_height (<em class="parameter"><code><a class="link" href="A
 <a name="arv-buffer-get-image-height.returns"></a><h4>Returns</h4>
 <p> image height, in pixels.</p>
 </div>
-<p class="since">Since: <a class="link" href="ix04.html#api-index-0.4.0">0.4.0</a></p>
+<p class="since">Since: <a class="link" href="ix03.html#api-index-0.4.0">0.4.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -857,7 +933,7 @@ arv_buffer_get_image_pixel_format (<em class="parameter"><code><a class="link" h
  payload.</p>
 <div class="refsect3">
 <a name="arv-buffer-get-image-pixel-format.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -874,22 +950,22 @@ arv_buffer_get_image_pixel_format (<em class="parameter"><code><a class="link" h
 <a name="arv-buffer-get-image-pixel-format.returns"></a><h4>Returns</h4>
 <p> image pixel format.</p>
 </div>
-<p class="since">Since: <a class="link" href="ix04.html#api-index-0.4.0">0.4.0</a></p>
+<p class="since">Since: <a class="link" href="ix03.html#api-index-0.4.0">0.4.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-buffer-get-image-region"></a><h3>arv_buffer_get_image_region ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 arv_buffer_get_image_region (<em class="parameter"><code><a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a> *buffer</code></em>,
-                             <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> *x</code></em>,
-                             <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> *y</code></em>,
-                             <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> *width</code></em>,
-                             <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> *height</code></em>);</pre>
+                             <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *x</code></em>,
+                             <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *y</code></em>,
+                             <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *width</code></em>,
+                             <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *height</code></em>);</pre>
 <p>Gets the image region. This function must only be called on buffer containing a <em class="parameter"><code>ARV_BUFFER_PAYLOAD_TYPE_IMAGE</code></em>
  payload.</p>
 <div class="refsect3">
 <a name="arv-buffer-get-image-region.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -903,39 +979,39 @@ arv_buffer_get_image_region (<em class="parameter"><code><a class="link" href="A
 </tr>
 <tr>
 <td class="parameter_name"><p>x</p></td>
-<td class="parameter_description"><p> image x offset placeholder. </p></td>
+<td class="parameter_description"><p>image x offset placeholder. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>y</p></td>
-<td class="parameter_description"><p> image y offset placeholder. </p></td>
+<td class="parameter_description"><p>image y offset placeholder. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>width</p></td>
-<td class="parameter_description"><p> image width placholder. </p></td>
+<td class="parameter_description"><p>image width placholder. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>height</p></td>
-<td class="parameter_description"><p> image height placeholder. </p></td>
+<td class="parameter_description"><p>image height placeholder. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
 </table></div>
 </div>
-<p class="since">Since: <a class="link" href="ix04.html#api-index-0.4.0">0.4.0</a></p>
+<p class="since">Since: <a class="link" href="ix03.html#api-index-0.4.0">0.4.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-buffer-get-image-width"></a><h3>arv_buffer_get_image_width ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 arv_buffer_get_image_width (<em class="parameter"><code><a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a> *buffer</code></em>);</pre>
 <p>Gets the image width. This function must only be called on buffer containing a <em class="parameter"><code>ARV_BUFFER_PAYLOAD_TYPE_IMAGE</code></em>
  payload.</p>
 <div class="refsect3">
 <a name="arv-buffer-get-image-width.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -952,18 +1028,18 @@ arv_buffer_get_image_width (<em class="parameter"><code><a class="link" href="Ar
 <a name="arv-buffer-get-image-width.returns"></a><h4>Returns</h4>
 <p> image width, in pixels.</p>
 </div>
-<p class="since">Since: <a class="link" href="ix04.html#api-index-0.4.0">0.4.0</a></p>
+<p class="since">Since: <a class="link" href="ix03.html#api-index-0.4.0">0.4.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-buffer-get-image-x"></a><h3>arv_buffer_get_image_x ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 arv_buffer_get_image_x (<em class="parameter"><code><a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a> *buffer</code></em>);</pre>
 <p>Gets the image x offset. This function must only be called on buffer containing a <em class="parameter"><code>ARV_BUFFER_PAYLOAD_TYPE_IMAGE</code></em>
  payload.</p>
 <div class="refsect3">
 <a name="arv-buffer-get-image-x.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -980,18 +1056,18 @@ arv_buffer_get_image_x (<em class="parameter"><code><a class="link" href="ArvBuf
 <a name="arv-buffer-get-image-x.returns"></a><h4>Returns</h4>
 <p> image x offset, in pixels.</p>
 </div>
-<p class="since">Since: <a class="link" href="ix04.html#api-index-0.4.0">0.4.0</a></p>
+<p class="since">Since: <a class="link" href="ix03.html#api-index-0.4.0">0.4.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-buffer-get-image-y"></a><h3>arv_buffer_get_image_y ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
 arv_buffer_get_image_y (<em class="parameter"><code><a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a> *buffer</code></em>);</pre>
 <p>Gets the image y offset. This function must only be called on buffer containing a <em class="parameter"><code>ARV_BUFFER_PAYLOAD_TYPE_IMAGE</code></em>
  payload.</p>
 <div class="refsect3">
 <a name="arv-buffer-get-image-y.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1008,7 +1084,7 @@ arv_buffer_get_image_y (<em class="parameter"><code><a class="link" href="ArvBuf
 <a name="arv-buffer-get-image-y.returns"></a><h4>Returns</h4>
 <p> image y offset, in pixels.</p>
 </div>
-<p class="since">Since: <a class="link" href="ix04.html#api-index-0.4.0">0.4.0</a></p>
+<p class="since">Since: <a class="link" href="ix03.html#api-index-0.4.0">0.4.0</a></p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1023,7 +1099,7 @@ arv_buffer_get_image_y (<em class="parameter"><code><a class="link" href="ArvBuf
 <a name="ArvBufferStatus"></a><h3>enum ArvBufferStatus</h3>
 <div class="refsect3">
 <a name="ArvBufferStatus.members"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -1107,7 +1183,7 @@ arv_buffer_get_image_y (<em class="parameter"><code><a class="link" href="ArvBuf
 <a name="ArvBufferPayloadType"></a><h3>enum ArvBufferPayloadType</h3>
 <div class="refsect3">
 <a name="ArvBufferPayloadType.members"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -1515,6 +1591,6 @@ arv_buffer_get_image_y (<em class="parameter"><code><a class="link" href="ArvBuf
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.28</div>
 </body>
 </html>

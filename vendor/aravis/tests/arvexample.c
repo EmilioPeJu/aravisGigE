@@ -65,9 +65,6 @@ main (int argc, char **argv)
 
 	data.buffer_count = 0;
 
-	/* Mandatory glib type system initialization */
-	arv_g_type_init ();
-
 	/* Instantiation of the first available camera */
 	camera = arv_camera_new (NULL);
 
@@ -118,6 +115,9 @@ main (int argc, char **argv)
 
 			/* Stop the video stream */
 			arv_camera_stop_acquisition (camera);
+
+			/* Signal must be inhibited to avoid stream thread running after the last unref */
+			arv_stream_set_emit_signals (stream, FALSE);
 
 			g_object_unref (stream);
 		} else

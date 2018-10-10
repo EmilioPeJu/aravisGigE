@@ -77,7 +77,7 @@ _pre_remove_child (ArvDomNode *self, ArvDomNode *child)
 /* ArvGcPort implementation */
 
 static gboolean
-_register_workaround_check (ArvGcPort *port, guint64 length) 
+_register_workaround_check (ArvGcPort *port, guint64 length)
 {
 	ArvDomDocument *document;
 	ArvGcRegisterDescriptionNode *register_description;
@@ -85,7 +85,7 @@ _register_workaround_check (ArvGcPort *port, guint64 length)
 	document = arv_dom_node_get_owner_document (ARV_DOM_NODE (port));
 	register_description = ARV_GC_REGISTER_DESCRIPTION_NODE (arv_dom_document_get_document_element (document));
 
-	return length == 4 && !arv_gc_register_description_node_check_schema_version (register_description, 1, 1, 0);
+	return length == 4 && (arv_gc_register_description_node_compare_schema_version (register_description, 1, 1, 0) < 0);
 }
 
 void
@@ -161,7 +161,7 @@ arv_gc_port_write (ArvGcPort *port, void *buffer, guint64 address, guint64 lengt
 	g_return_if_fail (buffer != NULL);
 
 	genicam = arv_gc_node_get_genicam (ARV_GC_NODE (port));
-	
+
 	if (port->priv->chunk_id == NULL) {
 		device = arv_gc_get_device (genicam);
 

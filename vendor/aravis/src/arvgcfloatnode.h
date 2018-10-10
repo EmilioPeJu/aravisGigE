@@ -23,6 +23,10 @@
 #ifndef ARV_GC_FLOAT_NODE_H
 #define ARV_GC_FLOAT_NODE_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
 #include <arvgcfeaturenode.h>
 #include <arvgcpropertynode.h>
@@ -46,6 +50,10 @@ struct _ArvGcFloatNode {
 	ArvGcPropertyNode *maximum;
 	ArvGcPropertyNode *increment;
 	ArvGcPropertyNode *unit;
+
+	ArvGcPropertyNode *index;
+	GSList *value_indexed_nodes;
+	ArvGcPropertyNode *value_default;
 };
 
 struct _ArvGcFloatNodeClass {

@@ -23,6 +23,10 @@
 #ifndef ARV_GC_REGISTER_NODE_H
 #define ARV_GC_REGISTER_NODE_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
 #include <arvgcfeaturenode.h>
 #include <arvgcpropertynode.h>
@@ -111,7 +115,7 @@ ArvGcNode * 	arv_gc_register_node_new_struct_register	(void);
 
 gint64 		arv_gc_register_node_get_masked_integer_value 	(ArvGcRegisterNode *gc_register_node,
 								 guint lsb, guint msb, GError **error);
-void 		arv_gc_register_node_set_masked_integer_value 	(ArvGcRegisterNode *gc_register_node, 
+void 		arv_gc_register_node_set_masked_integer_value 	(ArvGcRegisterNode *gc_register_node,
 								 guint lsb, guint msb, gint64 value, GError **error);
 
 G_END_DECLS

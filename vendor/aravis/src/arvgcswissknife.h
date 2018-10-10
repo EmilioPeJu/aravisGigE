@@ -23,6 +23,10 @@
 #ifndef ARV_GC_SWISS_KNIFE_H
 #define ARV_GC_SWISS_KNIFE_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
 #include <arvgcfeaturenode.h>
 #include <arvgcpropertynode.h>
@@ -43,6 +47,8 @@ struct _ArvGcSwissKnife {
 
 	GType value_type;
 	GSList *variables;	/* ArvGcVariableNode list */
+	GSList *constants;	/* ArvGcVariableNode list */
+	GSList *expressions;	/* ArvGcVariableNode list */
 
 	ArvGcPropertyNode *formula_node;
 

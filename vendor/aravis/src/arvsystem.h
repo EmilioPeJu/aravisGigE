@@ -23,6 +23,10 @@
 #ifndef ARV_SYSTEM_H
 #define ARV_SYSTEM_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
 
 G_BEGIN_DECLS
@@ -35,6 +39,12 @@ void 			arv_disable_interface		(const char *interface_id);
 void 			arv_update_device_list 		(void);
 unsigned int 		arv_get_n_devices 		(void);
 const char * 		arv_get_device_id 		(unsigned int index);
+const char * 		arv_get_device_physical_id 	(unsigned int index);
+const char * 		arv_get_device_address 		(unsigned int index);
+const char * 		arv_get_device_vendor	 	(unsigned int index);
+const char * 		arv_get_device_model	 	(unsigned int index);
+const char * 		arv_get_device_serial_nbr 	(unsigned int index);
+const char *		arv_get_device_protocol		(unsigned int index);
 
 ArvDevice * 		arv_open_device 		(const char *device_id);
 

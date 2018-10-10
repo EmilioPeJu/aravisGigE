@@ -52,7 +52,7 @@ static GObjectClass *parent_class = NULL;
 struct _ArvStreamPrivate {
 	GAsyncQueue *input_queue;
 	GAsyncQueue *output_queue;
-
+	GRecMutex mutex;
 	gboolean emit_signals;
 };
 
@@ -142,20 +142,9 @@ arv_stream_try_pop_buffer (ArvStream *stream)
 ArvBuffer *
 arv_stream_timeout_pop_buffer (ArvStream *stream, guint64 timeout)
 {
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_return_val_if_fail (ARV_IS_STREAM (stream), NULL);
 
 	return g_async_queue_timeout_pop (stream->priv->output_queue, timeout);
-#else
-	GTimeVal end_time;
-
-	g_return_val_if_fail (ARV_IS_STREAM (stream), NULL);
-
-	g_get_current_time (&end_time);
-	g_time_val_add (&end_time, timeout);
-
-	return g_async_queue_timed_pop (stream->priv->output_queue, &end_time);
-#endif
 }
 
 /**
@@ -183,8 +172,12 @@ arv_stream_push_output_buffer (ArvStream *stream, ArvBuffer *buffer)
 
 	g_async_queue_push (stream->priv->output_queue, buffer);
 
+	g_rec_mutex_lock (&stream->priv->mutex);
+
 	if (stream->priv->emit_signals)
 		g_signal_emit (stream, arv_stream_signals[ARV_STREAM_SIGNAL_NEW_BUFFER], 0);
+
+	g_rec_mutex_unlock (&stream->priv->mutex);
 }
 
 /**
@@ -271,7 +264,11 @@ arv_stream_set_emit_signals (ArvStream *stream, gboolean emit_signals)
 {
 	g_return_if_fail (ARV_IS_STREAM (stream));
 
+	g_rec_mutex_lock (&stream->priv->mutex);
+
 	stream->priv->emit_signals = emit_signals;
+
+	g_rec_mutex_unlock (&stream->priv->mutex);
 }
 
 /**
@@ -288,9 +285,16 @@ arv_stream_set_emit_signals (ArvStream *stream, gboolean emit_signals)
 gboolean
 arv_stream_get_emit_signals (ArvStream *stream)
 {
+	gboolean ret;
 	g_return_val_if_fail (ARV_IS_STREAM (stream), FALSE);
 
-	return stream->priv->emit_signals;
+	g_rec_mutex_lock (&stream->priv->mutex);
+
+	ret = stream->priv->emit_signals;
+
+	g_rec_mutex_unlock (&stream->priv->mutex);
+
+	return ret;
 }
 
 static void
@@ -334,6 +338,8 @@ arv_stream_init (ArvStream *stream)
 	stream->priv->output_queue = g_async_queue_new ();
 
 	stream->priv->emit_signals = FALSE;
+
+	g_rec_mutex_init (&stream->priv->mutex);
 }
 
 static void
@@ -346,6 +352,11 @@ arv_stream_finalize (GObject *object)
 			  g_async_queue_length (stream->priv->input_queue));
 	arv_debug_stream ("[Stream::finalize] Flush %d buffer[s] in output queue",
 			  g_async_queue_length (stream->priv->output_queue));
+
+	if (stream->priv->emit_signals) {
+		g_warning ("Stream finalized with 'new-buffer' signal enabled");
+		g_warning ("Please call arv_stream_set_emit_signals (stream, FALSE) before ArvStream object finalization");
+	}
 
 	do {
 		buffer = g_async_queue_try_pop (stream->priv->output_queue);
@@ -361,6 +372,8 @@ arv_stream_finalize (GObject *object)
 
 	g_async_queue_unref (stream->priv->input_queue);
 	g_async_queue_unref (stream->priv->output_queue);
+
+	g_rec_mutex_clear (&stream->priv->mutex);
 
 	parent_class->finalize (object);
 }
@@ -385,7 +398,7 @@ arv_stream_class_init (ArvStreamClass *node_class)
 	 * Signal that a new buffer is available.
 	 *
 	 * This signal is emited from the stream receive thread and only when the
-	 * "emit-signals" property is %TRUE. 
+	 * "emit-signals" property is %TRUE.
 	 *
 	 * The new buffer can be retrieved with arv_stream_pop_buffer().
 	 *

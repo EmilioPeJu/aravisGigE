@@ -22,13 +22,14 @@
 
 /**
  * SECTION: arvgvsp
- * @short_description: Gvsp packet handling (stream)
+ * @short_description: GigEVision stream packet handling
  */
 
 #include <arvgvsp.h>
 #include <arvdebug.h>
 #include <arvenumtypes.h>
 #include <string.h>
+#include <arvmisc.h>
 
 static ArvGvspPacket *
 arv_gvsp_packet_new (ArvGvspContentType content_type,
@@ -74,7 +75,7 @@ arv_gvsp_packet_new_data_leader	(guint16 frame_id, guint32 packet_id,
 		ArvGvspDataLeader *leader;
 
 		leader = (ArvGvspDataLeader *) &packet->data;
-		leader->payload_type = g_htonl (0x00000001); /* ID for image data */
+		leader->payload_type = g_htonl (ARV_GVSP_PAYLOAD_TYPE_IMAGE);
 		leader->timestamp_high = g_htonl (((guint64) timestamp >> 32));
 		leader->timestamp_low  = g_htonl ((guint64) timestamp & 0xffffffff);
 		leader->pixel_format = g_htonl (pixel_format);
@@ -100,8 +101,8 @@ arv_gvsp_packet_new_data_trailer (guint16 frame_id, guint32 packet_id,
 		ArvGvspDataTrailer *trailer;
 
 		trailer = (ArvGvspDataTrailer *) &packet->data;
+		trailer->payload_type = g_htonl (ARV_GVSP_PAYLOAD_TYPE_IMAGE);
 		trailer->data0 = 0;
-		trailer->data1 = 0;
 	}
 
 	return packet;
@@ -162,52 +163,46 @@ arv_gvsp_packet_to_string (const ArvGvspPacket *packet, size_t packet_size)
 	ArvGvspContentType content_type;
 	GString *string;
 	char *c_string;
-	int i, j, index;
 
 	string = g_string_new ("");
 
 	packet_type = arv_gvsp_packet_get_packet_type (packet);
 	content_type = arv_gvsp_packet_get_content_type (packet);
 
-	g_string_append_printf (string, "packet_type  = %s (%04x)\n", arv_gvsp_packet_type_to_string (packet_type), packet_type);
-	g_string_append_printf (string, "content_type = %s (%04x)\n", arv_gvsp_content_type_to_string (content_type), content_type);
+	g_string_append_printf (string, "packet_type  = %8s (0x%04x)\n", arv_gvsp_packet_type_to_string (packet_type), packet_type);
+	g_string_append_printf (string, "content_type = %8s (0x%04x)\n", arv_gvsp_content_type_to_string (content_type), content_type);
 
 	switch (content_type) {
 		case ARV_GVSP_CONTENT_TYPE_DATA_LEADER:
 			leader = (ArvGvspDataLeader *) &packet->data;
+			switch (g_ntohl (leader->payload_type)) {
+				case ARV_GVSP_PAYLOAD_TYPE_IMAGE:
+					g_string_append (string, "payload_type = image\n");
+					break;
+				case ARV_GVSP_PAYLOAD_TYPE_CHUNK_DATA:
+					g_string_append (string, "payload_type = chunk\n");
+					break;
+				case ARV_GVSP_PAYLOAD_TYPE_EXTENDED_CHUNK_DATA:
+					g_string_append (string, "payload_type = extended chunk\n");
+					break;
+				case ARV_GVSP_PAYLOAD_TYPE_H264:
+					g_string_append (string, "payload_type = h264\n");
+					break;
+				default:
+					g_string_append (string, "payload_type = unknown\n");
+					break;
+			}
+			g_string_append_printf (string, "pixel format = %s\n",
+						arv_pixel_format_to_gst_caps_string (g_ntohl (leader->pixel_format)));
 			g_string_append_printf (string, "width        = %d\n", g_ntohl (leader->width));
 			g_string_append_printf (string, "height       = %d\n", g_ntohl (leader->height));
+			g_string_append_printf (string, "x_offset     = %d\n", g_ntohl (leader->x_offset));
+			g_string_append_printf (string, "y_offset     = %d\n", g_ntohl (leader->y_offset));
 			break;
 		case ARV_GVSP_CONTENT_TYPE_DATA_TRAILER:
 			break;
 		case ARV_GVSP_CONTENT_TYPE_DATA_BLOCK:
 			break;
-	}
-
-	for (i = 0; i < (packet_size + 15) / 16; i++) {
-		for (j = 0; j < 16; j++) {
-			index = i * 16 + j;
-			if (j == 0)
-				g_string_append_printf (string, "%04x", i * 16);
-			if (index < packet_size)
-				g_string_append_printf (string, " %02x", *((guint8 *) ((void *) packet) + index));
-			else
-				g_string_append (string, "   ");
-		}
-		for (j = 0; j < 16; j++) {
-			index = i * 16 + j;
-			if (j == 0)
-				g_string_append (string, "  ");
-			if (index < packet_size)
-				if (*((char *) ((void *) packet) + index) >= ' ' &&
-				    *((char *) ((void *) packet) + index) <  '\x7f')
-					g_string_append_c (string, *((char *) ((void *) packet) + index));
-				else g_string_append_c (string, '.');
-			else
-				g_string_append_c (string, ' ');
-		}
-		if (index < packet_size)
-			g_string_append (string, "\n");
 	}
 
 	c_string = string->str;
@@ -222,19 +217,19 @@ arv_gvsp_packet_debug (const ArvGvspPacket *packet, size_t packet_size, ArvDebug
 {
 	char *string;
 
-	if (!arv_debug_check (&arv_debug_category_gvsp, level))
+	if (!arv_debug_check (&arv_debug_category_sp, level))
 		return;
 
 	string = arv_gvsp_packet_to_string (packet, packet_size);
 	switch (level) {
 		case ARV_DEBUG_LEVEL_LOG:
-			arv_log_gvsp ("%s", string);
+			arv_log_sp ("%s", string);
 			break;
 		case ARV_DEBUG_LEVEL_DEBUG:
-			arv_debug_gvsp ("%s", string);
+			arv_debug_sp ("%s", string);
 			break;
 		case ARV_DEBUG_LEVEL_WARNING:
-			arv_warning_gvsp ("%s", string);
+			arv_warning_sp ("%s", string);
 			break;
 		default:
 			break;

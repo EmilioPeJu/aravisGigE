@@ -31,7 +31,7 @@
  * arv_open_device().
  */
 
-#include <arvinterface.h>
+#include <arvinterfaceprivate.h>
 
 static GObjectClass *parent_class = NULL;
 
@@ -48,6 +48,10 @@ arv_interface_clear_device_ids (ArvInterface *interface)
 		g_free (g_array_index (interface->priv->device_ids, ArvInterfaceDeviceIds *, i)->device);
 		g_free (g_array_index (interface->priv->device_ids, ArvInterfaceDeviceIds *, i)->physical);
 		g_free (g_array_index (interface->priv->device_ids, ArvInterfaceDeviceIds *, i)->address);
+		g_free (g_array_index (interface->priv->device_ids, ArvInterfaceDeviceIds *, i)->vendor);
+		g_free (g_array_index (interface->priv->device_ids, ArvInterfaceDeviceIds *, i)->model);
+		g_free (g_array_index (interface->priv->device_ids, ArvInterfaceDeviceIds *, i)->serial_nbr);
+		g_free (g_array_index (interface->priv->device_ids, ArvInterfaceDeviceIds *, i));
 	}
 	g_array_set_size (interface->priv->device_ids, 0);
 }
@@ -93,7 +97,7 @@ arv_interface_update_device_list (ArvInterface *interface)
  * call the @arv_interface_update_device_list function must be called. The list content will not
  * change until the next call of the update function.
  *
- * Returns: the number of available devices 
+ * Returns: the number of available devices
  *
  * Since: 0.2.0
  */
@@ -113,7 +117,7 @@ arv_interface_get_n_devices (ArvInterface *interface)
  * @index: device index
  *
  * Queries the unique device id corresponding to index.  Prior to this
- * call the @arv_interface_update_device_list function must be called.
+ * call the arv_interface_update_device_list() function must be called.
  *
  * Returns: a unique device id
  *
@@ -141,7 +145,7 @@ arv_interface_get_device_id (ArvInterface *interface, unsigned int index)
  * as the MAC address for Ethernet based devices, bus id for PCI,
  * USB or Firewire based devices.
  *
- * Prior to this call the @arv_interface_update_device_list
+ * Prior to this call the arv_interface_update_device_list()
  * function must be called.
  *
  * Returns: a physical device id
@@ -169,7 +173,7 @@ arv_interface_get_device_physical_id (ArvInterface *interface, unsigned int inde
  * queries the device address (IP address in the case of an ethernet camera). Useful
  * for constructing manual connections to devices using @arv_gv_device_new
  *
- * Prior to this call the @arv_interface_update_device_list
+ * Prior to this call the arv_interface_update_device_list()
  * function must be called.
  *
  * Returns: (transfer none): the device address
@@ -190,11 +194,117 @@ arv_interface_get_device_address (ArvInterface *interface, unsigned int index)
 }
 
 /**
+ * arv_interface_get_device_vendor:
+ * @interface: a #ArvInterface
+ * @index: device index
+ *
+ * Queries the device vendor.
+ *
+ * Prior to this call the arv_interface_update_device_list()
+ * function must be called.
+ *
+ * Returns: (transfer none): the device vendor, NULL on error
+ *
+ * Since: 0.6.0
+ */
+
+const char *
+arv_interface_get_device_vendor (ArvInterface *interface, unsigned int index)
+{
+	g_return_val_if_fail (ARV_IS_INTERFACE (interface), 0);
+	g_return_val_if_fail (interface->priv->device_ids != NULL, 0);
+
+	if (index >= interface->priv->device_ids->len)
+		return NULL;
+
+	return g_array_index (interface->priv->device_ids, ArvInterfaceDeviceIds *, index)->vendor;
+}
+
+/**
+ * arv_interface_get_device_model:
+ * @interface: a #ArvInterface
+ * @index: device index
+ *
+ * Queries the device model.
+ *
+ * Prior to this call the arv_interface_update_device_list()
+ * function must be called.
+ *
+ * Returns: (transfer none): the device model, NULL on error
+ *
+ * Since: 0.6.0
+ */
+
+const char *
+arv_interface_get_device_model (ArvInterface *interface, unsigned int index)
+{
+	g_return_val_if_fail (ARV_IS_INTERFACE (interface), 0);
+	g_return_val_if_fail (interface->priv->device_ids != NULL, 0);
+
+	if (index >= interface->priv->device_ids->len)
+		return NULL;
+
+	return g_array_index (interface->priv->device_ids, ArvInterfaceDeviceIds *, index)->model;
+}
+
+/**
+ * arv_interface_get_device_serial_nbr:
+ * @interface: a #ArvInterface
+ * @index: device index
+ *
+ * Queries the device serial.
+ *
+ * Prior to this call the arv_interface_update_device_list()
+ * function must be called.
+ *
+ * Returns: (transfer none): the device serial, NULL on error
+ *
+ * Since: 0.6.0
+ */
+
+const char *
+arv_interface_get_device_serial_nbr (ArvInterface *interface, unsigned int index)
+{
+	g_return_val_if_fail (ARV_IS_INTERFACE (interface), 0);
+	g_return_val_if_fail (interface->priv->device_ids != NULL, 0);
+
+	if (index >= interface->priv->device_ids->len)
+		return NULL;
+
+	return g_array_index (interface->priv->device_ids, ArvInterfaceDeviceIds *, index)->serial_nbr;
+}
+
+/**
+ * arv_interface_get_device_protocol:
+ * @interface: a #ArvInterface
+ * @index: device index
+ *
+ * Queries the device protocol. Possible values are 'USB3Vision', 'GigEVision'
+ * and 'Fake'.
+ *
+ * Prior to this call the arv_interface_update_device_list()
+ * function must be called.
+ *
+ * Returns: (transfer none): the device protocol as a string, NULL on error
+ *
+ * Since: 0.6.0
+ */
+
+const char *
+arv_interface_get_device_protocol (ArvInterface *interface, unsigned int index)
+{
+	g_return_val_if_fail (ARV_IS_INTERFACE (interface), NULL);
+
+	return ARV_INTERFACE_GET_CLASS (interface)->protocol;
+}
+
+/**
  * arv_interface_open_device:
  * @interface: a #ArvInterface
  * @device_id: (allow-none): device unique id
  *
- * Creates a new #ArvDevice object corresponding to the given device id string. The first available device is returned if @device_id is null.
+ * Creates a new #ArvDevice object corresponding to the given device id string.
+ * The first available device is returned if @device_id is %NULL.
  *
  * Returns: (transfer full): a new #ArvDevice
  *

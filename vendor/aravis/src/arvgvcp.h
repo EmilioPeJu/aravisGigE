@@ -23,15 +23,19 @@
 #ifndef ARV_GVCP_H
 #define ARV_GVCP_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
 #include <arvdebug.h>
 
 G_BEGIN_DECLS
 
-/** 
+/**
  * ARV_GVCP_PORT:
  *
- * Standard device listening port for GVCP packets 
+ * Standard device listening port for GVCP packets
  */
 #define ARV_GVCP_PORT	3956
 
@@ -210,7 +214,7 @@ typedef enum {
 	ARV_GVCP_COMMAND_PENDING_ACK =		0x0089
 } ArvGvcpCommand;
 
-#define ARAVIS_PACKED_STRUCTURE __attribute__((__packed__))
+#pragma pack(push,1)
 
 /**
  * ArvGvcpHeader:
@@ -222,14 +226,12 @@ typedef enum {
  * GVCP packet header structure.
  */
 
-typedef struct ARAVIS_PACKED_STRUCTURE {
+typedef struct {
 	guint16 packet_type;
 	guint16 command;
 	guint16 size;
 	guint16 id;
 } ArvGvcpHeader;
-
-#undef ARAVIS_PACKED_STRUCTURE
 
 /**
  * ArvGvcpPacket:
@@ -239,10 +241,12 @@ typedef struct ARAVIS_PACKED_STRUCTURE {
  * GVCP packet structure.
  */
 
-typedef struct ARAVIS_PACKED_STRUCTURE {
+typedef struct {
 	ArvGvcpHeader header;
 	unsigned char data[];
 } ArvGvcpPacket;
+
+#pragma pack(pop)
 
 void 			arv_gvcp_packet_free 			(ArvGvcpPacket *packet);
 ArvGvcpPacket * 	arv_gvcp_packet_new_read_memory_cmd 	(guint32 address, guint32 size,
@@ -259,7 +263,7 @@ ArvGvcpPacket * 	arv_gvcp_packet_new_read_register_ack 	(guint32 value,
 								 guint16 packet_id, size_t *packet_size);
 ArvGvcpPacket * 	arv_gvcp_packet_new_write_register_cmd 	(guint32 address, guint32 value,
 								 guint16 packet_id, size_t *packet_size);
-ArvGvcpPacket * 	arv_gvcp_packet_new_write_register_ack 	(guint32 address,
+ArvGvcpPacket * 	arv_gvcp_packet_new_write_register_ack 	(guint32 data_index,
 								 guint16 packet_id, size_t *packet_size);
 ArvGvcpPacket * 	arv_gvcp_packet_new_discovery_cmd 	(size_t *size);
 ArvGvcpPacket * 	arv_gvcp_packet_new_discovery_ack 	(size_t *packet_size);
@@ -320,8 +324,13 @@ arv_gvcp_packet_get_packet_id (ArvGvcpPacket *packet)
 static inline void
 arv_gvcp_packet_get_read_memory_cmd_infos (const ArvGvcpPacket *packet, guint32 *address, guint32 *size)
 {
-	if (packet == NULL)
+	if (packet == NULL) {
+		if (address != NULL)
+			*address = 0;
+		if (size != NULL)
+			*size = 0;
 		return;
+	}
 	if (address != NULL)
 		*address = g_ntohl (*((guint32 *) ((char *) packet + sizeof (ArvGvcpPacket))));
 	if (size != NULL)
@@ -344,9 +353,13 @@ arv_gvcp_packet_get_read_memory_ack_data (const ArvGvcpPacket *packet)
 static inline void
 arv_gvcp_packet_get_write_memory_cmd_infos (const ArvGvcpPacket *packet, guint32 *address, guint32 *size)
 {
-	if (packet == NULL)
+	if (packet == NULL) {
+		if (address != NULL)
+			*address = 0;
+		if (size != NULL)
+			*size = 0;
 		return;
-
+	}
 	if (address != NULL)
 		*address = g_ntohl (*((guint32 *) ((char *) packet + sizeof (ArvGvcpPacket))));
 	if (size != NULL)
@@ -368,8 +381,11 @@ arv_gvcp_packet_get_write_memory_ack_size (void)
 static inline void
 arv_gvcp_packet_get_read_register_cmd_infos (const ArvGvcpPacket *packet, guint32 *address)
 {
-	if (packet == NULL)
+	if (packet == NULL) {
+		if (address != NULL)
+			*address = 0;
 		return;
+	}
 	if (address != NULL)
 		*address = g_ntohl (*((guint32 *) ((char *) packet + sizeof (ArvGvcpPacket))));
 }
@@ -385,8 +401,13 @@ arv_gvcp_packet_get_read_register_ack_value (const ArvGvcpPacket *packet)
 static inline void
 arv_gvcp_packet_get_write_register_cmd_infos (const ArvGvcpPacket *packet, guint32 *address, guint32 *value)
 {
-	if (packet == NULL)
+	if (packet == NULL) {
+		if (address != NULL)
+			*address = 0;
+		if (value != NULL)
+			*value = 0;
 		return;
+	}
 	if (address != NULL)
 		*address = g_ntohl (*((guint32 *) ((char *) packet + sizeof (ArvGvcpPacket))));
 	if (value != NULL)
@@ -400,6 +421,21 @@ arv_gvcp_next_packet_id (guint16 packet_id)
 	if (packet_id == 0xffff)
 		return 1;
 	return packet_id + 1;
+}
+
+/**
+ * arv_gvcp_packet_get_pending_ack_timeout:
+ * @packet: a #ArvGvcpPacket
+ *
+ * Returns: The pending acknowledge timeout stored in @packet, in ms.
+ *
+ * Since: 0.6.0
+ */
+
+static inline guint32
+arv_gvcp_packet_get_pending_ack_timeout (const ArvGvcpPacket *packet)
+{
+	return packet != NULL ? g_ntohl (*((guint32 *) ((char *) packet + sizeof (ArvGvcpPacket)))) : 0;
 }
 
 G_END_DECLS

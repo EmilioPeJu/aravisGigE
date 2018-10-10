@@ -23,6 +23,10 @@
 #ifndef ARV_STREAM_H
 #define ARV_STREAM_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
 
 G_BEGIN_DECLS
@@ -88,8 +92,6 @@ void		arv_stream_get_statistics		(ArvStream *stream,
 
 void 		arv_stream_set_emit_signals 		(ArvStream *stream, gboolean emit_signals);
 gboolean 	arv_stream_get_emit_signals 		(ArvStream *stream);
-
-ArvBuffer * arv_stream_pop_input_buffer (ArvStream *stream);
 
 G_END_DECLS
 

@@ -1,6 +1,6 @@
 /* Aravis - Digital camera library
  *
- * Copyright © 2009-2010 Emmanuel Pacaud
+ * Copyright © 2009-2016 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -47,8 +47,12 @@
 #include <arvgcenumeration.h>
 #include <arvgcenumentry.h>
 #include <arvgcstring.h>
+#include <arvbuffer.h>
 #include <arvgc.h>
 #include <arvgvdevice.h>
+#ifdef ARAVIS_BUILD_USB
+#include <arvuvdevice.h>
+#endif
 #include <arvenums.h>
 #include <arvstr.h>
 
@@ -58,7 +62,9 @@
  * @ARV_CAMERA_VENDOR_BASLER: Basler
  * @ARV_CAMERA_VENDOR_PROSILICA: Prosilica
  * @ARV_CAMERA_VENDOR_TIS: The Imaging Source
- * @ARV_CAMERA_VENDOR_POINT_GREY: PointGrey
+ * @ARV_CAMERA_VENDOR_POINT_GREY_FLIR: PointGrey / FLIR
+ * @ARV_CAMERA_VENDOR_XIMEA: XIMEA GmbH
+ * @ARV_CAMERA_VENDOR_MATRIX_VISION: Matrix Vision GmbH
  */
 
 typedef enum {
@@ -67,8 +73,10 @@ typedef enum {
 	ARV_CAMERA_VENDOR_DALSA,
 	ARV_CAMERA_VENDOR_PROSILICA,
 	ARV_CAMERA_VENDOR_TIS,
-	ARV_CAMERA_VENDOR_POINT_GREY,
-	ARV_CAMERA_VENDOR_RICOH	
+	ARV_CAMERA_VENDOR_POINT_GREY_FLIR,
+	ARV_CAMERA_VENDOR_RICOH,
+	ARV_CAMERA_VENDOR_XIMEA,
+	ARV_CAMERA_VENDOR_MATRIX_VISION
 } ArvCameraVendor;
 
 typedef enum {
@@ -79,8 +87,10 @@ typedef enum {
 	ARV_CAMERA_SERIES_DALSA,
 	ARV_CAMERA_SERIES_PROSILICA,
 	ARV_CAMERA_SERIES_TIS,
-	ARV_CAMERA_SERIES_POINT_GREY,
-	ARV_CAMERA_SERIES_RICOH
+	ARV_CAMERA_SERIES_POINT_GREY_FLIR,
+	ARV_CAMERA_SERIES_RICOH,
+	ARV_CAMERA_SERIES_XIMEA,
+	ARV_CAMERA_SERIES_MATRIX_VISION
 } ArvCameraSeries;
 
 static GObjectClass *parent_class = NULL;
@@ -95,6 +105,7 @@ struct _ArvCameraPrivate {
 	gboolean has_gain;
 	gboolean has_exposure_time;
 	gboolean has_acquisition_frame_rate;
+	gboolean has_acquisition_frame_rate_enabled;
 };
 
 enum
@@ -258,6 +269,110 @@ arv_camera_get_region (ArvCamera *camera, gint *x, gint *y, gint *width, gint *h
 }
 
 /**
+ * arv_camera_get_x_offset_bounds:
+ * @camera: a #ArvCamera
+ * @min: (out): minimum offset
+ * @max: (out): maximum offset
+ *
+ * Retrieves the valid range for image horizontal offset.
+ *
+ * Since: 0.6.0
+ */
+
+void
+arv_camera_get_x_offset_bounds (ArvCamera *camera, gint *min, gint *max)
+{
+	gint64 min64, max64;
+
+	g_return_if_fail (ARV_IS_CAMERA (camera));
+
+	arv_device_get_integer_feature_bounds (camera->priv->device, "OffsetX", &min64, &max64);
+
+	if (min != NULL)
+		*min = min64;
+	if (max != NULL)
+		*max = max64;
+}
+
+/**
+ * arv_camera_get_y_offset_bounds:
+ * @camera: a #ArvCamera
+ * @min: (out): minimum offset
+ * @max: (out): maximum offset
+ *
+ * Retrieves the valid range for image vertical offset.
+ *
+ * Since: 0.6.0
+ */
+
+void
+arv_camera_get_y_offset_bounds (ArvCamera *camera, gint *min, gint *max)
+{
+	gint64 min64, max64;
+
+	g_return_if_fail (ARV_IS_CAMERA (camera));
+
+	arv_device_get_integer_feature_bounds (camera->priv->device, "OffsetY", &min64, &max64);
+
+	if (min != NULL)
+		*min = min64;
+	if (max != NULL)
+		*max = max64;
+}
+
+/**
+ * arv_camera_get_x_binning_bounds:
+ * @camera: a #ArvCamera
+ * @min: (out): minimum binning
+ * @max: (out): maximum binning
+ *
+ * Retrieves the valid range for image horizontal binning.
+ *
+ * Since: 0.6.0
+ */
+
+void
+arv_camera_get_x_binning_bounds (ArvCamera *camera, gint *min, gint *max)
+{
+	gint64 min64, max64;
+
+	g_return_if_fail (ARV_IS_CAMERA (camera));
+
+	arv_device_get_integer_feature_bounds (camera->priv->device, "BinningHorizontal", &min64, &max64);
+
+	if (min != NULL)
+		*min = min64;
+	if (max != NULL)
+		*max = max64;
+}
+
+/**
+ * arv_camera_get_y_binning_bounds:
+ * @camera: a #ArvCamera
+ * @min: (out): minimum binning
+ * @max: (out): maximum binning
+ *
+ * Retrieves the valid range for image vertical binning.
+ *
+ * Since: 0.6.0
+ */
+
+void
+arv_camera_get_y_binning_bounds (ArvCamera *camera, gint *min, gint *max)
+{
+	gint64 min64, max64;
+
+	g_return_if_fail (ARV_IS_CAMERA (camera));
+
+	arv_device_get_integer_feature_bounds (camera->priv->device, "BinningVertical", &min64, &max64);
+
+	if (min != NULL)
+		*min = min64;
+	if (max != NULL)
+		*max = max64;
+}
+
+/**
  * arv_camera_get_width_bounds:
  * @camera: a #ArvCamera
  * @min: (out): minimum width
@@ -265,7 +380,7 @@ arv_camera_get_region (ArvCamera *camera, gint *x, gint *y, gint *width, gint *h
  *
  * Retrieves the valid range for image width.
  *
- * Since: 0.2.0
+ * Since: 0.6.0
  */
 
 void
@@ -291,7 +406,7 @@ arv_camera_get_width_bounds (ArvCamera *camera, gint *min, gint *max)
  *
  * Retrieves the valid range for image height.
  *
- * Since: 0.2.0
+ * Since: 0.6.0
  */
 
 void
@@ -318,7 +433,7 @@ arv_camera_get_height_bounds (ArvCamera *camera, gint *min, gint *max)
  * Defines binning in both directions. Not all cameras support this
  * feature.
  *
- * Since: 0.2.0
+ * Since: 0.6.0
  */
 
 void
@@ -538,7 +653,6 @@ void
 arv_camera_start_acquisition (ArvCamera *camera)
 {
 	g_return_if_fail (ARV_IS_CAMERA (camera));
-
 	arv_device_execute_command (camera->priv->device, "AcquisitionStart");
 }
 
@@ -574,6 +688,42 @@ arv_camera_abort_acquisition (ArvCamera *camera)
 	g_return_if_fail (ARV_IS_CAMERA (camera));
 
 	arv_device_execute_command (camera->priv->device, "AcquisitionAbort");
+}
+
+/**
+ * arv_camera_acquisition:
+ * @camera: a #ArvCamera
+ * @timeout: acquisition timeout
+ *
+ * Acquire one image buffer.
+ *
+ * Returns: (transfer full): A new #ArvBuffer, NULL on error. The returned buffer must be freed using g_object_unref().
+ *
+ * Since: 0.6.0
+ */
+
+ArvBuffer *
+arv_camera_acquisition (ArvCamera *camera, guint64 timeout)
+{
+	ArvStream *stream;
+	ArvBuffer *buffer;
+	gint payload;
+
+	g_return_val_if_fail (ARV_IS_CAMERA (camera), NULL);
+
+	stream = arv_camera_create_stream (camera, NULL, NULL);
+	payload = arv_camera_get_payload (camera);
+	arv_stream_push_buffer (stream,  arv_buffer_new (payload, NULL));
+	arv_camera_set_acquisition_mode (camera, ARV_ACQUISITION_MODE_SINGLE_FRAME);
+	arv_camera_start_acquisition (camera);
+	if (timeout > 0)
+		buffer = arv_stream_timeout_pop_buffer (stream, timeout);
+	else
+		buffer = arv_stream_pop_buffer (stream);
+	arv_camera_stop_acquisition (camera);
+	g_object_unref (stream);
+
+	return buffer;
 }
 
 /*
@@ -617,7 +767,79 @@ arv_camera_get_acquisition_mode (ArvCamera *camera)
 }
 
 /**
- * arv_camera_set_frame_rate: 
+ * arv_camera_set_frame_count:
+ * @camera: a #ArvCamera
+ * @frame_count: number of frames to capture in MultiFrame mode
+ *
+ * Sets the number of frames to capture in MultiFrame mode.
+ *
+ * Since: 0.6.0
+ */
+
+void
+arv_camera_set_frame_count (ArvCamera *camera, gint64 frame_count)
+{
+	gint64 minimum;
+	gint64 maximum;
+
+	g_return_if_fail (ARV_IS_CAMERA (camera));
+
+	if (frame_count <= 0)
+		return;
+
+	arv_camera_get_frame_count_bounds(camera, &minimum, &maximum);
+
+	if (frame_count < minimum)
+		frame_count = minimum;
+	if (frame_count > maximum)
+		frame_count = maximum;
+
+	arv_device_set_integer_feature_value (camera->priv->device, "AcquisitionFrameCount", frame_count);
+}
+
+/**
+ * arv_camera_get_frame_count:
+ * @camera: a #ArvCamera
+ *
+ * Returns: number of frames to capture in MultiFrame mode.
+ *
+ * Since: 0.6.0
+ */
+
+gint64
+arv_camera_get_frame_count (ArvCamera *camera)
+{
+	g_return_val_if_fail (ARV_IS_CAMERA (camera), 0);
+
+	return arv_device_get_integer_feature_value (camera->priv->device, "AcquisitionFrameCount");
+}
+
+/**
+ * arv_camera_get_frame_count_bounds:
+ * @camera: a #ArvCamera
+ * @min: (out): minimal possible frame count
+ * @max: (out): maximum possible frame count
+ *
+ * Retrieves allowed range for frame count.
+ *
+ * Since: 0.6.0
+ */
+
+void
+arv_camera_get_frame_count_bounds (ArvCamera *camera, gint64 *min, gint64 *max)
+{
+	if (min != NULL)
+		*min = G_MININT64;
+	if (max != NULL)
+		*max = G_MAXINT64;
+
+	g_return_if_fail (ARV_IS_CAMERA (camera));
+
+	arv_device_get_integer_feature_bounds (camera->priv->device, "AcquisitionFrameCount", min, max);
+}
+
+/**
+ * arv_camera_set_frame_rate:
  * @camera: a #ArvCamera
  * @frame_rate: frame rate, in Hz
  *
@@ -691,15 +913,20 @@ arv_camera_set_frame_rate (ArvCamera *camera, double frame_rate)
 			} else
 				arv_device_set_float_feature_value (camera->priv->device, "FPS", frame_rate);
 			break;
-		case ARV_CAMERA_VENDOR_POINT_GREY:
+		case ARV_CAMERA_VENDOR_POINT_GREY_FLIR:
 			arv_device_set_string_feature_value (camera->priv->device, "TriggerSelector", "FrameStart");
 			arv_device_set_string_feature_value (camera->priv->device, "TriggerMode", "Off");
-			arv_device_set_integer_feature_value (camera->priv->device, "AcquisitionFrameRateEnabled", 1);
+			if (camera->priv->has_acquisition_frame_rate_enabled)
+				arv_device_set_integer_feature_value (camera->priv->device, "AcquisitionFrameRateEnabled", 1);
+			else
+				arv_device_set_integer_feature_value (camera->priv->device, "AcquisitionFrameRateEnable", 1);
 			arv_device_set_string_feature_value (camera->priv->device, "AcquisitionFrameRateAuto", "Off");
 			arv_device_set_float_feature_value (camera->priv->device, "AcquisitionFrameRate", frame_rate);
 			break;
 		case ARV_CAMERA_VENDOR_DALSA:
 		case ARV_CAMERA_VENDOR_RICOH:
+		case ARV_CAMERA_VENDOR_XIMEA:
+		case ARV_CAMERA_VENDOR_MATRIX_VISION:
 		case ARV_CAMERA_VENDOR_UNKNOWN:
 			arv_device_set_string_feature_value (camera->priv->device, "TriggerSelector", "FrameStart");
 			arv_device_set_string_feature_value (camera->priv->device, "TriggerMode", "Off");
@@ -743,11 +970,13 @@ arv_camera_get_frame_rate (ArvCamera *camera)
 					return 0;
 			} else
 				return arv_device_get_float_feature_value (camera->priv->device, "FPS");
-		case ARV_CAMERA_VENDOR_POINT_GREY:
+		case ARV_CAMERA_VENDOR_POINT_GREY_FLIR:
 		case ARV_CAMERA_VENDOR_DALSA:
 		case ARV_CAMERA_VENDOR_RICOH:
 		case ARV_CAMERA_VENDOR_BASLER:
-		case ARV_CAMERA_VENDOR_UNKNOWN:
+	        case ARV_CAMERA_VENDOR_XIMEA:
+		case ARV_CAMERA_VENDOR_MATRIX_VISION:
+	        case ARV_CAMERA_VENDOR_UNKNOWN:
 			return arv_device_get_float_feature_value (camera->priv->device,
 								   camera->priv->has_acquisition_frame_rate ?
 								   "AcquisitionFrameRate":
@@ -809,10 +1038,12 @@ arv_camera_get_frame_rate_bounds (ArvCamera *camera, double *min, double *max)
 		case ARV_CAMERA_VENDOR_PROSILICA:
 			arv_device_get_float_feature_bounds (camera->priv->device, "AcquisitionFrameRateAbs", min, max);
 			break;
-		case ARV_CAMERA_VENDOR_POINT_GREY:
+		case ARV_CAMERA_VENDOR_POINT_GREY_FLIR:
 		case ARV_CAMERA_VENDOR_DALSA:
 		case ARV_CAMERA_VENDOR_RICOH:
 		case ARV_CAMERA_VENDOR_BASLER:
+	        case ARV_CAMERA_VENDOR_XIMEA:
+		case ARV_CAMERA_VENDOR_MATRIX_VISION:
 		case ARV_CAMERA_VENDOR_UNKNOWN:
 			arv_device_get_float_feature_bounds (camera->priv->device,
 							     camera->priv->has_acquisition_frame_rate ?
@@ -845,22 +1076,18 @@ arv_camera_set_trigger (ArvCamera *camera, const char *source)
 	g_return_if_fail (ARV_IS_CAMERA (camera));
 	g_return_if_fail (source != NULL);
 
-	switch (camera->priv->vendor) {
-		case ARV_CAMERA_VENDOR_BASLER:
-			arv_device_set_integer_feature_value (camera->priv->device, "AcquisitionFrameRateEnable",
-							      0);
-		default:
-			arv_device_set_string_feature_value (camera->priv->device, "TriggerSelector",
-							     "AcquisitionStart");
-			arv_device_set_string_feature_value (camera->priv->device, "TriggerMode", "Off");
-			arv_device_set_string_feature_value (camera->priv->device, "TriggerSelector",
-							     "FrameStart");
-			arv_device_set_string_feature_value (camera->priv->device, "TriggerMode", "On");
-			arv_device_set_string_feature_value (camera->priv->device, "TriggerActivation",
-							     "RisingEdge");
-			arv_device_set_string_feature_value (camera->priv->device, "TriggerSource", source);
-			break;
-	}
+	if (camera->priv->vendor == ARV_CAMERA_VENDOR_BASLER)
+		arv_device_set_integer_feature_value (camera->priv->device, "AcquisitionFrameRateEnable", 0);
+
+	arv_device_set_string_feature_value (camera->priv->device, "TriggerSelector",
+					     "AcquisitionStart");
+	arv_device_set_string_feature_value (camera->priv->device, "TriggerMode", "Off");
+	arv_device_set_string_feature_value (camera->priv->device, "TriggerSelector",
+					     "FrameStart");
+	arv_device_set_string_feature_value (camera->priv->device, "TriggerMode", "On");
+	arv_device_set_string_feature_value (camera->priv->device, "TriggerActivation",
+					     "RisingEdge");
+	arv_device_set_string_feature_value (camera->priv->device, "TriggerSource", source);
 }
 
 /**
@@ -901,6 +1128,72 @@ arv_camera_get_trigger_source (ArvCamera *camera)
 	g_return_val_if_fail (ARV_IS_CAMERA (camera), NULL);
 
 	return arv_device_get_string_feature_value (camera->priv->device, "TriggerSource");
+}
+
+/**
+ * arv_camera_get_available_trigger_sources:
+ * @camera: a #ArvCamera
+ * @n_sources: (out): number of sources
+ *
+ * Gets the list of all available trigger sources.
+ *
+ * Returns: (array length=n_sources) (transfer container): a newly allocated array of strings, which must be freed using g_free().
+ *
+ * Since: 0.6.0
+ */
+
+const char **
+arv_camera_get_available_trigger_sources (ArvCamera *camera, guint *n_sources)
+{
+        g_return_val_if_fail (ARV_IS_CAMERA (camera), NULL);
+
+	return arv_device_get_available_enumeration_feature_values_as_strings (camera->priv->device, "TriggerSource", n_sources);
+}
+
+/**
+ * arv_camera_get_available_triggers:
+ * @camera: a #ArvCamera
+ * @n_triggers: (out): number of available triggers
+ *
+ * Gets a list of all available triggers: FrameStart, ExposureActive, etc...
+ *
+ * Returns: (array length=n_triggers) (transfer container): a newly allocated array of strings, which must be freed using g_free().
+ *
+ * Since: 0.6.0
+ */
+
+const char **
+arv_camera_get_available_triggers (ArvCamera *camera, guint *n_triggers)
+{
+        g_return_val_if_fail (ARV_IS_CAMERA (camera), NULL);
+
+	return arv_device_get_available_enumeration_feature_values_as_strings (camera->priv->device, "TriggerSelector", n_triggers);
+}
+
+/**
+ * arv_camera_clear_triggers:
+ * @camera: a #ArvCamera
+ *
+ * Disables all triggers.
+ *
+ * Since: 0.6.0
+ */
+
+void
+arv_camera_clear_triggers (ArvCamera* camera)
+{
+	const char **triggers;
+	guint n_triggers;
+	unsigned i;
+
+        g_return_if_fail (ARV_IS_CAMERA (camera));
+
+	triggers = arv_device_get_available_enumeration_feature_values_as_strings(camera->priv->device, "TriggerSelector", &n_triggers);
+
+	for (i = 0; i< n_triggers; i++) {
+		arv_device_set_string_feature_value (camera->priv->device, "TriggerSelector", triggers[i]);
+		arv_device_set_string_feature_value (camera->priv->device, "TriggerMode", "Off");
+	}
 }
 
 /**
@@ -950,6 +1243,15 @@ arv_camera_set_exposure_time (ArvCamera *camera, double exposure_time_us)
 			arv_device_set_integer_feature_value (camera->priv->device, "ExposureTimeRaw",
 							    exposure_time_us);
 			break;
+		case ARV_CAMERA_SERIES_XIMEA:
+			arv_device_set_integer_feature_value (camera->priv->device, "ExposureTime",
+							      exposure_time_us);
+			break;
+		case ARV_CAMERA_SERIES_MATRIX_VISION:
+			arv_device_set_string_feature_value (camera->priv->device, "ExposureMode", "Timed");
+			arv_device_set_float_feature_value (camera->priv->device, "ExposureTime",
+							      exposure_time_us);
+			break;
 		case ARV_CAMERA_SERIES_BASLER_ACE:
 		default:
 			arv_device_set_float_feature_value (camera->priv->device,
@@ -973,14 +1275,16 @@ double
 arv_camera_get_exposure_time (ArvCamera *camera)
 {
 	g_return_val_if_fail (ARV_IS_CAMERA (camera), 0.0);
-	
+
 	switch (camera->priv->series) {
+		case ARV_CAMERA_SERIES_XIMEA:
+			return arv_device_get_integer_feature_value (camera->priv->device,"ExposureTime");
 		case ARV_CAMERA_SERIES_RICOH:
 			return arv_device_get_integer_feature_value (camera->priv->device,"ExposureTimeRaw");
 		default:
 			return arv_device_get_float_feature_value (camera->priv->device,
 						   camera->priv->has_exposure_time ?
-						   "ExposureTime" : 
+						   "ExposureTime" :
 						   "ExposureTimeAbs");
 	}
 }
@@ -1023,6 +1327,24 @@ arv_camera_get_exposure_time_bounds (ArvCamera *camera, double *min, double *max
 				if (max != NULL)
 					*max = int_max;
 			}
+			break;
+		case ARV_CAMERA_SERIES_XIMEA:
+			arv_device_get_integer_feature_bounds (camera->priv->device, "ExposureTime",
+							       &int_min,
+							       &int_max);
+			if (min != NULL)
+				*min = int_min;
+			if (max != NULL)
+				*max = int_max;
+			break;
+		case ARV_CAMERA_SERIES_RICOH:
+			arv_device_get_integer_feature_bounds (camera->priv->device, "ExposureTimeRaw",
+							       &int_min,
+							       &int_max);
+			if (min != NULL)
+				*min = int_min;
+			if (max != NULL)
+				*max = int_max;
 			break;
 		default:
 			arv_device_get_float_feature_bounds (camera->priv->device,
@@ -1137,7 +1459,7 @@ arv_camera_get_gain_bounds (ArvCamera *camera, double *min, double *max)
 		arv_device_get_float_feature_bounds (camera->priv->device, "Gain", min, max);
 		return;
 	}
-	
+
 	arv_device_get_integer_feature_bounds (camera->priv->device, "GainRaw", &min64, &max64);
 
 	if (min != NULL)
@@ -1188,7 +1510,7 @@ arv_camera_get_gain_auto (ArvCamera *camera)
 /**
  * arv_camera_get_payload:
  * @camera: a #ArvCamera
- * 
+ *
  * Retrieves the size needed for the storage of an image. This value is used
  * for the creation of the stream buffers.
  *
@@ -1243,10 +1565,12 @@ arv_camera_is_frame_rate_available (ArvCamera *camera)
 			return arv_device_get_feature (camera->priv->device, "AcquisitionFrameRateAbs") != NULL;
 		case ARV_CAMERA_VENDOR_TIS:
 			return arv_device_get_feature (camera->priv->device, "FPS") != NULL;
-		case ARV_CAMERA_VENDOR_POINT_GREY:
+		case ARV_CAMERA_VENDOR_POINT_GREY_FLIR:
 		case ARV_CAMERA_VENDOR_DALSA:
 		case ARV_CAMERA_VENDOR_RICOH:
 		case ARV_CAMERA_VENDOR_BASLER:
+	        case ARV_CAMERA_VENDOR_XIMEA:
+		case ARV_CAMERA_VENDOR_MATRIX_VISION:
 		case ARV_CAMERA_VENDOR_UNKNOWN:
 			return arv_device_get_feature (camera->priv->device,
 						       camera->priv->has_acquisition_frame_rate ?
@@ -1270,10 +1594,17 @@ arv_camera_is_exposure_time_available (ArvCamera *camera)
 {
 	g_return_val_if_fail (ARV_IS_CAMERA (camera), FALSE);
 
-	return arv_device_get_feature (camera->priv->device,
-				       camera->priv->has_exposure_time ?
-				       "ExposureTime" :
-				       "ExposureTimeAbs") != NULL;
+	switch (camera->priv->vendor) {
+		case ARV_CAMERA_VENDOR_XIMEA:
+			return arv_device_get_feature (camera->priv->device, "ExposureTime") != NULL;
+		case ARV_CAMERA_VENDOR_RICOH:
+			return arv_device_get_feature (camera->priv->device, "ExposureTimeRaw") != NULL;
+		default:
+			return arv_device_get_feature (camera->priv->device,
+						       camera->priv->has_exposure_time ?
+						       "ExposureTime" :
+						       "ExposureTimeAbs") != NULL;
+	}
 }
 
 /**
@@ -1328,6 +1659,37 @@ arv_camera_is_gain_auto_available (ArvCamera *camera)
 	g_return_val_if_fail (ARV_IS_CAMERA (camera), FALSE);
 
 	return arv_device_get_feature (camera->priv->device, "GainAuto") != NULL;
+}
+
+/**
+ * arv_camera_is_binning_available:
+ * @camera: a #ArvCamera
+ *
+ * Returns: %TRUE if Binning feature is available.
+ *
+ * Since: 0.6.0
+ */
+
+gboolean
+arv_camera_is_binning_available (ArvCamera *camera)
+{
+	ArvGcNode* node;
+
+	g_return_val_if_fail (ARV_IS_CAMERA (camera), FALSE);
+
+	node = arv_device_get_feature (camera->priv->device, "BinningHorizontal");
+	if (!ARV_IS_GC_FEATURE_NODE (node))
+		return FALSE;
+	if (!arv_gc_feature_node_is_available (ARV_GC_FEATURE_NODE (node), NULL))
+		return FALSE;
+
+	node = arv_device_get_feature (camera->priv->device, "BinningVertical");
+	if (!ARV_IS_GC_FEATURE_NODE (node))
+		return FALSE;
+	if (!arv_gc_feature_node_is_available (ARV_GC_FEATURE_NODE (node), NULL))
+		return FALSE;
+
+	return TRUE;
 }
 
 /**
@@ -1481,7 +1843,7 @@ arv_camera_gv_set_packet_size (ArvCamera *camera, gint packet_size)
 
 	g_return_if_fail (arv_camera_is_gv_device (camera));
 
-	arv_device_set_integer_feature_value (camera->priv->device, "GevSCPSPacketSize", packet_size);
+	arv_gv_device_set_packet_size (ARV_GV_DEVICE (camera->priv->device), packet_size);
 }
 
 /**
@@ -1493,12 +1855,159 @@ arv_camera_gv_set_packet_size (ArvCamera *camera, gint packet_size)
  * Since: 0.4.0
  */
 
-gint
+guint
 arv_camera_gv_get_packet_size (ArvCamera *camera)
 {
 	g_return_val_if_fail (arv_camera_is_gv_device (camera), 0);
 
-	return arv_device_get_integer_feature_value (camera->priv->device, "GevSCPSPacketSize");
+	return arv_gv_device_get_packet_size (ARV_GV_DEVICE (camera->priv->device));
+}
+
+/**
+ * arv_camera_gv_auto_packet_size:
+ * @camera: a #ArvCamera
+ *
+ * Automatically determine the biggest packet size that can be used data
+ * streaming, and set GevSCPSPacketSize value accordingly. This function relies
+ * on the GevSCPSFireTestPacket feature. If this feature is not available, the
+ * packet size will be set to a default value (1500 bytes).
+ *
+ * Returns: The packet size, in bytes.
+ *
+ * Since: 0.6.0
+ */
+
+guint
+arv_camera_gv_auto_packet_size (ArvCamera *camera)
+{
+	g_return_val_if_fail (arv_camera_is_gv_device (camera), 0);
+
+	return arv_gv_device_auto_packet_size (ARV_GV_DEVICE (camera->priv->device));
+}
+
+/**
+ * arv_camera_gv_set_stream_options:
+ * @camera: a #ArvCamera
+ * @options: option for stream creation
+ *
+ * Sets the options used during stream object creation. These options mus be
+ * set before the call to arv_camera_create_stream().
+ *
+ * Since: 0.6.0
+ */
+
+void
+arv_camera_gv_set_stream_options (ArvCamera *camera, ArvGvStreamOption options)
+{
+	g_return_if_fail (arv_camera_is_gv_device (camera));
+
+	arv_gv_device_set_stream_options (ARV_GV_DEVICE (camera->priv->device), options);
+}
+
+/**
+ * arv_camera_is_uv_device:
+ * @camera: a #ArvCamera
+ *
+ * Returns: %TRUE if @camera is a USB3Vision device.
+ *
+ * Since: 0.6.0
+ */
+
+gboolean
+arv_camera_is_uv_device	(ArvCamera *camera)
+{
+	g_return_val_if_fail (ARV_IS_CAMERA (camera), FALSE);
+
+#ifdef ARAVIS_BUILD_USB
+	return ARV_IS_UV_DEVICE (camera->priv->device);
+#else
+	return FALSE;
+#endif
+}
+
+/**
+ * arv_camera_uv_is_bandwidth_control_available:
+ * @camera: a #ArvCamera
+ *
+ * Returns: wether bandwidth limits are available on this camera
+ *
+ * Since: 0.6.0
+ */
+
+gboolean
+arv_camera_uv_is_bandwidth_control_available (ArvCamera *camera)
+{
+	g_return_val_if_fail (arv_camera_is_uv_device (camera), FALSE);
+
+	switch (camera->priv->vendor) {
+		case ARV_CAMERA_VENDOR_XIMEA:
+			return arv_device_get_feature(camera->priv->device, "DeviceLinkThroughputLimit") != NULL;
+		default:
+			return FALSE;
+	}
+}
+
+
+/**
+ * arv_camera_uv_set_bandwidth:
+ * @camera: a #ArvCamera
+ * @bandwidth: Desired bandwith limit in megabits/sec. Set to 0 to disable limit mode.
+ *
+ * Since: 0.6.0
+ */
+
+void
+arv_camera_uv_set_bandwidth (ArvCamera *camera, guint bandwidth)
+{
+	g_return_if_fail (arv_camera_is_uv_device (camera));
+
+	if (bandwidth > 0) {
+		arv_device_set_integer_feature_value (camera->priv->device, "DeviceLinkThroughputLimit", bandwidth);
+		arv_device_set_integer_feature_value (camera->priv->device, "DeviceLinkThroughputLimitMode", 1);
+	} else {
+		arv_device_set_integer_feature_value (camera->priv->device, "DeviceLinkThroughputLimitMode", 0);
+	}
+
+}
+
+/**
+ * arv_camera_uv_get_bandwidth:
+ * @camera: a #ArvCamera
+ *
+ * Returns: the current bandwidth limit
+ *
+ * Since: 0.6.0
+ */
+
+guint
+arv_camera_uv_get_bandwidth (ArvCamera *camera)
+{
+	g_return_val_if_fail (arv_camera_is_uv_device (camera), 0);
+
+	return arv_device_get_integer_feature_value (camera->priv->device, "DeviceLinkThroughputLimit");
+}
+
+/**
+ * arv_camera_uv_get_bandwidth_bounds:
+ * @camera: a #ArvCamera
+ * @min: (out): minimum bandwidth
+ * @max: (out): maximum bandwidth
+ *
+ * Since: 0.6.0
+ */
+
+void
+arv_camera_uv_get_bandwidth_bounds (ArvCamera *camera, guint *min, guint *max)
+{
+	gint64 min64, max64;
+
+	g_return_if_fail (arv_camera_is_uv_device (camera));
+
+	arv_device_get_integer_feature_bounds (camera->priv->device, "DeviceLinkThroughputLimit", &min64, &max64);
+	if (min != NULL)
+		*min = min64;
+	if (max != NULL)
+		*max = max64;
 }
 
 /**
@@ -1508,7 +2017,7 @@ arv_camera_gv_get_packet_size (ArvCamera *camera)
  *
  * Controls wether chunk data mode is active. When active, chunk data
  * are appended to image data in #ArvBuffer. A #ArvChunkParser must be used in
- * order to extract chunk data. 
+ * order to extract chunk data.
  *
  * Since: 0.4.0
  **/
@@ -1589,7 +2098,7 @@ arv_camera_get_chunk_state (ArvCamera *camera, const char *chunk)
  * arv_camera_set_chunks:
  * @camera: a #ArvCamera
  * @chunk_list: chunk data names, as a comma or space separated list
- * 
+ *
  * Convenience function for enabling a set of chunk data. Chunk mode is activated, or deactivated
  * if @chunk_list is %NULL or empty. All chunk data not listed are disabled.
  *
@@ -1599,10 +2108,11 @@ arv_camera_get_chunk_state (ArvCamera *camera, const char *chunk)
 void
 arv_camera_set_chunks (ArvCamera *camera, const char *chunk_list)
 {
+	const char **available_chunks;
 	char **chunks;
 	char *striped_chunk_list;
 	gboolean enable_chunk_data = FALSE;
-	int i;
+	guint i;
 	guint n_values;
 
 	g_return_if_fail (ARV_IS_CAMERA (camera));
@@ -1612,11 +2122,12 @@ arv_camera_set_chunks (ArvCamera *camera, const char *chunk_list)
 		return;
 	}
 
-	chunks = (char **) arv_device_get_available_enumeration_feature_values_as_strings (camera->priv->device,
+	available_chunks = arv_device_get_available_enumeration_feature_values_as_strings (camera->priv->device,
 											   "ChunkSelector", &n_values);
 	for (i = 0; i < n_values; i++) {
-		arv_camera_set_chunk_state (camera, chunks[i], FALSE);
+		arv_camera_set_chunk_state (camera, available_chunks[i], FALSE);
 	}
+	g_free (available_chunks);
 
 	striped_chunk_list = g_strdup (chunk_list);
 	arv_str_strip (striped_chunk_list, " ,:;", ',');
@@ -1677,10 +2188,10 @@ arv_camera_new (const char *name)
 
 	camera = g_object_new (ARV_TYPE_CAMERA, "device", device, NULL);
 
-    /* if you need to apply or test for fixups based on the camera model
-       please do so in arv_camera_constructor and not here, as this breaks
-       objects created with g_object_new, which includes but is not limited to
-       introspection users */
+	/* if you need to apply or test for fixups based on the camera model
+	   please do so in arv_camera_constructor and not here, as this breaks
+	   objects created with g_object_new, which includes but is not limited to
+	   introspection users */
 
 	return camera;
 }
@@ -1744,12 +2255,18 @@ arv_camera_constructor (GType gtype, guint n_properties, GObjectConstructParam *
 	} else if (g_strcmp0 (vendor_name, "DALSA") == 0) {
 		vendor = ARV_CAMERA_VENDOR_DALSA;
 		series = ARV_CAMERA_SERIES_DALSA;
-	} else if (g_strcmp0 (vendor_name, "Point Grey Research") == 0) {
-		vendor = ARV_CAMERA_VENDOR_POINT_GREY;
-		series = ARV_CAMERA_SERIES_POINT_GREY;
+	} else if (g_strcmp0 (vendor_name, "Point Grey Research") == 0 || g_strcmp0 (vendor_name, "FLIR") == 0) {
+		vendor = ARV_CAMERA_VENDOR_POINT_GREY_FLIR;
+		series = ARV_CAMERA_SERIES_POINT_GREY_FLIR;
 	} else if (g_strcmp0 (vendor_name, "Ricoh Company, Ltd.") == 0) {
 		vendor = ARV_CAMERA_VENDOR_RICOH;
 		series = ARV_CAMERA_SERIES_RICOH;
+	} else if (g_strcmp0 (vendor_name, "XIMEA GmbH") == 0) {
+		vendor = ARV_CAMERA_VENDOR_XIMEA;
+		series = ARV_CAMERA_SERIES_XIMEA;
+	} else if (g_strcmp0 (vendor_name, "MATRIX VISION GmbH") == 0) {
+		vendor = ARV_CAMERA_VENDOR_MATRIX_VISION;
+		series = ARV_CAMERA_SERIES_MATRIX_VISION;
 	} else {
 		vendor = ARV_CAMERA_VENDOR_UNKNOWN;
 		series = ARV_CAMERA_SERIES_UNKNOWN;
@@ -1762,6 +2279,8 @@ arv_camera_constructor (GType gtype, guint n_properties, GObjectConstructParam *
 	camera->priv->has_exposure_time = ARV_IS_GC_FLOAT (arv_device_get_feature (camera->priv->device, "ExposureTime"));
 	camera->priv->has_acquisition_frame_rate = ARV_IS_GC_FLOAT (arv_device_get_feature (camera->priv->device,
 											    "AcquisitionFrameRate"));
+	camera->priv->has_acquisition_frame_rate_enabled = ARV_IS_GC_INTEGER (arv_device_get_feature (camera->priv->device,
+												      "AcquisitionFrameRateEnabled"));
 
     return object;
 }

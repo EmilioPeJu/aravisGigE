@@ -1,6 +1,6 @@
 /* Aravis - Digital camera library
  *
- * Copyright © 2009-2010 Emmanuel Pacaud
+ * Copyright © 2009-2016 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,7 +23,12 @@
 #ifndef ARV_TYPES_H
 #define ARV_TYPES_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvenums.h>
+#include <arvfeatures.h>
 
 G_BEGIN_DECLS
 
@@ -45,7 +50,7 @@ typedef struct _ArvGc ArvGc;
 typedef	struct _ArvGcNode			ArvGcNode;
 typedef struct _ArvGcPropertyNode		ArvGcPropertyNode;
 typedef struct _ArvGcIndexNode			ArvGcIndexNode;
-typedef struct _ArvGcVariableNode		ArvGcVariableNode;
+typedef struct _ArvGcValueIndexedNode		ArvGcValueIndexedNode;
 typedef struct _ArvGcInvalidatorNode		ArvGcInvalidatorNode;
 typedef struct _ArvGcFeatureNode 		ArvGcFeatureNode;
 typedef struct _ArvGcRegisterDescriptionNode 	ArvGcRegisterDescriptionNode;
@@ -78,13 +83,23 @@ typedef struct _ArvGvInterface 		ArvGvInterface;
 typedef struct _ArvGvDevice 		ArvGvDevice;
 typedef struct _ArvGvStream 		ArvGvStream;
 
+#if ARAVIS_HAS_USB
+typedef struct _ArvUvInterface 		ArvUvInterface;
+typedef struct _ArvUvDevice		ArvUvDevice;
+typedef struct _ArvUvStream		ArvUvStream;
+#endif
+
 typedef struct _ArvFakeInterface	ArvFakeInterface;
 typedef struct _ArvFakeDevice		ArvFakeDevice;
 typedef struct _ArvFakeStream		ArvFakeStream;
 typedef struct _ArvFakeCamera		ArvFakeCamera;
 
+typedef struct _ArvGvFakeCamera		ArvGvFakeCamera;
+
 typedef struct _ArvZip			ArvZip;
 typedef struct _ArvZipFile 		ArvZipFile;
+
+typedef struct _ArvXmlSchema 		ArvXmlSchema;
 
 G_END_DECLS
 

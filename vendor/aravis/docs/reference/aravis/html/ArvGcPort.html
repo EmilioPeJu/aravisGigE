@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ArvGcPort: Aravis Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Aravis Reference Manual">
 <link rel="up" href="ch05.html" title="Genicam">
 <link rel="prev" href="ArvGcSwissKnife.html" title="ArvGcSwissKnife">
 <link rel="next" href="ch06.html" title="Ethernet cameras">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.28 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -34,7 +34,7 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="ArvGcPort.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -77,7 +77,7 @@
 </div>
 <div class="refsect1">
 <a name="ArvGcPort.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -90,7 +90,7 @@
 </div>
 <div class="refsect1">
 <a name="ArvGcPort.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
     <span class="lineart">╰──</span> <a class="link" href="ArvDomNode.html" title="ArvDomNode">ArvDomNode</a>
         <span class="lineart">╰──</span> <a class="link" href="ArvDomElement.html" title="ArvDomElement">ArvDomElement</a>
             <span class="lineart">╰──</span> <a class="link" href="ArvGcNode.html" title="ArvGcNode">ArvGcNode</a>
@@ -114,9 +114,9 @@ arv_gc_port_new (<em class="parameter"><code><span class="type">void</span></cod
 <pre class="programlisting"><span class="returnvalue">void</span>
 arv_gc_port_read (<em class="parameter"><code><a class="link" href="ArvGcPort.html" title="ArvGcPort"><span class="type">ArvGcPort</span></a> *port</code></em>,
                   <em class="parameter"><code><span class="type">void</span> *buffer</code></em>,
-                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint64"><span class="type">guint64</span></a> address</code></em>,
-                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint64"><span class="type">guint64</span></a> length</code></em>,
-                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> address</code></em>,
+                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> length</code></em>,
+                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -124,9 +124,9 @@ arv_gc_port_read (<em class="parameter"><code><a class="link" href="ArvGcPort.ht
 <pre class="programlisting"><span class="returnvalue">void</span>
 arv_gc_port_write (<em class="parameter"><code><a class="link" href="ArvGcPort.html" title="ArvGcPort"><span class="type">ArvGcPort</span></a> *port</code></em>,
                    <em class="parameter"><code><span class="type">void</span> *buffer</code></em>,
-                   <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint64"><span class="type">guint64</span></a> address</code></em>,
-                   <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#guint64"><span class="type">guint64</span></a> length</code></em>,
-                   <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                   <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> address</code></em>,
+                   <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> length</code></em>,
+                   <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -146,6 +146,6 @@ arv_gc_set_default_node_data (<em class="parameter"><code><a class="link" href="
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.28</div>
 </body>
 </html>

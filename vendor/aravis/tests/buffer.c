@@ -20,6 +20,7 @@ simple_buffer_test (void)
 	g_assert (arv_buffer_get_payload_type (buffer) == ARV_BUFFER_PAYLOAD_TYPE_UNKNOWN);
 	g_assert (arv_buffer_get_status (buffer) == ARV_BUFFER_STATUS_CLEARED);
 	g_assert (arv_buffer_get_user_data (buffer) == NULL);
+	g_assert (arv_buffer_get_frame_id (buffer) == 0);
 
 	g_object_unref (buffer);
 }
@@ -40,6 +41,7 @@ preallocated_buffer_test (void)
 	g_assert (arv_buffer_get_user_data (buffer) == NULL);
 
 	g_object_unref (buffer);
+	g_free (data);
 }
 
 static void
@@ -89,6 +91,23 @@ timestamp (void)
 	g_object_unref (buffer);
 }
 
+static void
+allocate (void)
+{
+	ArvBuffer *buffer;
+	const void *data;
+	size_t size;
+
+	buffer = arv_buffer_new_allocate (512);
+
+	data = arv_buffer_get_data (buffer, &size);
+
+	g_assert (data != NULL);
+	g_assert (size == 512);
+
+	g_object_unref (buffer);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -96,12 +115,11 @@ main (int argc, char *argv[])
 
 	g_test_init (&argc, &argv, NULL);
 
-	arv_g_type_init ();
-
 	g_test_add_func ("/buffer/simple-buffer", simple_buffer_test);
 	g_test_add_func ("/buffer/preallocated-buffer", preallocated_buffer_test);
 	g_test_add_func ("/buffer/full-buffer", full_buffer_test);
 	g_test_add_func ("/buffer/timestamp", timestamp);
+	g_test_add_func ("/buffer/allocate", allocate);
 
 	result = g_test_run();
 

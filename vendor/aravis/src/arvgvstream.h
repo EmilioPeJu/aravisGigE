@@ -1,6 +1,6 @@
 /* Aravis - Digital camera library
  *
- * Copyright © 2009-2010 Emmanuel Pacaud
+ * Copyright © 2009-2016 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,11 +23,24 @@
 #ifndef ARV_GV_STREAM_H
 #define ARV_GV_STREAM_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
-#include <arvstream.h>
-#include <gio/gio.h>
 
 G_BEGIN_DECLS
+
+/**
+ * ArvGvStreamOption:
+ * @ARV_GV_STREAM_OPTION_NONE: no option specified
+ * @ARV_GV_STREAM_OPTION_PACKET_SOCKET_DISABLED: use of packet socket is disabled
+ */
+
+typedef enum {
+	ARV_GV_STREAM_OPTION_NONE = 0,
+	ARV_GV_STREAM_OPTION_PACKET_SOCKET_DISABLED
+} ArvGvStreamOption;
 
 /**
  * ArvGvStreamSocketBuffer:
@@ -58,27 +71,9 @@ typedef enum {
 #define ARV_IS_GV_STREAM_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), ARV_TYPE_GV_STREAM))
 #define ARV_GV_STREAM_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), ARV_TYPE_GV_STREAM, ArvGvStreamClass))
 
-typedef struct _ArvGvStreamPrivate ArvGvStreamPrivate;
-typedef struct _ArvGvStreamClass ArvGvStreamClass;
-
-struct _ArvGvStream {
-	ArvStream	stream;
-
-	ArvGvStreamPrivate *priv;
-};
-
-struct _ArvGvStreamClass {
-	ArvStreamClass parent_class;
-};
-
 GType arv_gv_stream_get_type (void);
 
-ArvStream * 	arv_gv_stream_new			(GInetAddress *device_address, guint16 port,
-							 ArvStreamCallback callback, void *user_data,
-							 guint64 timestamp_tick_frequency,
-							 guint packet_size);
-guint16 	arv_gv_stream_get_port			(ArvGvStream *gv_stream);
-
+guint16 	arv_gv_stream_get_port 			(ArvGvStream *gv_stream);
 void		arv_gv_stream_get_statistics		(ArvGvStream *gv_stream,
 							 guint64 *n_resent_packets,
 							 guint64 *n_missing_packets);
