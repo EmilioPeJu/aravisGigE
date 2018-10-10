@@ -1,8 +1,8 @@
 SUPPORT=/dls_sw/prod/R3.14.12.7/support
 
-ASYN         = $(SUPPORT)/asyn/4-33
+ASYN         = $(SUPPORT)/asyn/4-34
 CALC         = $(SUPPORT)/calc/3-7
-BUSY         = $(SUPPORT)/busy/1-7
+BUSY         = $(SUPPORT)/busy/1-7dls1
 SSCAN        = $(SUPPORT)/sscan/2-11
 AUTOSAVE     = /dls_sw/work/R3.14.12.7/support/autosave
 DEVIOCSTATS  = $(SUPPORT)/devIocStats/3-1-14dls3-0
