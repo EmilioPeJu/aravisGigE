@@ -6,7 +6,8 @@ BUSY         = $(SUPPORT)/busy/1-7dls1
 SSCAN        = $(SUPPORT)/sscan/2-11
 AUTOSAVE     = /dls_sw/work/R3.14.12.7/support/autosave
 DEVIOCSTATS  = $(SUPPORT)/devIocStats/3-1-14dls3-0
-ADCORE=       /dls_sw/work/R3.14.12.7/support/ADCore
+#ADCORE=       /dls_sw/work/R3.14.12.7/support/ADCore
+ADCORE=         $(SUPPORT)/ADCore/3-3-2dls1
 
 EPICS_BASE=/dls_sw/epics/R3.14.12.7/base
 
