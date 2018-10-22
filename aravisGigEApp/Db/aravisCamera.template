@@ -241,7 +241,7 @@ record(mbbo, "$(P)$(R)PKT_RESEND")
    field(ONVL, "1")
    field(VAL,  "1")
    field(PINI, "1")
-   info(autosaveFields, "DESC ONSV SRSV PINI VAL")
+   info(autosaveFields, "DESC ONSV ZRSV PINI VAL")
 }
 
 record(longout, "$(P)$(R)PKT_TIMEOUT")
@@ -338,7 +338,7 @@ record(bi, "$(P)$(R)HWIMAGEMODE_RBV") {
   field(ZNAM, "No")
   field(ONAM, "Yes")
   field(SCAN, "I/O Intr")
-  info(autosaveFields, "DESC ZRSV ONSV")
+  info(autosaveFields, "DESC ZSV OSV")
 }
 
 ## If this is set to 1, the acquisition mode is communicated to the
@@ -349,7 +349,7 @@ record(bo, "$(P)$(R)HWIMAGEMODE") {
   field(OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_HWIMAGEMODE")
   field(ZNAM, "No")
   field(ONAM, "Yes")
-  info(autosaveFields, "DESC ZRSV ONSV VAL")
+  info(autosaveFields, "DESC ZSV OSV VAL")
 }
 
 # unsupported fields
