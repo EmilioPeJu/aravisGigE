@@ -23,4 +23,5 @@ dllPath.bat
 auto_settings.sav*
 *~
 *.swp
+.idea/
 
