@@ -6,7 +6,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-introspection --enable-gtk-doc --enable-gst-plugin --enable-gst-0.10-plugin --enable-viewer --enable-cpp-test --enable-appstream-util
 
-SUBDIRS = src
+SUBDIRS = src man
 
 if ARAVIS_BUILD_VIEWER
 SUBDIRS += viewer
@@ -22,7 +22,7 @@ endif
 
 SUBDIRS += tests po docs
 
-aravisdocdir = ${prefix}/doc/aravis-@ARAVIS_API_VERSION@
+aravisdocdir = ${docdir}/aravis-@ARAVIS_API_VERSION@
 aravisdoc_DATA = 	\
 	README.md	\
 	COPYING		\

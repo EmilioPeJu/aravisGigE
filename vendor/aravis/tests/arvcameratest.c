@@ -1,5 +1,4 @@
 #include <arv.h>
-#include <arvstr.h>
 #include <stdlib.h>
 #include <signal.h>
 #include <stdio.h>
@@ -18,6 +17,7 @@ static double arv_option_exposure_time_us = -1;
 static int arv_option_gain = -1;
 static gboolean arv_option_auto_socket_buffer = FALSE;
 static gboolean arv_option_no_packet_resend = FALSE;
+static double arv_option_packet_request_ratio = -1.0;
 static unsigned int arv_option_packet_timeout = 20;
 static unsigned int arv_option_frame_retention = 100;
 static int arv_option_gv_stream_channel = -1;
@@ -25,7 +25,9 @@ static int arv_option_gv_packet_delay = -1;
 static int arv_option_gv_packet_size = -1;
 static gboolean arv_option_realtime = FALSE;
 static gboolean arv_option_high_priority = FALSE;
+static gboolean arv_option_no_packet_socket = FALSE;
 static char *arv_option_chunks = NULL;
+static unsigned int arv_option_bandwidth_limit = -1;
 
 static const GOptionEntry arv_option_entries[] =
 {
@@ -82,6 +84,10 @@ static const GOptionEntry arv_option_entries[] =
 		&arv_option_no_packet_resend,		"No packet resend", NULL
 	},
 	{
+		"packet-request-ratio",			'q', 0, G_OPTION_ARG_DOUBLE,
+		&arv_option_packet_request_ratio,	"Packet resend request limit as a frame packet number ratio [0..2.0]", NULL
+	},
+	{
 		"packet-timeout", 			'p', 0, G_OPTION_ARG_INT,
 		&arv_option_packet_timeout, 		"Packet timeout (ms)", NULL
 	},
@@ -114,8 +120,16 @@ static const GOptionEntry arv_option_entries[] =
 		&arv_option_high_priority,		"Make stream thread high priority", NULL
 	},
 	{
+		"no-packet-socket",			'\0', 0, G_OPTION_ARG_NONE,
+		&arv_option_no_packet_socket,		"Disable use of packet socket", NULL
+	},
+	{
 		"debug", 				'd', 0, G_OPTION_ARG_STRING,
 		&arv_option_debug_domains, 		"Debug domains", NULL
+	},
+	{
+		"bandwidth-limit",			'b', 0, G_OPTION_ARG_INT,
+		&arv_option_bandwidth_limit,		"Desired USB3 Vision device bandwidth limit", NULL
 	},
 	{ NULL }
 };
@@ -145,7 +159,8 @@ new_buffer_cb (ArvStream *stream, ApplicationData *data)
 		if (arv_buffer_get_status (buffer) == ARV_BUFFER_STATUS_SUCCESS)
 			data->buffer_count++;
 
-		if (arv_buffer_get_payload_type (buffer) == ARV_BUFFER_PAYLOAD_TYPE_CHUNK_DATA &&
+		if ((arv_buffer_get_payload_type (buffer) == ARV_BUFFER_PAYLOAD_TYPE_CHUNK_DATA ||
+		     arv_buffer_get_payload_type (buffer) == ARV_BUFFER_PAYLOAD_TYPE_EXTENDED_CHUNK_DATA) &&
 		    data->chunks != NULL) {
 			int i;
 
@@ -222,9 +237,6 @@ main (int argc, char **argv)
 	data.chunks = NULL;
 	data.chunk_parser = NULL;
 
-	arv_g_thread_init (NULL);
-	arv_g_type_init ();
-
 	context = g_option_context_new (NULL);
 	g_option_context_add_main_entries (context, arv_option_entries, NULL);
 
@@ -280,11 +292,18 @@ main (int argc, char **argv)
 		arv_camera_set_binning (camera, arv_option_horizontal_binning, arv_option_vertical_binning);
 		arv_camera_set_exposure_time (camera, arv_option_exposure_time_us);
 		arv_camera_set_gain (camera, arv_option_gain);
-		
+
+		if (arv_camera_is_uv_device(camera)) {
+			arv_camera_uv_set_bandwidth (camera, arv_option_bandwidth_limit);
+		}
+
 		if (arv_camera_is_gv_device (camera)) {
 			arv_camera_gv_select_stream_channel (camera, arv_option_gv_stream_channel);
 			arv_camera_gv_set_packet_delay (camera, arv_option_gv_packet_delay);
 			arv_camera_gv_set_packet_size (camera, arv_option_gv_packet_size);
+			arv_camera_gv_set_stream_options (camera, arv_option_no_packet_socket ?
+							  ARV_GV_STREAM_OPTION_PACKET_SOCKET_DISABLED :
+							  ARV_GV_STREAM_OPTION_NONE);
 		}
 
 		arv_camera_get_region (camera, &x, &y, &width, &height);
@@ -311,6 +330,13 @@ main (int argc, char **argv)
 			printf ("gv packet size        = %d bytes\n", arv_camera_gv_get_packet_size (camera));
 		}
 
+		if (arv_camera_is_uv_device (camera)) {
+			guint min,max;
+
+			arv_camera_uv_get_bandwidth_bounds (camera, &min, &max);
+			printf ("uv bandwidth limit     = %d [%d..%d]\n", arv_camera_uv_get_bandwidth (camera), min, max);
+		}
+
 		stream = arv_camera_create_stream (camera, stream_cb, NULL);
 		if (stream != NULL) {
 			if (ARV_IS_GV_STREAM (stream)) {
@@ -323,6 +349,11 @@ main (int argc, char **argv)
 					g_object_set (stream,
 						      "packet-resend", ARV_GV_STREAM_PACKET_RESEND_NEVER,
 						      NULL);
+				if (arv_option_packet_request_ratio >= 0.0)
+					g_object_set (stream,
+						      "packet-request-ratio", arv_option_packet_request_ratio,
+						      NULL);
+
 				g_object_set (stream,
 					      "packet-timeout", (unsigned) arv_option_packet_timeout * 1000,
 					      "frame-retention", (unsigned) arv_option_frame_retention * 1000,
@@ -377,6 +408,8 @@ main (int argc, char **argv)
 			printf ("Underruns         = %Lu\n", (unsigned long long) n_underruns);
 
 			arv_camera_stop_acquisition (camera);
+
+			arv_stream_set_emit_signals (stream, FALSE);
 
 			g_object_unref (stream);
 		} else

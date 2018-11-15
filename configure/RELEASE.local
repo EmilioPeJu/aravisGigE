@@ -1,11 +1,11 @@
-SUPPORT=/dls_sw/prod/R3.14.12.3/support
+SUPPORT=/dls_sw/prod/R3.14.12.7/support
 
-ASYN=         $(SUPPORT)/asyn/4-31
-ADCORE=       $(SUPPORT)/ADCore/2-6dls6
+ASYN=         $(SUPPORT)/asyn/4-34
+ADCORE=         $(SUPPORT)/ADCore/3-3-2dls1
 
 # comment this out if glib is installed in a standard place
 # you need at least glib 2.28
-GLIBPREFIX=/dls_sw/prod/tools/RHEL6-x86_64/glib/2-28-8/prefix
 
-EPICS_BASE=/dls_sw/epics/R3.14.12.3/base
+
+EPICS_BASE=/dls_sw/epics/R3.14.12.7/base
 

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Part II. Aravis API reference: Aravis Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Aravis Reference Manual">
 <link rel="up" href="index.html" title="Aravis Reference Manual">
 <link rel="prev" href="aravis-building.html" title="Building and Debugging Aravis">
 <link rel="next" href="ch04.html" title="Base">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.28 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -27,6 +27,9 @@
 <dl class="toc">
 <dt><span class="chapter"><a href="ch04.html">Base</a></span></dt>
 <dd><dl>
+<dt>
+<span class="refentrytitle"><a href="aravis-Arv.html">Arv</a></span><span class="refpurpose"> — Device discovery and instantiation</span>
+</dt>
 <dt>
 <span class="refentrytitle"><a href="ArvCamera.html">ArvCamera</a></span><span class="refpurpose"> — Class for generic camera control</span>
 </dt>
@@ -61,10 +64,10 @@
 <span class="refentrytitle"><a href="ArvGcIndexNode.html">ArvGcIndexNode</a></span><span class="refpurpose"> — Class for Index nodes</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="ArvGcInvalidatorNode.html">ArvGcInvalidatorNode</a></span><span class="refpurpose"> — Class for Invalidator nodes</span>
+<span class="refentrytitle"><a href="aravis-ArvGcValueIndexedNode.html">ArvGcValueIndexedNode</a></span><span class="refpurpose"> — Class for Index nodes</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="ArvGcVariableNode.html">ArvGcVariableNode</a></span><span class="refpurpose"> — Class for VariableNode elements</span>
+<span class="refentrytitle"><a href="ArvGcInvalidatorNode.html">ArvGcInvalidatorNode</a></span><span class="refpurpose"> — Class for Invalidator nodes</span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="ArvGcFeatureNode.html">ArvGcFeatureNode</a></span><span class="refpurpose"> — Base class for Genicam feature nodes</span>
@@ -127,37 +130,58 @@
 <dt><span class="chapter"><a href="ch06.html">Ethernet cameras</a></span></dt>
 <dd><dl>
 <dt>
-<span class="refentrytitle"><a href="ArvGvInterface.html">ArvGvInterface</a></span><span class="refpurpose"> — Gigabit ethernet camera interface</span>
+<span class="refentrytitle"><a href="ArvGvInterface.html">ArvGvInterface</a></span><span class="refpurpose"> — GigEVision interface</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="ArvGvDevice.html">ArvGvDevice</a></span><span class="refpurpose"> — Gigabit ethernet camera device</span>
+<span class="refentrytitle"><a href="ArvGvDevice.html">ArvGvDevice</a></span><span class="refpurpose"> — GigEVision device</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="ArvGvStream.html">ArvGvStream</a></span><span class="refpurpose"> — Gigabit ethernet camera stream</span>
+<span class="refentrytitle"><a href="ArvGvStream.html">ArvGvStream</a></span><span class="refpurpose"> — GigEVision stream</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="aravis-ArvGvcp.html">ArvGvcp</a></span><span class="refpurpose"> — Gvcp packet handling (control)</span>
+<span class="refentrytitle"><a href="aravis-ArvGvFakeCamera.html">ArvGvFakeCamera</a></span><span class="refpurpose"> — GigE Vision Simulator</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="aravis-ArvGvsp.html">ArvGvsp</a></span><span class="refpurpose"> — Gvsp packet handling (stream)</span>
+<span class="refentrytitle"><a href="aravis-ArvGvcp.html">ArvGvcp</a></span><span class="refpurpose"> — GigEVision control packet handling</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="aravis-ArvGvsp.html">ArvGvsp</a></span><span class="refpurpose"> — GigEVision stream packet handling</span>
 </dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch07.html">Fake camera</a></span></dt>
+<dt><span class="chapter"><a href="ch07.html">USB cameras</a></span></dt>
 <dd><dl>
 <dt>
-<span class="refentrytitle"><a href="ArvFakeInterface.html">ArvFakeInterface</a></span><span class="refpurpose"> — Fake camera interface</span>
+<span class="refentrytitle"><a href="aravis-ArvUvInterface.html">ArvUvInterface</a></span><span class="refpurpose"> — USB3Vision interface</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="ArvFakeDevice.html">ArvFakeDevice</a></span><span class="refpurpose"> — Fake camera device</span>
+<span class="refentrytitle"><a href="aravis-ArvUvDevice.html">ArvUvDevice</a></span><span class="refpurpose"> — USB3Vision device</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="ArvFakeStream.html">ArvFakeStream</a></span><span class="refpurpose"> — Fake camera stream</span>
+<span class="refentrytitle"><a href="aravis-ArvUvStream.html">ArvUvStream</a></span><span class="refpurpose"> — USB3Vision video stream</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="aravis-ArvUvcp.html">ArvUvcp</a></span><span class="refpurpose"> — USB3Vision control packet handling</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="aravis-ArvUvsp.html">ArvUvsp</a></span><span class="refpurpose"> — USB3Vision stream packet handling</span>
+</dt>
+</dl></dd>
+<dt><span class="chapter"><a href="ch08.html">Fake cameras</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="ArvFakeInterface.html">ArvFakeInterface</a></span><span class="refpurpose"> — Fake interface</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="ArvFakeDevice.html">ArvFakeDevice</a></span><span class="refpurpose"> — Fake device</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="ArvFakeStream.html">ArvFakeStream</a></span><span class="refpurpose"> — Fake stream</span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="ArvFakeCamera.html">ArvFakeCamera</a></span><span class="refpurpose"> — Fake camera internals</span>
 </dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch08.html">DOM</a></span></dt>
+<dt><span class="chapter"><a href="ch09.html">DOM</a></span></dt>
 <dd><dl>
 <dt>
 <span class="refentrytitle"><a href="ArvDomNode.html">ArvDomNode</a></span><span class="refpurpose"> — Base class for DOM nodes</span>
@@ -184,7 +208,7 @@
 <span class="refentrytitle"><a href="aravis-ArvDomText.html">ArvDomText</a></span><span class="refpurpose"> — Base class for DOM text nodes</span>
 </dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch09.html">Utils</a></span></dt>
+<dt><span class="chapter"><a href="ch10.html">Utils</a></span></dt>
 <dd><dl>
 <dt>
 <span class="refentrytitle"><a href="aravis-ArvDebug.html">ArvDebug</a></span><span class="refpurpose"> — Debugging tools</span>
@@ -207,17 +231,20 @@
 <dt>
 <span class="refentrytitle"><a href="aravis-ArvZip.html">ArvZip</a></span><span class="refpurpose"> — A simple zip extractor</span>
 </dt>
+<dt>
+<span class="refentrytitle"><a href="aravis-ArvXmlSchema.html">ArvXmlSchema</a></span><span class="refpurpose"> — XML Schema storage</span>
+</dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch10.html">Object Hierarchy</a></span></dt>
+<dt><span class="chapter"><a href="ch11.html">Object Hierarchy</a></span></dt>
 <dt><span class="index"><a href="ix01.html">Index</a></span></dt>
 <dt><span class="index"><a href="ix02.html">Index of new symbols in 0.2</a></span></dt>
-<dt><span class="index"><a href="ix03.html">Index of new symbols in 0.2.3</a></span></dt>
-<dt><span class="index"><a href="ix04.html">Index of new symbols in 0.4</a></span></dt>
+<dt><span class="index"><a href="ix03.html">Index of new symbols in 0.4</a></span></dt>
+<dt><span class="index"><a href="ix04.html">Index of new symbols in 0.6</a></span></dt>
 <dt><span class="glossary"><a href="annotation-glossary.html">Annotation Glossary</a></span></dt>
 </dl>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.28</div>
 </body>
 </html>

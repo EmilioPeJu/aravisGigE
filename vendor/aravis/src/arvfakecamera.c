@@ -51,11 +51,8 @@ struct _ArvFakeCameraPrivate {
 	guint32 frame_id;
 	double trigger_frequency;
 
-#if GLIB_CHECK_VERSION(2,32,0)
 	GMutex fill_pattern_mutex;
-#else
-	GMutex *fill_pattern_mutex;
-#endif
+
 	ArvFakeCameraFillPattern fill_pattern_callback;
 	void *fill_pattern_data;
 };
@@ -73,20 +70,25 @@ arv_fake_camera_read_memory (ArvFakeCamera *camera, guint32 address, guint32 siz
 	g_return_val_if_fail (buffer != NULL, FALSE);
 	g_return_val_if_fail (size > 0, FALSE);
 
-	/* TODO Handle read accross register space and genicam data */
-
 	if (address < ARV_FAKE_CAMERA_MEMORY_SIZE) {
-		g_return_val_if_fail (address + size < ARV_FAKE_CAMERA_MEMORY_SIZE, FALSE);
+		read_size = MIN (address  + size, ARV_FAKE_CAMERA_MEMORY_SIZE) - address;
 
-		memcpy (buffer, ((char *) camera->priv->memory) + address, size);
+		memcpy (buffer, ((char *) camera->priv->memory) + address, read_size);
 
-		return TRUE;
+		if (read_size == size)
+			return TRUE;
+
+		size = size - read_size;
+		address = ARV_FAKE_CAMERA_MEMORY_SIZE;
+		buffer = buffer + read_size;
 	}
 
 	address -= ARV_FAKE_CAMERA_MEMORY_SIZE;
 	read_size = MIN (address + size, camera->priv->genicam_xml_size) - address;
 
 	memcpy (buffer, ((char *) camera->priv->genicam_xml) + address, read_size);
+	if (read_size < size)
+		memset (buffer + read_size, 0, size - read_size);
 
 	return TRUE;
 }
@@ -157,29 +159,40 @@ arv_fake_camera_get_payload (ArvFakeCamera *camera)
 	return width * height;
 }
 
+guint64
+arv_fake_camera_get_sleep_time_for_next_frame (ArvFakeCamera *camera, guint64 *next_timestamp_us)
+{
+	guint64 time_us;
+	guint64 sleep_time_us;
+	guint64 frame_period_time_us;
+
+	g_return_val_if_fail (ARV_IS_FAKE_CAMERA (camera), 0);
+
+	if (_get_register (camera, ARV_FAKE_CAMERA_REGISTER_TRIGGER_MODE) == 1)
+		frame_period_time_us = 1000000L / camera->priv->trigger_frequency;
+	else
+		frame_period_time_us = (guint64) _get_register (camera, ARV_FAKE_CAMERA_REGISTER_ACQUISITION_FRAME_PERIOD_US);
+
+	if (frame_period_time_us == 0) {
+		arv_warning_misc ("Invalid zero frame period, defaulting to 1 second");
+		frame_period_time_us = 1000000L;
+	}
+
+	time_us = g_get_real_time ();
+	sleep_time_us = frame_period_time_us - (time_us % frame_period_time_us);
+
+	if (next_timestamp_us != NULL)
+		*next_timestamp_us = time_us + sleep_time_us;
+
+	return sleep_time_us;
+}
+
 void
 arv_fake_camera_wait_for_next_frame (ArvFakeCamera *camera)
 {
-	struct timespec time;
-	struct timespec sleep_time;
-	guint64 sleep_time_ns;
-	guint64 frame_period_time_ns;
+	g_return_if_fail (ARV_IS_FAKE_CAMERA (camera));
 
-	if (_get_register (camera, ARV_FAKE_CAMERA_REGISTER_TRIGGER_MODE) == 1)
-		frame_period_time_ns = 1000000000L / camera->priv->trigger_frequency;
-	else
-		frame_period_time_ns = (guint64) _get_register (camera,
-								ARV_FAKE_CAMERA_REGISTER_ACQUISITION_FRAME_PERIOD_US) *
-			1000L;
-
-	clock_gettime (CLOCK_MONOTONIC, &time);
-	sleep_time_ns = frame_period_time_ns - (((guint64) time.tv_sec * 1000000000L +
-						 (guint64) time.tv_nsec) % frame_period_time_ns);
-
-	sleep_time.tv_sec = sleep_time_ns / 1000000000L;
-	sleep_time.tv_nsec = sleep_time_ns % 1000000000L;
-
-	nanosleep (&sleep_time, NULL);
+	g_usleep (arv_fake_camera_get_sleep_time_for_next_frame (camera, NULL));
 }
 
 static void
@@ -235,11 +248,8 @@ arv_fake_camera_set_fill_pattern (ArvFakeCamera *camera,
 {
 	g_return_if_fail (ARV_IS_FAKE_CAMERA (camera));
 
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_mutex_lock (&camera->priv->fill_pattern_mutex);
-#else
-	g_mutex_lock (camera->priv->fill_pattern_mutex);
-#endif
+
 	if (fill_pattern_callback != NULL) {
 		camera->priv->fill_pattern_callback = fill_pattern_callback;
 		camera->priv->fill_pattern_data = fill_pattern_data;
@@ -247,17 +257,13 @@ arv_fake_camera_set_fill_pattern (ArvFakeCamera *camera,
 		camera->priv->fill_pattern_callback = arv_fake_camera_diagonal_ramp;
 		camera->priv->fill_pattern_data = NULL;
 	}
-#if GLIB_CHECK_VERSION(2,32,0)
+
 	g_mutex_unlock (&camera->priv->fill_pattern_mutex);
-#else
-	g_mutex_unlock (camera->priv->fill_pattern_mutex);
-#endif
 }
 
 void
 arv_fake_camera_fill_buffer (ArvFakeCamera *camera, ArvBuffer *buffer, guint32 *packet_size)
 {
-	struct timespec time;
 	guint32 width;
 	guint32 height;
 	guint32 exposure_time_us;
@@ -268,8 +274,6 @@ arv_fake_camera_fill_buffer (ArvFakeCamera *camera, ArvBuffer *buffer, guint32 *
 	if (camera == NULL || buffer == NULL)
 		return;
 
-	clock_gettime (CLOCK_MONOTONIC, &time);
-
 	width = _get_register (camera, ARV_FAKE_CAMERA_REGISTER_WIDTH);
 	height = _get_register (camera, ARV_FAKE_CAMERA_REGISTER_HEIGHT);
 	payload = width * height;
@@ -279,29 +283,25 @@ arv_fake_camera_fill_buffer (ArvFakeCamera *camera, ArvBuffer *buffer, guint32 *
 		return;
 	}
 
-	buffer->priv->gvsp_payload_type = ARV_GVSP_PAYLOAD_TYPE_IMAGE;
+	buffer->priv->payload_type = ARV_BUFFER_PAYLOAD_TYPE_IMAGE;
+	buffer->priv->chunk_endianness = G_BIG_ENDIAN;
 	buffer->priv->width = width;
 	buffer->priv->height = height;
 	buffer->priv->status = ARV_BUFFER_STATUS_SUCCESS;
-	buffer->priv->timestamp_ns = ((guint64) time.tv_sec) * 1000000000LL + time.tv_nsec;
+	buffer->priv->timestamp_ns = g_get_real_time () * 1000;
+	buffer->priv->system_timestamp_ns = buffer->priv->timestamp_ns;
 	buffer->priv->frame_id = camera->priv->frame_id++;
 	buffer->priv->pixel_format = _get_register (camera, ARV_FAKE_CAMERA_REGISTER_PIXEL_FORMAT);
 
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_mutex_lock (&camera->priv->fill_pattern_mutex);
-#else
-	g_mutex_lock (camera->priv->fill_pattern_mutex);
-#endif
+
 	arv_fake_camera_read_register (camera, ARV_FAKE_CAMERA_REGISTER_EXPOSURE_TIME_US, &exposure_time_us);
 	arv_fake_camera_read_register (camera, ARV_FAKE_CAMERA_REGISTER_GAIN_RAW, &gain);
 	arv_fake_camera_read_register (camera, ARV_FAKE_CAMERA_REGISTER_PIXEL_FORMAT, &pixel_format);
 	camera->priv->fill_pattern_callback (buffer, camera->priv->fill_pattern_data,
 					     exposure_time_us, gain, pixel_format);
-#if GLIB_CHECK_VERSION(2,32,0)
+
 	g_mutex_unlock (&camera->priv->fill_pattern_mutex);
-#else
-	g_mutex_unlock (camera->priv->fill_pattern_mutex);
-#endif
 
 	if (packet_size != NULL)
 		*packet_size = _get_register (camera, ARV_GVBS_STREAM_CHANNEL_0_PACKET_SIZE_OFFSET);
@@ -403,9 +403,9 @@ const char *
 arv_get_fake_camera_genicam_xml (size_t *size)
 {
 	static GMappedFile *genicam_file = NULL;
-	ARV_DEFINE_STATIC_MUTEX (mutex);
+	static GMutex mutex;
 
-	arv_g_mutex_lock (&mutex);
+	g_mutex_lock (&mutex);
 
 	if (genicam_file == NULL ) {
 		char *filename;
@@ -426,7 +426,7 @@ arv_get_fake_camera_genicam_xml (size_t *size)
 		g_free (filename);
 	}
 
-	arv_g_mutex_unlock (&mutex);
+	g_mutex_unlock (&mutex);
 
 	g_return_val_if_fail( genicam_file != NULL, NULL);
 
@@ -453,11 +453,7 @@ arv_fake_camera_new (const char *serial_number)
 
 	memory = g_malloc0 (ARV_FAKE_CAMERA_MEMORY_SIZE);
 
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_mutex_init (&fake_camera->priv->fill_pattern_mutex);
-#else
-	fake_camera->priv->fill_pattern_mutex = g_mutex_new ();
-#endif
 	fake_camera->priv->fill_pattern_callback = arv_fake_camera_diagonal_ramp;
 	fake_camera->priv->fill_pattern_data = NULL;
 
@@ -469,8 +465,7 @@ arv_fake_camera_new (const char *serial_number)
 	strcpy (((char *) memory) + ARV_GVBS_DEVICE_VERSION_OFFSET, PACKAGE_VERSION);
 	strcpy (((char *) memory) + ARV_GVBS_SERIAL_NUMBER_OFFSET, serial_number);
 
-	xml_url = g_strdup_printf ("Local:arv-fake-camera-%s.xml;%x;%x",
-				   PACKAGE_VERSION,
+	xml_url = g_strdup_printf ("Local:arv-fake-camera.xml;%x;%x",
 				   ARV_FAKE_CAMERA_MEMORY_SIZE,
 				   (unsigned int) fake_camera->priv->genicam_xml_size);
 	strcpy (((char *) memory) + ARV_GVBS_XML_URL_0_OFFSET, xml_url);
@@ -532,11 +527,7 @@ arv_fake_camera_finalize (GObject *object)
 
 	g_free (fake_camera->priv->memory);
 
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_mutex_clear (&fake_camera->priv->fill_pattern_mutex);
-#else
-	g_mutex_free (fake_camera->priv->fill_pattern_mutex);
-#endif
 
 	parent_class->finalize (object);
 }

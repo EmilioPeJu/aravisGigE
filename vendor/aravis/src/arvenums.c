@@ -25,7 +25,7 @@
 static unsigned int
 _from_string (const char *string, const char **strings, unsigned int n_strings)
 {
-	int i;
+	unsigned int i;
 
 	if (string == NULL)
 		return 0;
@@ -58,13 +58,14 @@ arv_auto_from_string (const char *string)
 
 static const char *arv_acquisition_mode_strings[] = {
 	"Continuous",
-	"SingleFrame"
+	"SingleFrame",
+	"MultiFrame"
 };
 
 const char *
 arv_acquisition_mode_to_string (ArvAcquisitionMode value)
 {
-	return arv_acquisition_mode_strings[CLAMP (value, 0, ARV_ACQUISITION_MODE_SINGLE_FRAME)];
+	return arv_acquisition_mode_strings[CLAMP (value, 0, ARV_ACQUISITION_MODE_MULTI_FRAME)];
 }
 
 ArvAcquisitionMode

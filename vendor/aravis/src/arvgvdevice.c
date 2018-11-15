@@ -1,11 +1,6 @@
 /* Aravis - Digital camera library
  *
- * Copyright © 2009-2010 Emmanuel Pacaud
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * Copyright © 2009-2016 Emmanuel Pacaud
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,33 +17,61 @@
 
 /**
  * SECTION: arvgvdevice
- * @short_description: Gigabit ethernet camera device
+ * @short_description: GigEVision device
  */
 
-#include <arvgvdevice.h>
+#include <arvgvdeviceprivate.h>
 #include <arvdeviceprivate.h>
 #include <arvgc.h>
+#include <arvgccommand.h>
+#include <arvgcboolean.h>
 #include <arvgcregisterdescriptionnode.h>
 #include <arvdebug.h>
-#include <arvgvstream.h>
+#include <arvgvstreamprivate.h>
 #include <arvgvcp.h>
 #include <arvgvsp.h>
 #include <arvzip.h>
 #include <arvstr.h>
 #include <arvmisc.h>
+#include <arvenumtypes.h>
 #include <string.h>
 #include <stdlib.h>
+#ifndef __APPLE__
+#include <linux/ip.h>
+#endif
+#include <netinet/udp.h>
 
 static GObjectClass *parent_class = NULL;
 
 /* Shared data (main thread - heartbeat) */
 
-typedef struct {
-#if GLIB_CHECK_VERSION(2,32,0)
-	GMutex mutex;
+#ifdef __APPLE__
+struct iphdr
+  {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+    unsigned int ihl:4;
+    unsigned int version:4;
+#elif __BYTE_ORDER == __BIG_ENDIAN
+    unsigned int version:4;
+    unsigned int ihl:4;
 #else
-	GMutex *mutex;
+# error  "Please fix <bits/endian.h>"
 #endif
+    u_int8_t tos;
+    u_int16_t tot_len;
+    u_int16_t id;
+    u_int16_t frag_off;
+    u_int8_t ttl;
+    u_int8_t protocol;
+    u_int16_t check;
+    u_int32_t saddr;
+    u_int32_t daddr;
+    /*The options start here. */
+  };
+#endif
+
+typedef struct {
+	GMutex mutex;
 
 	guint16 packet_id;
 
@@ -79,6 +102,8 @@ struct _ArvGvDevicePrivate {
 
 	gboolean is_packet_resend_supported;
 	gboolean is_write_memory_supported;
+
+	ArvGvStreamOption stream_options;
 };
 
 GRegex *
@@ -93,25 +118,39 @@ static GRegex *arv_gv_device_url_regex = NULL;
 	return arv_gv_device_url_regex;
 }
 
+static void
+_flush_socket_buffer(ArvGvDeviceIOData *io_data)
+{
+	GError *local_error = NULL;
+	gboolean success = TRUE;
+
+	while (success &&
+		g_poll (&io_data->poll_in_event, 1, 0) > 0
+	)
+	{
+		arv_debug_device ("[GvDevice::flush_receive_socket] Flush packet");
+		success = g_socket_receive (io_data->socket, io_data->buffer,
+						  ARV_GV_DEVICE_BUFFER_SIZE, NULL, &local_error) > 0;
+	}
+}
+
 static gboolean
-_read_memory (ArvGvDeviceIOData *io_data, guint32 address, guint32 size, void *buffer, GError **error)
+_read_memory (ArvGvDeviceIOData *io_data, guint64 address, guint32 size, void *buffer, GError **error)
 {
 	ArvGvcpPacket *packet;
+	ArvGvcpPacket *ack_packet = io_data->buffer;
 	size_t packet_size;
 	size_t answer_size;
 	int count;
 	unsigned int n_retries = 0;
 	gboolean success = FALSE;
+	guint32 timeout_ms;
 
 	answer_size = arv_gvcp_packet_get_read_memory_ack_size (size);
 
 	g_return_val_if_fail (answer_size <= ARV_GV_DEVICE_BUFFER_SIZE, FALSE);
 
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_mutex_lock (&io_data->mutex);
-#else
-	g_mutex_lock (io_data->mutex);
-#endif
 
 	packet = arv_gvcp_packet_new_read_memory_cmd (address,
 						      ((size + sizeof (guint32) - 1)
@@ -119,51 +158,87 @@ _read_memory (ArvGvDeviceIOData *io_data, guint32 address, guint32 size, void *b
 						      0, &packet_size);
 
 	do {
+		GError *local_error = NULL;
+
 		io_data->packet_id = arv_gvcp_next_packet_id (io_data->packet_id);
 		arv_gvcp_packet_set_packet_id (packet, io_data->packet_id);
 
 		arv_gvcp_packet_debug (packet, ARV_DEBUG_LEVEL_LOG);
 
-		g_socket_send_to (io_data->socket, io_data->device_address,
-				  (const char *) packet, packet_size,
-				  NULL, NULL);
+		_flush_socket_buffer(io_data);
+		success = g_socket_send_to (io_data->socket, io_data->device_address,
+					    (const char *) packet, packet_size,
+					    NULL, &local_error) >= 0;
 
-		if (g_poll (&io_data->poll_in_event, 1, io_data->gvcp_timeout_ms) > 0) {
-			count = g_socket_receive (io_data->socket, io_data->buffer,
-						  ARV_GV_DEVICE_BUFFER_SIZE, NULL, NULL);
-			if (count >= answer_size) {
-				ArvGvcpPacket *ack_packet = io_data->buffer;
-				ArvGvcpPacketType packet_type;
-				ArvGvcpCommand command;
-				guint16 packet_id;
+		if (success) {
+			gboolean pending_ack;
+			gboolean expected_answer;
 
-				arv_gvcp_packet_debug (ack_packet, ARV_DEBUG_LEVEL_LOG);
+			timeout_ms = io_data->gvcp_timeout_ms;
 
-				packet_type = arv_gvcp_packet_get_packet_type (ack_packet);
-				command = arv_gvcp_packet_get_command (ack_packet);
-				packet_id = arv_gvcp_packet_get_packet_id (ack_packet);
+			do {
+				success = TRUE;
+				success = success && g_poll (&io_data->poll_in_event, 1, timeout_ms) > 0;
+				if (success)
+					count = g_socket_receive (io_data->socket, io_data->buffer,
+								  ARV_GV_DEVICE_BUFFER_SIZE, NULL, &local_error);
+				else
+					count = 0;
+				success = success && (count >= answer_size);
 
-				if (packet_type == ARV_GVCP_PACKET_TYPE_ACK &&
-				    command == ARV_GVCP_COMMAND_READ_MEMORY_ACK &&
-				    packet_id == io_data->packet_id) {
-					memcpy (buffer, arv_gvcp_packet_get_read_memory_ack_data (ack_packet), size);
-					success = TRUE;
-				} else
-					arv_gvcp_packet_debug (ack_packet, ARV_DEBUG_LEVEL_WARNING);
-			}
+				if (success) {
+					ArvGvcpPacketType packet_type;
+					ArvGvcpCommand command;
+					guint16 packet_id;
+
+					arv_gvcp_packet_debug (ack_packet, ARV_DEBUG_LEVEL_LOG);
+
+					packet_type = arv_gvcp_packet_get_packet_type (ack_packet);
+					command = arv_gvcp_packet_get_command (ack_packet);
+					packet_id = arv_gvcp_packet_get_packet_id (ack_packet);
+
+					if (command == ARV_GVCP_COMMAND_PENDING_ACK) {
+						pending_ack = TRUE;
+						expected_answer = FALSE;
+
+						timeout_ms = arv_gvcp_packet_get_pending_ack_timeout (ack_packet);
+
+						arv_log_device ("[GvDevice::read_memory] Pending ack timeout = %d", timeout_ms);
+					} else {
+						pending_ack = FALSE;
+						expected_answer = packet_type == ARV_GVCP_PACKET_TYPE_ACK &&
+							command == ARV_GVCP_COMMAND_READ_MEMORY_ACK &&
+							packet_id == io_data->packet_id;
+						if (!expected_answer) {
+							arv_debug_device ("[GvDevice::read_memory] Unexpected answer (0x%04x)",
+									  packet_type);
+						}
+					}
+				} else {
+					pending_ack = FALSE;
+					expected_answer = FALSE;
+					if (local_error != NULL)
+						arv_warning_device ("[GvDevice::read_memory] Ack reception error: %s", local_error->message);
+					g_clear_error (&local_error);
+				}
+			} while (pending_ack);
+
+			success = success && expected_answer;
+
+			if (success)
+				memcpy (buffer, arv_gvcp_packet_get_read_memory_ack_data (ack_packet), size);
+		} else {
+			if (local_error != NULL)
+				arv_warning_device ("[GvDevice::read_memory] Command sending error: %s", local_error->message);
+			g_clear_error (&local_error);
 		}
 
 		n_retries++;
-
 	} while (!success && n_retries < io_data->gvcp_n_retries);
 
 	arv_gvcp_packet_free (packet);
 
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_mutex_unlock (&io_data->mutex);
-#else
-	g_mutex_unlock (io_data->mutex);
-#endif
 
 	if (!success) {
 		if (error != NULL && *error == NULL)
@@ -175,19 +250,17 @@ _read_memory (ArvGvDeviceIOData *io_data, guint32 address, guint32 size, void *b
 }
 
 static gboolean
-_write_memory (ArvGvDeviceIOData *io_data, guint32 address, guint32 size, void *buffer, GError **error)
+_write_memory (ArvGvDeviceIOData *io_data, guint64 address, guint32 size, void *buffer, GError **error)
 {
 	ArvGvcpPacket *packet;
+	ArvGvcpPacket *ack_packet = io_data->buffer;
 	size_t packet_size;
 	int count;
 	unsigned int n_retries = 0;
 	gboolean success = FALSE;
+	guint32 timeout_ms;
 
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_mutex_lock (&io_data->mutex);
-#else
-	g_mutex_lock (io_data->mutex);
-#endif
 
 	packet = arv_gvcp_packet_new_write_memory_cmd (address,
 						       ((size + sizeof (guint32) - 1) /
@@ -197,37 +270,76 @@ _write_memory (ArvGvDeviceIOData *io_data, guint32 address, guint32 size, void *
 	memcpy (arv_gvcp_packet_get_write_memory_cmd_data (packet), buffer, size);
 
 	do {
+		GError *local_error = NULL;
+
 		io_data->packet_id = arv_gvcp_next_packet_id (io_data->packet_id);
 		arv_gvcp_packet_set_packet_id (packet, io_data->packet_id);
 
 		arv_gvcp_packet_debug (packet, ARV_DEBUG_LEVEL_LOG);
 
-		g_socket_send_to (io_data->socket, io_data->device_address,
-				  (const char *) packet, packet_size,
-				  NULL, NULL);
+		_flush_socket_buffer(io_data);
+		success = g_socket_send_to (io_data->socket, io_data->device_address,
+					    (const char *) packet, packet_size,
+					    NULL, &local_error) >= 0;
 
-		if (g_poll (&io_data->poll_in_event, 1, io_data->gvcp_timeout_ms) > 0) {
-			count = g_socket_receive (io_data->socket, io_data->buffer,
-						  ARV_GV_DEVICE_BUFFER_SIZE, NULL, NULL);
-			if (count >= arv_gvcp_packet_get_write_memory_ack_size ()) {
-				ArvGvcpPacket *ack_packet = io_data->buffer;
-				ArvGvcpPacketType packet_type;
-				ArvGvcpCommand command;
-				guint16 packet_id;
+		if (success) {
+			gboolean pending_ack;
+			gboolean expected_answer;
 
-				arv_gvcp_packet_debug (ack_packet, ARV_DEBUG_LEVEL_LOG);
+			timeout_ms = io_data->gvcp_timeout_ms;
 
-				packet_type = arv_gvcp_packet_get_packet_type (ack_packet);
-				command = arv_gvcp_packet_get_command (ack_packet);
-				packet_id = arv_gvcp_packet_get_packet_id (ack_packet);
-
-				if (packet_type == ARV_GVCP_PACKET_TYPE_ACK &&
-				    command == ARV_GVCP_COMMAND_WRITE_MEMORY_ACK &&
-				    packet_id == io_data->packet_id)
-					success = TRUE;
+			do {
+				success = TRUE;
+				success = success && g_poll (&io_data->poll_in_event, 1, io_data->gvcp_timeout_ms) > 0;
+				if (success)
+					count = g_socket_receive (io_data->socket, io_data->buffer,
+								  ARV_GV_DEVICE_BUFFER_SIZE, NULL, &local_error);
 				else
-					arv_gvcp_packet_debug (ack_packet, ARV_DEBUG_LEVEL_WARNING);
-			}
+					count = 0;
+				success = success && (count >= arv_gvcp_packet_get_write_memory_ack_size ());
+
+				if (success) {
+					ArvGvcpPacketType packet_type;
+					ArvGvcpCommand command;
+					guint16 packet_id;
+
+					arv_gvcp_packet_debug (ack_packet, ARV_DEBUG_LEVEL_LOG);
+
+					packet_type = arv_gvcp_packet_get_packet_type (ack_packet);
+					command = arv_gvcp_packet_get_command (ack_packet);
+					packet_id = arv_gvcp_packet_get_packet_id (ack_packet);
+
+					if (command == ARV_GVCP_COMMAND_PENDING_ACK) {
+						pending_ack = TRUE;
+						expected_answer = FALSE;
+
+						timeout_ms = arv_gvcp_packet_get_pending_ack_timeout (ack_packet);
+
+						arv_log_device ("[GvDevice::write_memory] Pending ack timeout = %d", timeout_ms);
+					} else {
+						pending_ack = FALSE;
+						expected_answer = packet_type == ARV_GVCP_PACKET_TYPE_ACK &&
+							command == ARV_GVCP_COMMAND_WRITE_MEMORY_ACK &&
+							packet_id == io_data->packet_id;
+						if (!expected_answer) {
+							arv_debug_device ("[GvDevice::write_memory] Unexpected answer (0x%04x)",
+									  packet_type);
+						}
+					}
+				} else {
+					pending_ack = FALSE;
+					expected_answer = FALSE;
+					if (local_error != NULL)
+						arv_warning_device ("[GvDevice::write_memory] Ack reception error: %s", local_error->message);
+					g_clear_error (&local_error);
+				}
+			} while (pending_ack);
+
+			success = success && expected_answer;
+		} else {
+			if (local_error != NULL)
+				arv_warning_device ("[GvDevice::write_memory] Command sending error: %s", local_error->message);
+			g_clear_error (&local_error);
 		}
 
 		n_retries++;
@@ -236,11 +348,7 @@ _write_memory (ArvGvDeviceIOData *io_data, guint32 address, guint32 size, void *
 
 	arv_gvcp_packet_free (packet);
 
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_mutex_unlock (&io_data->mutex);
-#else
-	g_mutex_unlock (io_data->mutex);
-#endif
 
 	if (!success) {
 		if (error != NULL && *error == NULL)
@@ -255,52 +363,91 @@ gboolean
 _read_register (ArvGvDeviceIOData *io_data, guint32 address, guint32 *value_placeholder, GError **error)
 {
 	ArvGvcpPacket *packet;
+	ArvGvcpPacket *ack_packet = io_data->buffer;
 	size_t packet_size;
 	int count;
 	unsigned int n_retries = 0;
 	gboolean success = FALSE;
+	guint32 timeout_ms;
 
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_mutex_lock (&io_data->mutex);
-#else
-	g_mutex_lock (io_data->mutex);
-#endif
 
 	packet = arv_gvcp_packet_new_read_register_cmd (address, 0, &packet_size);
 
 	do {
+		GError *local_error = NULL;
+
 		io_data->packet_id = arv_gvcp_next_packet_id (io_data->packet_id);
 		arv_gvcp_packet_set_packet_id (packet, io_data->packet_id);
 
 		arv_gvcp_packet_debug (packet, ARV_DEBUG_LEVEL_LOG);
 
-		g_socket_send_to (io_data->socket, io_data->device_address,
-				  (const char *) packet, packet_size,
-				  NULL, NULL);
+		_flush_socket_buffer(io_data);
+		success = g_socket_send_to (io_data->socket, io_data->device_address,
+					    (const char *) packet, packet_size,
+					    NULL, &local_error) >= 0;
 
-		if (g_poll (&io_data->poll_in_event, 1, io_data->gvcp_timeout_ms) > 0) {
-			count = g_socket_receive (io_data->socket, io_data->buffer,
-						  ARV_GV_DEVICE_BUFFER_SIZE, NULL, NULL);
-			if (count > 0) {
-				ArvGvcpPacket *ack_packet = io_data->buffer;
-				ArvGvcpPacketType packet_type;
-				ArvGvcpCommand command;
-				guint16 packet_id;
+		if (success) {
+			gboolean pending_ack;
+			gboolean expected_answer;
 
-				arv_gvcp_packet_debug (ack_packet, ARV_DEBUG_LEVEL_LOG);
+			timeout_ms = io_data->gvcp_timeout_ms;
 
-				packet_type = arv_gvcp_packet_get_packet_type (ack_packet);
-				command = arv_gvcp_packet_get_command (ack_packet);
-				packet_id = arv_gvcp_packet_get_packet_id (ack_packet);
+			do {
+				success = TRUE;
+				success = success && g_poll (&io_data->poll_in_event, 1, io_data->gvcp_timeout_ms) > 0;
+				if (success)
+					count = g_socket_receive (io_data->socket, io_data->buffer,
+						  ARV_GV_DEVICE_BUFFER_SIZE, NULL, &local_error);
+				else
+					count = 0;
+				success = success && (count > 0);
 
-				if (packet_type == ARV_GVCP_PACKET_TYPE_ACK &&
-				    command == ARV_GVCP_COMMAND_READ_REGISTER_ACK &&
-				    packet_id == io_data->packet_id) {
-					*value_placeholder = arv_gvcp_packet_get_read_register_ack_value (ack_packet);
-					success = TRUE;
-				} else
-					arv_gvcp_packet_debug (ack_packet, ARV_DEBUG_LEVEL_WARNING);
-			}
+				if (success) {
+					ArvGvcpPacketType packet_type;
+					ArvGvcpCommand command;
+					guint16 packet_id;
+
+					arv_gvcp_packet_debug (ack_packet, ARV_DEBUG_LEVEL_LOG);
+
+					packet_type = arv_gvcp_packet_get_packet_type (ack_packet);
+					command = arv_gvcp_packet_get_command (ack_packet);
+					packet_id = arv_gvcp_packet_get_packet_id (ack_packet);
+
+					if (command == ARV_GVCP_COMMAND_PENDING_ACK) {
+						pending_ack = TRUE;
+						expected_answer = FALSE;
+
+						timeout_ms = arv_gvcp_packet_get_pending_ack_timeout (ack_packet);
+
+						arv_log_device ("[GvDevice::read_register] Pending ack timeout = %d", timeout_ms);
+					} else {
+						pending_ack = FALSE;
+						expected_answer = packet_type == ARV_GVCP_PACKET_TYPE_ACK &&
+							command == ARV_GVCP_COMMAND_READ_REGISTER_ACK &&
+							packet_id == io_data->packet_id;
+						if (!expected_answer) {
+							arv_debug_device ("[GvDevice::read_register] Unexpected answer (0x%04x)",
+									  packet_type);
+						}
+					}
+				} else {
+					pending_ack = FALSE;
+					expected_answer = FALSE;
+					if (local_error != NULL)
+						arv_warning_device ("[GvDevice::read_register] Ack reception error: %s", local_error->message);
+					g_clear_error (&local_error);
+				}
+			} while (pending_ack);
+
+			success = success && expected_answer;
+
+			if (success)
+				*value_placeholder = arv_gvcp_packet_get_read_register_ack_value (ack_packet);
+		} else {
+			if (local_error != NULL)
+				arv_warning_device ("[GvDevice::read_register] Command sending error: %s", local_error->message);
+			g_clear_error (&local_error);
 		}
 
 		n_retries++;
@@ -309,11 +456,7 @@ _read_register (ArvGvDeviceIOData *io_data, guint32 address, guint32 *value_plac
 
 	arv_gvcp_packet_free (packet);
 
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_mutex_unlock (&io_data->mutex);
-#else
-	g_mutex_unlock (io_data->mutex);
-#endif
 
 	if (!success) {
 		*value_placeholder = 0;
@@ -330,52 +473,87 @@ gboolean
 _write_register (ArvGvDeviceIOData *io_data, guint32 address, guint32 value, GError **error)
 {
 	ArvGvcpPacket *packet;
+	ArvGvcpPacket *ack_packet = io_data->buffer;
 	size_t packet_size;
 	int count;
 	unsigned int n_retries = 0;
 	gboolean success = FALSE;
+	guint32 timeout_ms;
 
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_mutex_lock (&io_data->mutex);
-#else
-	g_mutex_lock (io_data->mutex);
-#endif
 
 	packet = arv_gvcp_packet_new_write_register_cmd (address, value, io_data->packet_id, &packet_size);
 
 	do {
+		GError *local_error = NULL;
+
 		io_data->packet_id = arv_gvcp_next_packet_id (io_data->packet_id);
 		arv_gvcp_packet_set_packet_id (packet, io_data->packet_id);
 
 		arv_gvcp_packet_debug (packet, ARV_DEBUG_LEVEL_LOG);
 
-		g_socket_send_to (io_data->socket, io_data->device_address, (const char *) packet, packet_size,
-				  NULL, NULL);
+		_flush_socket_buffer(io_data);
+		success = g_socket_send_to (io_data->socket, io_data->device_address, (const char *) packet, packet_size,
+					    NULL, &local_error) >= 0;
 
-		if (g_poll (&io_data->poll_in_event, 1, io_data->gvcp_timeout_ms) > 0) {
-			count = g_socket_receive (io_data->socket, io_data->buffer,
-						  ARV_GV_DEVICE_BUFFER_SIZE, NULL, NULL);
-			if (count > 0) {
-				ArvGvcpPacket *ack_packet = io_data->buffer;
-				ArvGvcpPacketType packet_type;
-				ArvGvcpCommand command;
-				guint16 packet_id;
+		if (success) {
+			gboolean pending_ack;
+			gboolean expected_answer;
 
-				arv_gvcp_packet_debug (ack_packet, ARV_DEBUG_LEVEL_LOG);
+			timeout_ms = io_data->gvcp_timeout_ms;
 
-				packet_type = arv_gvcp_packet_get_packet_type (ack_packet);
-				command = arv_gvcp_packet_get_command (ack_packet);
-				packet_id = arv_gvcp_packet_get_packet_id (ack_packet);
-
-				arv_log_gvcp ("%d, %d, %d", packet_type, command, packet_id);
-
-				if (packet_type == ARV_GVCP_PACKET_TYPE_ACK &&
-				    command == ARV_GVCP_COMMAND_WRITE_REGISTER_ACK &&
-				    packet_id == io_data->packet_id)
-					success = TRUE;
+			do {
+				success = TRUE;
+				success = success && g_poll (&io_data->poll_in_event, 1, io_data->gvcp_timeout_ms) > 0;
+				if (success)
+					count = g_socket_receive (io_data->socket, io_data->buffer,
+								  ARV_GV_DEVICE_BUFFER_SIZE, NULL, NULL);
 				else
-					arv_gvcp_packet_debug (ack_packet, ARV_DEBUG_LEVEL_WARNING);
-			}
+					count = 0;
+				success = success && (count > 0);
+
+				if (success) {
+					ArvGvcpPacketType packet_type;
+					ArvGvcpCommand command;
+					guint16 packet_id;
+
+					arv_gvcp_packet_debug (ack_packet, ARV_DEBUG_LEVEL_LOG);
+
+					packet_type = arv_gvcp_packet_get_packet_type (ack_packet);
+					command = arv_gvcp_packet_get_command (ack_packet);
+					packet_id = arv_gvcp_packet_get_packet_id (ack_packet);
+
+					if (command == ARV_GVCP_COMMAND_PENDING_ACK) {
+						pending_ack = TRUE;
+						expected_answer = FALSE;
+
+						timeout_ms = arv_gvcp_packet_get_pending_ack_timeout (ack_packet);
+
+						arv_log_device ("[GvDevice::write_register] Pending ack timeout = %d", timeout_ms);
+					} else {
+						pending_ack = FALSE;
+						expected_answer = packet_type == ARV_GVCP_PACKET_TYPE_ACK &&
+							command == ARV_GVCP_COMMAND_WRITE_REGISTER_ACK &&
+							packet_id == io_data->packet_id;
+						if (!expected_answer) {
+							arv_debug_device ("[GvDevice::write_register] Unexpected answer (0x%04x)",
+									  packet_type);
+						}
+					}
+				} else {
+					pending_ack = FALSE;
+					expected_answer = FALSE;
+					if (local_error != NULL)
+						arv_warning_device ("[GvDevice::write_register] Ack reception error: %s", local_error->message);
+					g_clear_error (&local_error);
+				}
+			} while (pending_ack);
+
+			success = success && expected_answer;
+		} else {
+			if (local_error != NULL)
+				arv_warning_device ("[GvDevice::write_register] Command sending error: %s", local_error->message);
+			g_clear_error (&local_error);
 		}
 
 		n_retries++;
@@ -384,11 +562,7 @@ _write_register (ArvGvDeviceIOData *io_data, guint32 address, guint32 value, GEr
 
 	arv_gvcp_packet_free (packet);
 
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_mutex_unlock (&io_data->mutex);
-#else
-	g_mutex_unlock (io_data->mutex);
-#endif
 
 	if (!success) {
 		if (error != NULL && *error == NULL)
@@ -432,12 +606,12 @@ arv_gv_device_heartbeat_thread (void *data)
 
 			while (!_read_register (io_data, ARV_GVBS_CONTROL_CHANNEL_PRIVILEGE_OFFSET, &value, NULL) &&
 			       g_timer_elapsed (timer, NULL) < ARV_GV_DEVICE_HEARTBEAT_RETRY_TIMEOUT_S &&
-			       !thread_data->cancel) {
+			       !g_atomic_int_get (&thread_data->cancel)) {
 				g_usleep (ARV_GV_DEVICE_HEARTBEAT_RETRY_DELAY_US);
 				counter++;
 			}
 
-			if (!thread_data->cancel) {
+			if (!g_atomic_int_get (&thread_data->cancel)) {
 				arv_log_device ("[GvDevice::Heartbeat] Ack value = %d", value);
 
 				if (counter > 1)
@@ -454,7 +628,7 @@ arv_gv_device_heartbeat_thread (void *data)
 			} else
 				io_data->is_controller = FALSE;
 		}
-	} while (!thread_data->cancel);
+	} while (!g_atomic_int_get (&thread_data->cancel));
 
 	g_timer_destroy (timer);
 
@@ -473,6 +647,10 @@ arv_gv_device_take_control (ArvGvDevice *gv_device)
 					     ARV_GVBS_CONTROL_CHANNEL_PRIVILEGE_CONTROL, NULL);
 
 	gv_device->priv->io_data->is_controller = success;
+
+	/* Disable GVSP extended ID mode for now, it is not supported yet by ArvGvStream */
+	if (success)
+		arv_device_set_string_feature_value (ARV_DEVICE (gv_device), "GevGVSPExtendedIDMode", "Off");
 
 	if (!success)
 		arv_warning_device ("[GvDevice::take_control] Can't get control access");
@@ -524,11 +702,134 @@ arv_gv_device_get_packet_size (ArvGvDevice *gv_device)
 }
 
 void
-arv_gv_device_set_packet_size (ArvGvDevice *gv_device, guint packet_size)
+arv_gv_device_set_packet_size (ArvGvDevice *gv_device, gint packet_size)
 {
 	g_return_if_fail (packet_size > 0);
 
 	arv_device_set_integer_feature_value (ARV_DEVICE (gv_device), "GevSCPSPacketSize", packet_size);
+}
+
+/**
+ * arv_gv_device_auto_packet_size:
+ * @gv_device: a #ArvGvDevice
+ *
+ * Automatically determine the biggest packet size that can be used data
+ * streaming, and set GevSCPSPacketSize value accordingly. This function relies
+ * on the GevSCPSFireTestPacket feature. If this feature is not available, the
+ * packet size will be set to a default value (1500 bytes).
+ *
+ * Returns: The packet size, in bytes.
+ *
+ * Since: 0.6.0
+ */
+
+guint
+arv_gv_device_auto_packet_size (ArvGvDevice *gv_device)
+{
+	ArvDevice *device = ARV_DEVICE (gv_device);
+	ArvGvDeviceIOData *io_data = gv_device->priv->io_data;
+	ArvGcNode *node;
+	GSocket *socket;
+	GInetAddress *interface_address;
+	GSocketAddress *interface_socket_address;
+	GInetSocketAddress *local_address;
+	GPollFD poll_fd;
+	const guint8 *address_bytes;
+	guint16 port;
+	gboolean do_not_fragment;
+	gboolean is_command;
+	int n_events;
+	guint max_size, min_size, current_size;
+	guint packet_size = 1500;
+	char *buffer;
+
+	g_return_val_if_fail (ARV_IS_GV_DEVICE (gv_device), 1500);
+
+	node = arv_device_get_feature (device, "GevSCPSFireTestPacket");
+	if (!ARV_IS_GC_COMMAND (node) && !ARV_IS_GC_BOOLEAN (node)) {
+		arv_debug_device ("[GvDevice::auto_packet_size] No GevSCPSFireTestPacket feature found, "
+				  "use default packet size (%d bytes)",
+				  packet_size);
+		return packet_size;
+	}
+
+	is_command = ARV_IS_GC_COMMAND (node);
+
+	interface_address = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (io_data->interface_address));
+	interface_socket_address = g_inet_socket_address_new (interface_address, 0);
+	socket = g_socket_new (G_SOCKET_FAMILY_IPV4, G_SOCKET_TYPE_DATAGRAM, G_SOCKET_PROTOCOL_UDP, NULL);
+	g_socket_bind (socket, interface_socket_address, FALSE, NULL);
+	local_address = G_INET_SOCKET_ADDRESS (g_socket_get_local_address (socket, NULL));
+	port = g_inet_socket_address_get_port (local_address);
+
+	address_bytes = g_inet_address_to_bytes (interface_address);
+	arv_device_set_integer_feature_value (ARV_DEVICE (gv_device), "GevSCDA", g_htonl (*((guint32 *) address_bytes)));
+	arv_device_set_integer_feature_value (ARV_DEVICE (gv_device), "GevSCPHostPort", port);
+
+	g_clear_object (&local_address);
+	g_clear_object (&interface_socket_address);
+
+	do_not_fragment = arv_device_get_boolean_feature_value (device, "GevSCPSDoNotFragment");
+	arv_device_set_boolean_feature_value (device, "GevSCPSDoNotFragment", TRUE);
+
+	poll_fd.fd = g_socket_get_fd (socket);
+	poll_fd.events =  G_IO_IN;
+	poll_fd.revents = 0;
+
+	current_size = 1500;
+	max_size = 16384;
+	min_size = 256;
+
+	buffer = g_malloc (8192);
+
+	do {
+		size_t read_count;
+		unsigned n_tries = 0;
+
+		arv_debug_device ("[GvDevice::auto_packet_size] Try packet size = %d", current_size);
+		arv_device_set_integer_feature_value (device, "GevSCPSPacketSize", current_size);
+
+		do {
+			if (is_command) {
+				arv_device_execute_command (device, "GevSCPSFireTestPacket");
+			} else {
+				arv_device_set_boolean_feature_value (device, "GevSCPSFireTestPacket", FALSE);
+				arv_device_set_boolean_feature_value (device, "GevSCPSFireTestPacket", TRUE);
+			}
+
+			do {
+				n_events = g_poll (&poll_fd, 1, 10);
+				if (n_events != 0)
+					read_count = g_socket_receive (socket, buffer, 8192, NULL, NULL);
+				else
+					read_count = 0;
+				/* Discard late packets, read_count should be equal to packet size minus IP and UDP headers */
+			} while (n_events != 0 && read_count != (current_size - sizeof (struct iphdr) - sizeof (struct udphdr)));
+
+			n_tries++;
+		} while (n_events == 0 && n_tries < 3);
+
+		if (n_events != 0) {
+			arv_debug_device ("[GvDevice::auto_packet_size] Received %d bytes", (int) read_count);
+
+			packet_size = current_size;
+			min_size = current_size;
+			current_size = (max_size - min_size) / 2 + min_size;
+		} else {
+			max_size = current_size;
+			current_size = (max_size - min_size) / 2 + min_size;
+		}
+	} while ((max_size - min_size) > 16);
+
+	g_clear_pointer (&buffer, g_free);
+	g_clear_object (&socket);
+
+	arv_debug_device ("[GvDevice::auto_packet_size] Packet size set to %d bytes", packet_size);
+
+	arv_device_set_boolean_feature_value (device, "GevSCPSDoNotFragment", do_not_fragment);
+	arv_device_set_integer_feature_value (device, "GevSCPSPacketSize", packet_size);
+
+	return packet_size;
 }
 
 static char *
@@ -577,7 +878,7 @@ _load_genicam (ArvGvDevice *gv_device, guint32 address, size_t  *size)
 
 					if (arv_debug_check (&arv_debug_category_misc, ARV_DEBUG_LEVEL_LOG)) {
 						GString *string = g_string_new ("");
-						
+
 						g_string_append_printf (string,
 									"[GvDevice::load_genicam] Raw data size = 0x%x\n", file_size);
 						arv_g_string_append_hex_dump (string, genicam, file_size);
@@ -721,6 +1022,74 @@ arv_gv_device_load_genicam (ArvGvDevice *gv_device)
 					      "<AccessMode>RO</AccessMode>"
 					      "<pPort>Device</pPort>"
 					      "</StringReg>");
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "NumberOfStreamChannels",
+					      "<IntReg Name=\"NumberOfStreamChannels\">"
+					      "<Address>0x904</Address>"
+					      "<Length>4</Length>"
+					      "<AccessMode>RO</AccessMode>"
+					      "<Endianess>BigEndian</Endianess>"
+					      "<pPort>Device</pPort>"
+					      "</IntReg>");
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCPHostPort",
+					      "<Integer Name=\"GevSCPHostPort\">"
+					      "<Visibility>Expert</Visibility>"
+					      "<pIsLocked>TLParamsLocked</pIsLocked>"
+					      "<pValue>GevSCPHostPortReg</pValue>"
+					      "</Integer>");
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCPHostPortReg",
+					      "<MaskedIntReg Name=\"GevSCPHostPortReg\">"
+					      "<Address>0xd00</Address>"
+					      "<pAddress>GevSCPAddrCalc</pAddress>"
+					      "<Length>4</Length>"
+					      "<AccessMode>RW</AccessMode>"
+					      "<pPort>Device</pPort>"
+					      "<LSB>31</LSB>"
+					      "<MSB>16</MSB>"
+					      "<Sign>Unsigned</Sign>"
+					      "<Endianess>BigEndian</Endianess>"
+					      "</MaskedIntReg>");
+#if 0
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCPSFireTestPacket",
+					      "<Command Name=\"GevSCPSFireTestPacket\">"
+					      "<pIsLocked>TLParamsLocked</pIsLocked>"
+					      "<pValue>GevSCPSFireTestPacketReg</pValue>"
+					      "<CommandValue>1</CommandValue>"
+					      "</Boolean>");
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCPSFireTestPacketReg",
+					      "<MaskedIntReg Name=\"GevSCPSFireTestPacketReg\">"
+					      "<Address>0x0d04</Address>"
+					      "<pAddress>GevSCPAddrCalc</pAddress>"
+					      "<Length>4</Length>"
+					      "<AccessMode>RW</AccessMode>"
+					      "<Bit>0</Bit>"
+					      "</MaskedIntReg>");
+#endif
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCPSDoNotFragment",
+					      "<Boolean Name=\"GevSCPSDoNotFragment\">"
+					      "<pIsLocked>TLParamsLocked</pIsLocked>"
+					      "<pValue>GevSCPSDoNotFragmentReg</pValue>"
+					      "</Boolean>");
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCPSDoNotFragmentReg",
+					      "<MaskedIntReg Name=\"GevSCPSDoNotFragmentReg\">"
+					      "<Address>0x0d04</Address>"
+					      "<pAddress>GevSCPAddrCalc</pAddress>"
+					      "<Length>4</Length>"
+					      "<AccessMode>RW</AccessMode>"
+					      "<Bit>1</Bit>"
+					      "</MaskedIntReg>");
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCPSBigEndian",
+					      "<Boolean Name=\"GevSCPSBigEndian\">"
+					      "<pIsLocked>TLParamsLocked</pIsLocked>"
+					      "<pValue>GevSCPSBigEndianReg</pValue>"
+					      "</Boolean>");
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCPSBigEndianReg",
+					      "<MaskedIntReg Name=\"GevSCPSBigEndianReg\">"
+					      "<Address>0x0d04</Address>"
+					      "<pAddress>GevSCPAddrCalc</pAddress>"
+					      "<Length>4</Length>"
+					      "<AccessMode>RW</AccessMode>"
+					      "<Bit>2</Bit>"
+					      "</MaskedIntReg>");
 		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCPSPacketSize",
 					      "<Integer Name=\"GevSCPSPacketSize\">"
 					      "<Visibility>Expert</Visibility>"
@@ -730,6 +1099,7 @@ arv_gv_device_load_genicam (ArvGvDevice *gv_device)
 		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCPSPacketSizeReg",
 					      "<MaskedIntReg Name=\"GevSCPSPacketSizeReg\">"
 					      "<Address>0xd04</Address>"
+					      "<pAddress>GevSCPAddrCalc</pAddress>"
 					      "<Length>4</Length>"
 					      "<AccessMode>RW</AccessMode>"
 					      "<pPort>Device</pPort>"
@@ -738,6 +1108,57 @@ arv_gv_device_load_genicam (ArvGvDevice *gv_device)
 					      "<Sign>Unsigned</Sign>"
 					      "<Endianess>BigEndian</Endianess>"
 					      "</MaskedIntReg>");
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCDA",
+					      "<Integer Name=\"GevSCDA\">"
+					      "<Visibility>Expert</Visibility>"
+					      "<pIsLocked>TLParamsLocked</pIsLocked>"
+					      "<pValue>GevSCDAReg</pValue>"
+					      "</Integer>");
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCDAReg",
+					      "<IntReg Name=\"GevSCDAReg\">"
+					      "<Address>0xd18</Address>"
+					      "<pAddress>GevSCPAddrCalc</pAddress>"
+					      "<Length>4</Length>"
+					      "<AccessMode>RW</AccessMode>"
+					      "<pPort>Device</pPort>"
+					      "<Sign>Unsigned</Sign>"
+					      "<Endianess>BigEndian</Endianess>"
+					      "</IntReg>");
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCSP",
+					      "<Integer Name=\"GevSCSP\">"
+					      "<Visibility>Expert</Visibility>"
+					      "<pIsLocked>TLParamsLocked</pIsLocked>"
+					      "<pValue>GevSCSPReg</pValue>"
+					      "</Integer>");
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCSPReg",
+					      "<MaskedIntReg Name=\"GevSCSPReg\">"
+					      "<Address>0xd1c</Address>"
+					      "<pAddress>GevSCPAddrCalc</pAddress>"
+					      "<Length>4</Length>"
+					      "<AccessMode>RO</AccessMode>"
+					      "<pPort>Device</pPort>"
+					      "<LSB>31</LSB>"
+					      "<MSB>16</MSB>"
+					      "<Sign>Unsigned</Sign>"
+					      "<Endianess>BigEndian</Endianess>"
+					      "</MaskedIntReg>");
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevSCPAddrCalc",
+					      "<IntSwissKnife Name= \"GevSCPAddrCalc\">"
+					      "<pVariable Name=\"SEL\">GevStreamChannelSelector</pVariable>"
+					      "<Formula>SEL * 0x40</Formula>"
+					      "</IntSwissKnife>");
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevStreamChannelSelector",
+					      "<Integer Name=\"GevStreamChannelSelector\">"
+					      "<Value>0</Value>"
+					      "<Min>0</Min>"
+					      "<pMax>GevStreamChannelSelectorMax</pMax>"
+					      "<Inc>1</Inc>"
+					      "</Integer>");
+		arv_gc_set_default_node_data (gv_device->priv->genicam, "GevStreamChannelSelectorMax",
+					      "<IntSwissKnife Name=\"GevStreamChannelSelectorMax\">"
+					      "<pVariable Name=\"N_STREAM_CHANNELS\">NumberOfStreamChannels</pVariable>"
+					      "<Formula>N_STREAM_CHANNELS - 1</Formula>"
+					      "</IntSwissKnife>");
 		arv_gc_set_default_node_data (gv_device->priv->genicam, "TLParamsLocked",
 					      "<Integer Name=\"TLParamsLocked\">"
 					      "<Visibility>Invisible</Visibility>"
@@ -756,14 +1177,11 @@ arv_gv_device_create_stream (ArvDevice *device, ArvStreamCallback callback, void
 	ArvGvDevice *gv_device = ARV_GV_DEVICE (device);
 	ArvGvDeviceIOData *io_data = gv_device->priv->io_data;
 	ArvStream *stream;
-	const guint8 *address_bytes;
-	guint32 stream_port;
-	guint packet_size;
 	guint32 n_stream_channels;
 	GInetAddress *interface_address;
 	GInetAddress *device_address;
 
-	arv_device_read_register (device, ARV_GVBS_N_STREAM_CHANNELS_OFFSET, &n_stream_channels, NULL);
+	n_stream_channels = arv_device_get_integer_feature_value (device, "NumberOfStreamChannels");
 	arv_debug_device ("[GvDevice::create_stream] Number of stream channels = %d", n_stream_channels);
 
 	if (n_stream_channels < 1)
@@ -776,38 +1194,13 @@ arv_gv_device_create_stream (ArvDevice *device, ArvStreamCallback callback, void
 
 	interface_address = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (io_data->interface_address));
 	device_address = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (io_data->device_address));
-	address_bytes = g_inet_address_to_bytes (interface_address);
 
-	/* On some cameras, the default packet size after reset is incorrect.
-	 * So, if the value is obviously incorrect, set it to a default size. */
-	packet_size = arv_gv_device_get_packet_size (gv_device);
-	if (packet_size <= ARV_GVSP_PACKET_PROTOCOL_OVERHEAD) {
-		arv_gv_device_set_packet_size (gv_device, ARV_GV_DEVICE_GVSP_PACKET_SIZE_DEFAULT);
-		arv_debug_device ("[GvDevice::create_stream] Packet size set to default value (%d)",
-				  ARV_GV_DEVICE_GVSP_PACKET_SIZE_DEFAULT);
-	}
-
-	packet_size = arv_gv_device_get_packet_size (gv_device);
-	arv_debug_device ("[GvDevice::create_stream] Packet size = %d byte(s)", packet_size);
-
-	stream = arv_gv_stream_new (device_address, 0, callback, user_data,
-				    arv_gv_device_get_timestamp_tick_frequency (gv_device), packet_size);
-
-	stream_port = arv_gv_stream_get_port (ARV_GV_STREAM (stream));
-
-	if (!arv_device_write_register (device, ARV_GVBS_STREAM_CHANNEL_0_IP_ADDRESS_OFFSET,
-					g_htonl(*((guint32 *) address_bytes)), NULL) ||
-	    !arv_device_write_register (device, ARV_GVBS_STREAM_CHANNEL_0_PORT_OFFSET, stream_port, NULL)) {
-		arv_warning_device ("[GvDevice::create_stream] Stream configuration failed");
-
-		g_object_unref (stream);
+	stream = arv_gv_stream_new (gv_device, interface_address, device_address, callback, user_data);
+	if (!ARV_IS_STREAM (stream))
 		return NULL;
-	}
 
 	if (!gv_device->priv->is_packet_resend_supported)
-		g_object_set (stream, "packet-resend", ARV_GV_STREAM_PACKET_RESEND_NEVER, NULL); 
-
-	arv_debug_device ("[GvDevice::create_stream] Stream port = %d", stream_port);
+		g_object_set (stream, "packet-resend", ARV_GV_STREAM_PACKET_RESEND_NEVER, NULL);
 
 	return stream;
 }
@@ -821,7 +1214,7 @@ arv_gv_device_get_genicam (ArvDevice *device)
 }
 
 static gboolean
-arv_gv_device_read_memory (ArvDevice *device, guint32 address, guint32 size, void *buffer, GError **error)
+arv_gv_device_read_memory (ArvDevice *device, guint64 address, guint32 size, void *buffer, GError **error)
 {
 	ArvGvDevice *gv_device = ARV_GV_DEVICE (device);
 	int i;
@@ -839,7 +1232,7 @@ arv_gv_device_read_memory (ArvDevice *device, guint32 address, guint32 size, voi
 }
 
 static gboolean
-arv_gv_device_write_memory (ArvDevice *device, guint32 address, guint32 size, void *buffer, GError **error)
+arv_gv_device_write_memory (ArvDevice *device, guint64 address, guint32 size, void *buffer, GError **error)
 {
 	ArvGvDevice *gv_device = ARV_GV_DEVICE (device);
 	int i;
@@ -857,7 +1250,7 @@ arv_gv_device_write_memory (ArvDevice *device, guint32 address, guint32 size, vo
 }
 
 static gboolean
-arv_gv_device_read_register (ArvDevice *device, guint32 address, guint32 *value, GError **error)
+arv_gv_device_read_register (ArvDevice *device, guint64 address, guint32 *value, GError **error)
 {
 	ArvGvDevice *gv_device = ARV_GV_DEVICE (device);
 
@@ -865,11 +1258,46 @@ arv_gv_device_read_register (ArvDevice *device, guint32 address, guint32 *value,
 }
 
 static gboolean
-arv_gv_device_write_register (ArvDevice *device, guint32 address, guint32 value, GError **error)
+arv_gv_device_write_register (ArvDevice *device, guint64 address, guint32 value, GError **error)
 {
 	ArvGvDevice *gv_device = ARV_GV_DEVICE (device);
 
 	return _write_register (gv_device->priv->io_data, address, value, error);
+}
+
+/**
+ * arv_gv_device_get_stream_options:
+ * @gv_device: a #ArvGvDevice
+ *
+ * Returns: options for stream creation
+ *
+ * Since: 0.6.0
+ */
+
+ArvGvStreamOption
+arv_gv_device_get_stream_options (ArvGvDevice *gv_device)
+{
+	g_return_val_if_fail (ARV_IS_GV_DEVICE (gv_device), ARV_GV_STREAM_OPTION_NONE);
+
+	return gv_device->priv->stream_options;
+}
+
+/**
+ * arv_gv_device_set_stream_options:
+ * @gv_device: a #ArvGvDevice
+ * @options: options for stream creation
+ *
+ * Sets the option used during stream creation. It must be called before arv_device_create_stream().
+ *
+ * Since: 0.6.0
+ */
+
+void
+arv_gv_device_set_stream_options (ArvGvDevice *gv_device, ArvGvStreamOption options)
+{
+	g_return_if_fail (ARV_IS_GV_DEVICE (gv_device));
+
+	gv_device->priv->stream_options = options;
 }
 
 ArvDevice *
@@ -897,11 +1325,8 @@ arv_gv_device_new (GInetAddress *interface_address, GInetAddress *device_address
 
 	io_data = g_new0 (ArvGvDeviceIOData, 1);
 
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_mutex_init (&io_data->mutex);
-#else
-	io_data->mutex = g_mutex_new ();
-#endif
+
 	io_data->packet_id = 65300; /* Start near the end of the circular counter */
 
 	io_data->interface_address = g_inet_socket_address_new (interface_address, 0);
@@ -909,7 +1334,7 @@ arv_gv_device_new (GInetAddress *interface_address, GInetAddress *device_address
 	io_data->socket = g_socket_new (G_SOCKET_FAMILY_IPV4,
 					G_SOCKET_TYPE_DATAGRAM,
 					G_SOCKET_PROTOCOL_UDP, NULL);
-	g_socket_bind (io_data->socket, io_data->interface_address, TRUE, NULL);
+	g_socket_bind (io_data->socket, io_data->interface_address, FALSE, NULL);
 
 	io_data->buffer = g_malloc (ARV_GV_DEVICE_BUFFER_SIZE);
 	io_data->gvcp_n_retries = ARV_GV_DEVICE_GVCP_N_RETRIES_DEFAULT;
@@ -938,8 +1363,8 @@ arv_gv_device_new (GInetAddress *interface_address, GInetAddress *device_address
 
 	gv_device->priv->heartbeat_data = heartbeat_data;
 
-	gv_device->priv->heartbeat_thread = arv_g_thread_new ("arv_gv_heartbeat", arv_gv_device_heartbeat_thread,
-							      gv_device->priv->heartbeat_data);
+	gv_device->priv->heartbeat_thread = g_thread_new ("arv_gv_heartbeat", arv_gv_device_heartbeat_thread,
+							  gv_device->priv->heartbeat_data);
 
 	arv_device_read_register (ARV_DEVICE (gv_device), ARV_GVBS_GVCP_CAPABILITY_OFFSET, &capabilities, NULL);
 	gv_device->priv->is_packet_resend_supported = (capabilities & ARV_GVBS_GVCP_CAPABILITY_PACKET_RESEND) != 0;
@@ -950,7 +1375,7 @@ arv_gv_device_new (GInetAddress *interface_address, GInetAddress *device_address
 
 	document = ARV_DOM_DOCUMENT (gv_device->priv->genicam);
 	register_description = ARV_GC_REGISTER_DESCRIPTION_NODE (arv_dom_document_get_document_element (document));
-	if (!arv_gc_register_description_node_check_schema_version (register_description, 1, 1, 0))
+	if (arv_gc_register_description_node_compare_schema_version (register_description, 1, 1, 0) < 0)
 		arv_debug_device ("[GvDevice::new] Register workaround = yes");
 
 	return ARV_DEVICE (gv_device);
@@ -964,6 +1389,7 @@ arv_gv_device_init (ArvGvDevice *gv_device)
 	gv_device->priv->genicam = NULL;
 	gv_device->priv->genicam_xml = NULL;
 	gv_device->priv->genicam_xml_size = 0;
+	gv_device->priv->stream_options = ARV_GV_STREAM_OPTION_NONE;
 }
 
 static void
@@ -977,7 +1403,7 @@ arv_gv_device_finalize (GObject *object)
 
 		heartbeat_data = gv_device->priv->heartbeat_data;
 
-		heartbeat_data->cancel = TRUE;
+		g_atomic_int_set (&heartbeat_data->cancel, TRUE);
 		g_thread_join (gv_device->priv->heartbeat_thread);
 		g_free (heartbeat_data);
 
@@ -992,11 +1418,7 @@ arv_gv_device_finalize (GObject *object)
 	g_object_unref (io_data->interface_address);
 	g_object_unref (io_data->socket);
 	g_free (io_data->buffer);
-#if GLIB_CHECK_VERSION(2,32,0)
 	g_mutex_clear (&io_data->mutex);
-#else
-	g_mutex_free (io_data->mutex);
-#endif
 
 	g_free (gv_device->priv->io_data);
 
@@ -1013,7 +1435,7 @@ arv_gv_device_finalize (GObject *object)
  * @device: a #ArvGvDevice
  *
  * Returns: (transfer none): the device host interface IP address.
- * 
+ *
  * Since: 0.2.0
  */
 

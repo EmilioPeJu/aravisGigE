@@ -23,6 +23,10 @@
 #ifndef ARV_TOOLS_H
 #define ARV_TOOLS_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
 
 G_BEGIN_DECLS
@@ -68,39 +72,11 @@ void 		arv_copy_memory_with_endianess 	(void *to, size_t to_size, guint to_endia
 void * 		arv_decompress 			(void *input_buffer, size_t input_size, size_t *output_size);
 
 const char * 	arv_pixel_format_to_gst_caps_string 		(ArvPixelFormat pixel_format);
-ArvPixelFormat 	arv_pixel_format_from_gst_caps 			(const char *name, const char *format);
+ArvPixelFormat 	arv_pixel_format_from_gst_caps 			(const char *name, const char *format, int bpp, int depth);
 const char * 	arv_pixel_format_to_gst_0_10_caps_string 	(ArvPixelFormat pixel_format);
 ArvPixelFormat 	arv_pixel_format_from_gst_0_10_caps 		(const char *name, int bpp, int depth, guint32 fourcc);
 
-/*
-   Compatibility with old glib
- */
-
-#if GLIB_CHECK_VERSION(2,36,0)
-#define arv_g_type_init()
-#else
-#define arv_g_type_init() g_type_init()
-#endif
-
-#if GLIB_CHECK_VERSION(2,32,0)
-
-#define ARV_DEFINE_STATIC_MUTEX(mutex) static GMutex mutex
-#define arv_g_mutex_lock(mutex) g_mutex_lock(mutex)
-#define arv_g_mutex_unlock(mutex) g_mutex_unlock(mutex)
-
-#define arv_g_thread_init(vtable)
-#define arv_g_thread_new(name,func,data) g_thread_new(name,func,data)
-
-#else
-
-#define ARV_DEFINE_STATIC_MUTEX(mutex) static GStaticMutex mutex = G_STATIC_MUTEX_INIT
-#define arv_g_mutex_lock(mutex) g_static_mutex_lock(mutex)
-#define arv_g_mutex_unlock(mutex) g_static_mutex_unlock(mutex)
-
-#define arv_g_thread_init(vtable) g_thread_init(vtable)
-#define arv_g_thread_new(name,func,data) g_thread_create(func,data,TRUE,NULL)
-
-#endif
+const char *	arv_vendor_alias_lookup		(const char *vendor);
 
 G_END_DECLS
 

@@ -23,6 +23,10 @@
 #ifndef ARV_BUFFER_H
 #define ARV_BUFFER_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
 
 G_BEGIN_DECLS
@@ -115,6 +119,8 @@ const void *		arv_buffer_get_user_data	(ArvBuffer *buffer);
 ArvBufferPayloadType	arv_buffer_get_payload_type	(ArvBuffer *buffer);
 guint64			arv_buffer_get_timestamp	(ArvBuffer *buffer);
 void			arv_buffer_set_timestamp	(ArvBuffer *buffer, guint64 timestamp_ns);
+guint64			arv_buffer_get_system_timestamp	(ArvBuffer *buffer);
+void			arv_buffer_set_system_timestamp	(ArvBuffer *buffer, guint64 timestamp_ns);
 guint32 		arv_buffer_get_frame_id 	(ArvBuffer *buffer);
 const void *		arv_buffer_get_data		(ArvBuffer *buffer, size_t *size);
 

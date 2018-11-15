@@ -1,6 +1,6 @@
 /* Aravis - Digital camera library
  *
- * Copyright © 2009-2010 Emmanuel Pacaud
+ * Copyright © 2009-2016 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,10 +22,10 @@
 
 /**
  * SECTION: arvfakestream
- * @short_description: Fake camera stream
+ * @short_description: Fake stream
  */
 
-#include <arvfakestream.h>
+#include <arvfakestreamprivate.h>
 #include <arvstreamprivate.h>
 #include <arvbufferprivate.h>
 #include <arvdebug.h>
@@ -69,19 +69,24 @@ arv_fake_stream_thread (void *data)
 	if (thread_data->callback != NULL)
 		thread_data->callback (thread_data->user_data, ARV_STREAM_CALLBACK_TYPE_INIT, NULL);
 
-	while (!thread_data->cancel) {
+	while (!g_atomic_int_get (&thread_data->cancel)) {
 		arv_fake_camera_wait_for_next_frame (thread_data->camera);
 		buffer = arv_stream_pop_input_buffer (thread_data->stream);
 		if (buffer != NULL) {
+			if (thread_data->callback != NULL)
+				thread_data->callback (thread_data->user_data, ARV_STREAM_CALLBACK_TYPE_START_BUFFER,
+						       NULL);
+
 			arv_fake_camera_fill_buffer (thread_data->camera, buffer, NULL);
 			if (buffer->priv->status == ARV_BUFFER_STATUS_SUCCESS)
 				thread_data->n_completed_buffers++;
 			else
 				thread_data->n_failures++;
+			arv_stream_push_output_buffer (thread_data->stream, buffer);
+
 			if (thread_data->callback != NULL)
 				thread_data->callback (thread_data->user_data, ARV_STREAM_CALLBACK_TYPE_BUFFER_DONE,
 						       buffer);
-			arv_stream_push_output_buffer (thread_data->stream, buffer);
 		} else
 			thread_data->n_underruns++;
 	}
@@ -134,7 +139,7 @@ arv_fake_stream_new (ArvFakeCamera *camera, ArvStreamCallback callback, void *us
 
 	fake_stream->priv->camera = camera;
 	fake_stream->priv->thread_data = thread_data;
-	fake_stream->priv->thread = arv_g_thread_new ("arv_fake_stream", arv_fake_stream_thread, fake_stream->priv->thread_data);
+	fake_stream->priv->thread = g_thread_new ("arv_fake_stream", arv_fake_stream_thread, fake_stream->priv->thread_data);
 
 	return ARV_STREAM (fake_stream);
 }
@@ -173,7 +178,7 @@ arv_fake_stream_finalize (GObject *object)
 
 		thread_data = fake_stream->priv->thread_data;
 
-		thread_data->cancel = TRUE;
+		g_atomic_int_set (&thread_data->cancel, TRUE);
 		g_thread_join (fake_stream->priv->thread);
 		g_free (thread_data);
 

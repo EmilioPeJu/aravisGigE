@@ -26,7 +26,6 @@
  */
 
 #include <arvgcswissknife.h>
-#include <arvgcvariablenode.h>
 #include <arvevaluator.h>
 #include <arvgcinteger.h>
 #include <arvgcfloat.h>
@@ -66,8 +65,10 @@ arv_gc_swiss_knife_post_new_child (ArvDomNode *self, ArvDomNode *child)
 				node->formula_node = property_node;
 				break;
 			case ARV_GC_PROPERTY_NODE_TYPE_EXPRESSION:
+				node->expressions = g_slist_prepend (node->expressions, property_node);
+				break;
 			case ARV_GC_PROPERTY_NODE_TYPE_CONSTANT:
-				arv_warning_genicam ("[GcSwissKnife::post_new_child] Constant and Expression not yet implemented");
+				node->constants = g_slist_prepend (node->constants, property_node);
 				break;
 			default:
 				ARV_DOM_NODE_CLASS (parent_class)->post_new_child (self, child);
@@ -128,8 +129,10 @@ arv_gc_swiss_knife_finalize (GObject *object)
 	ArvGcSwissKnife *gc_swiss_knife = ARV_GC_SWISS_KNIFE (object);
 
 	g_slist_free (gc_swiss_knife->variables);
+	g_slist_free (gc_swiss_knife->expressions);
+	g_slist_free (gc_swiss_knife->constants);
 
-	g_object_unref (gc_swiss_knife->formula);
+	g_clear_object (&gc_swiss_knife->formula);
 
 	parent_class->finalize (object);
 }
@@ -165,15 +168,45 @@ _update_variables (ArvGcSwissKnife *gc_swiss_knife, GError **error)
 	else
 		expression = "";
 
-	if (local_error != NULL) { 
+	if (local_error != NULL) {
 		g_propagate_error (error, local_error);
 		return;
 	}
 
 	arv_evaluator_set_expression (gc_swiss_knife->formula, expression);
 
+	for (iter = gc_swiss_knife->expressions; iter != NULL; iter = iter->next) {
+		const char *expression;
+		const char *name;
+
+		expression = arv_gc_property_node_get_string (ARV_GC_PROPERTY_NODE (iter->data), &local_error);
+		if (local_error != NULL) {
+			g_propagate_error (error, local_error);
+			return;
+		}
+
+		name = arv_gc_property_node_get_name (iter->data);
+
+		arv_evaluator_set_sub_expression (gc_swiss_knife->formula, name, expression);
+	}
+
+	for (iter = gc_swiss_knife->constants; iter != NULL; iter = iter->next) {
+		const char *constant;
+		const char *name;
+
+		constant = arv_gc_property_node_get_string (ARV_GC_PROPERTY_NODE (iter->data), &local_error);
+		if (local_error != NULL) {
+			g_propagate_error (error, local_error);
+			return;
+		}
+
+		name = arv_gc_property_node_get_name (iter->data);
+
+		arv_evaluator_set_constant (gc_swiss_knife->formula, name, constant);
+	}
+
 	for (iter = gc_swiss_knife->variables; iter != NULL; iter = iter->next) {
-		ArvGcVariableNode *variable_node = iter->data;
+		ArvGcPropertyNode *variable_node = iter->data;
 
 		node = arv_gc_property_node_get_linked_node (ARV_GC_PROPERTY_NODE (variable_node));
 		if (arv_gc_feature_node_get_value_type (ARV_GC_FEATURE_NODE (node)) == G_TYPE_INT64) {
@@ -181,26 +214,26 @@ _update_variables (ArvGcSwissKnife *gc_swiss_knife, GError **error)
 
 			value = arv_gc_integer_get_value (ARV_GC_INTEGER (node), &local_error);
 
-			if (local_error != NULL) { 
+			if (local_error != NULL) {
 				g_propagate_error (error, local_error);
 				return;
 			}
 
 			arv_evaluator_set_int64_variable (gc_swiss_knife->formula,
-							  arv_gc_variable_node_get_name (variable_node),
+							  arv_gc_property_node_get_name (variable_node),
 							  value);
 		} else if (arv_gc_feature_node_get_value_type (ARV_GC_FEATURE_NODE (node)) == G_TYPE_DOUBLE) {
 			double value;
 
 			value = arv_gc_float_get_value (ARV_GC_FLOAT (node), &local_error);
 
-			if (local_error != NULL) { 
+			if (local_error != NULL) {
 				g_propagate_error (error, local_error);
 				return;
 			}
 
 			arv_evaluator_set_double_variable (gc_swiss_knife->formula,
-							  arv_gc_variable_node_get_name (variable_node),
+							  arv_gc_property_node_get_name (variable_node),
 							  value);
 		}
 	}
@@ -215,7 +248,7 @@ arv_gc_swiss_knife_get_integer_value (ArvGcInteger *gc_integer, GError **error)
 
 	_update_variables (gc_swiss_knife, &local_error);
 
-	if (local_error != NULL) { 
+	if (local_error != NULL) {
 		g_propagate_error (error, local_error);
 		return 0;
 	}
@@ -243,7 +276,7 @@ arv_gc_swiss_knife_get_float_value (ArvGcFloat *gc_float, GError **error)
 
 	_update_variables (gc_swiss_knife, &local_error);
 
-	if (local_error != NULL) { 
+	if (local_error != NULL) {
 		g_propagate_error (error, local_error);
 		return 0.0;
 	}

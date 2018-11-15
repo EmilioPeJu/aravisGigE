@@ -23,10 +23,15 @@
 #ifndef ARV_H
 #define ARV_H
 
+#define ARV_H_INSIDE
+
 #include <arvtypes.h>
 
+#include <arvfeatures.h>
+#include <arvversion.h>
 #include <arvdebug.h>
 #include <arvmisc.h>
+#include <arvstr.h>
 #include <arvzip.h>
 #include <arvsystem.h>
 #include <arvevaluator.h>
@@ -68,10 +73,21 @@
 #include <arvgvinterface.h>
 #include <arvgvdevice.h>
 #include <arvgvstream.h>
+#if ARAVIS_HAS_USB
+#include <arvuvcp.h>
+#include <arvuvsp.h>
+#include <arvuvinterface.h>
+#include <arvuvdevice.h>
+#include <arvuvstream.h>
+#endif
 #include <arvfakeinterface.h>
 #include <arvfakedevice.h>
 #include <arvfakestream.h>
 #include <arvfakecamera.h>
+#include <arvgvfakecamera.h>
 #include <arvrealtime.h>
+#include <arvxmlschema.h>
+
+#undef ARV_H_INSIDE
 
 #endif

@@ -23,6 +23,10 @@
 #ifndef ARV_CHUNK_PARSER_H
 #define ARV_CHUNK_PARSER_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
 #include <arvgc.h>
 
@@ -69,7 +73,7 @@ GType arv_chunk_parser_get_type (void);
 
 ArvChunkParser *	arv_chunk_parser_new 			(const char *xml, gsize size);
 const char *		arv_chunk_parser_get_string_value	(ArvChunkParser *parser, ArvBuffer *buffer, const char *chunk);
-gint64			arv_chunk_parser_get_integer_value	(ArvChunkParser *parser, ArvBuffer *buffer, const char *chunk); 
+gint64			arv_chunk_parser_get_integer_value	(ArvChunkParser *parser, ArvBuffer *buffer, const char *chunk);
 double			arv_chunk_parser_get_float_value	(ArvChunkParser *parser, ArvBuffer *buffer, const char *chunk);
 
 G_END_DECLS

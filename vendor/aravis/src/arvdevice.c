@@ -20,7 +20,7 @@
  * Author: Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-/** 
+/**
  * SECTION: arvdevice
  * @short_description: Abstract base class for device handling
  *
@@ -98,7 +98,7 @@ arv_device_create_stream (ArvDevice *device, ArvStreamCallback callback, void *u
  **/
 
 gboolean
-arv_device_read_memory (ArvDevice *device, guint32 address, guint32 size, void *buffer, GError **error)
+arv_device_read_memory (ArvDevice *device, guint64 address, guint32 size, void *buffer, GError **error)
 {
 	g_return_val_if_fail (ARV_IS_DEVICE (device), FALSE);
 	g_return_val_if_fail (buffer != NULL, FALSE);
@@ -124,7 +124,7 @@ arv_device_read_memory (ArvDevice *device, guint32 address, guint32 size, void *
  **/
 
 gboolean
-arv_device_write_memory (ArvDevice *device, guint32 address, guint32 size, void *buffer, GError **error)
+arv_device_write_memory (ArvDevice *device, guint64 address, guint32 size, void *buffer, GError **error)
 {
 	g_return_val_if_fail (ARV_IS_DEVICE (device), FALSE);
 	g_return_val_if_fail (buffer != NULL, FALSE);
@@ -149,7 +149,7 @@ arv_device_write_memory (ArvDevice *device, guint32 address, guint32 size, void 
  **/
 
 gboolean
-arv_device_read_register (ArvDevice *device, guint32 address, guint32 *value, GError **error)
+arv_device_read_register (ArvDevice *device, guint64 address, guint32 *value, GError **error)
 {
 	g_return_val_if_fail (ARV_IS_DEVICE (device), FALSE);
 	g_return_val_if_fail (value != NULL, FALSE);
@@ -173,7 +173,7 @@ arv_device_read_register (ArvDevice *device, guint32 address, guint32 *value, GE
  **/
 
 gboolean
-arv_device_write_register (ArvDevice *device, guint32 address, guint32 value, GError **error)
+arv_device_write_register (ArvDevice *device, guint64 address, guint32 value, GError **error)
 {
 	g_return_val_if_fail (ARV_IS_DEVICE (device), FALSE);
 	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
@@ -182,7 +182,7 @@ arv_device_write_register (ArvDevice *device, guint32 address, guint32 value, GE
 }
 
 /**
- * arv_device_get_genicam: 
+ * arv_device_get_genicam:
  * @device: a #ArvDevice
  *
  * Retrieves the genicam interface of the given device.
@@ -198,14 +198,6 @@ arv_device_get_genicam (ArvDevice *device)
 	g_return_val_if_fail (ARV_IS_DEVICE (device), NULL);
 
 	return ARV_DEVICE_GET_CLASS (device)->get_genicam (device);
-}
-
-static const char *
-_get_genicam_xml (ArvDevice *device, size_t *size)
-{
-	*size = 0;
-
-	return NULL;
 }
 
 /**
@@ -226,7 +218,12 @@ arv_device_get_genicam_xml (ArvDevice *device, size_t *size)
 	g_return_val_if_fail (ARV_IS_DEVICE (device), NULL);
 	g_return_val_if_fail (size != NULL, NULL);
 
-	return ARV_DEVICE_GET_CLASS (device)->get_genicam_xml (device, size);
+	if (ARV_DEVICE_GET_CLASS (device)->get_genicam_xml != NULL)
+		return ARV_DEVICE_GET_CLASS (device)->get_genicam_xml (device, size);
+
+	*size = 0;
+
+	return NULL;
 }
 
 /**
@@ -308,7 +305,7 @@ arv_device_execute_command (ArvDevice *device, const char *feature)
 
 	if (ARV_IS_GC_COMMAND (node)) {
 		GError *error = NULL;
-		
+
 		arv_gc_command_execute (ARV_GC_COMMAND (node), &error);
 
 		if (error != NULL) {
@@ -318,6 +315,78 @@ arv_device_execute_command (ArvDevice *device, const char *feature)
 	} else
 		arv_warning_device ("[ArvDevice::execute_command] Node '%s' is not a command",
 				    feature);
+}
+
+/**
+ * arv_device_set_boolean_feature_value:
+ * @device: a #ArvDevice
+ * @feature: feature name
+ * @value: feature value
+ *
+ * Set the value of a boolean feature.
+ * If this operation fails, the device status returned by arv_device_get_status() will be changed.
+ *
+ * Since: 0.6.0
+ */
+
+void
+arv_device_set_boolean_feature_value (ArvDevice *device, const char *feature, gboolean value)
+{
+	ArvGcNode *node;
+	GError *error = NULL;
+
+	g_return_if_fail (ARV_IS_DEVICE (device));
+
+	node = arv_device_get_feature (device, feature);
+
+	if (ARV_IS_GC_BOOLEAN (node))
+		arv_gc_boolean_set_value (ARV_GC_BOOLEAN (node), value, &error);
+	else
+		arv_warning_device ("[ArvDevice::set_boolean_feature_value] Node '%s' is not a boolean",
+				    feature);
+
+	if (error != NULL) {
+		_set_status (device, error->code, error->message);
+		g_error_free (error);
+	}
+}
+
+/**
+ * arv_device_get_boolean_feature_value:
+ * @device: a #ArvDevice
+ * @feature: feature name
+ *
+ * Returns: the feature value.
+ *
+ * If this operation fails, the device status returned by arv_device_get_status() will be changed.
+ *
+ * Since: 0.6.0
+ */
+
+gboolean
+arv_device_get_boolean_feature_value (ArvDevice *device, const char *feature)
+{
+	ArvGcNode *node;
+	GError *error = NULL;
+	gboolean value = 0;
+
+	g_return_val_if_fail (ARV_IS_DEVICE (device), 0);
+
+	node = arv_device_get_feature (device, feature);
+
+	if (ARV_IS_GC_BOOLEAN (node))
+		value = arv_gc_boolean_get_value (ARV_GC_BOOLEAN (node), &error);
+	else
+		arv_warning_device ("[ArvDevice::get_boolean_feature_value] Node '%s' is not an boolean",
+				    feature);
+
+	if (error != NULL) {
+		_set_status (device, error->code, error->message);
+		g_error_free (error);
+		return 0;
+	}
+
+	return value;
 }
 
 void
@@ -417,6 +486,16 @@ arv_device_get_integer_feature_value (ArvDevice *device, const char *feature)
 	return value;
 }
 
+/**
+ * arv_device_get_integer_feature_bounds:
+ * @device: a #ArvDevice
+ * @feature: feature name
+ * @min: (out): minimum feature value
+ * @max: (out): maximum feature value
+ *
+ * Retrieves feature bounds.
+ */
+
 void
 arv_device_get_integer_feature_bounds (ArvDevice *device, const char *feature, gint64 *min, gint64 *max)
 {
@@ -475,7 +554,7 @@ arv_device_set_float_feature_value (ArvDevice *device, const char *feature, doub
 
 	if (ARV_IS_GC_FLOAT (node))
 		arv_gc_float_set_value (ARV_GC_FLOAT (node), value, &error);
-	else 
+	else
 		arv_warning_device ("[ArvDevice::set_float_feature_value] Node '%s' is not a float",
 				    feature);
 
@@ -498,7 +577,7 @@ arv_device_get_float_feature_value (ArvDevice *device, const char *feature)
 
 	if (ARV_IS_GC_FLOAT (node))
 		value = arv_gc_float_get_value (ARV_GC_FLOAT (node), &error);
-	else 
+	else
 		arv_warning_device ("[ArvDevice::get_float_feature_value] Node '%s' is not a float",
 				    feature);
 
@@ -510,6 +589,16 @@ arv_device_get_float_feature_value (ArvDevice *device, const char *feature)
 
 	return value;
 }
+
+/**
+ * arv_device_get_float_feature_bounds:
+ * @device: a #ArvDevice
+ * @feature: feature name
+ * @min: (out): minimum feature value
+ * @max: (out): maximum feature value
+ *
+ * Retrieves feature bounds.
+ */
 
 void
 arv_device_get_float_feature_bounds (ArvDevice *device, const char *feature, double *min, double *max)
@@ -634,11 +723,11 @@ ArvDeviceStatus
 arv_device_get_status (ArvDevice *device)
 {
 	ArvDeviceStatus status;
-	
+
 	g_return_val_if_fail (ARV_IS_DEVICE (device), ARV_DEVICE_STATUS_UNKNOWN);
 
 	status = device->priv->status;
-	
+
 	g_free (device->priv->status_message);
 	device->priv->status = ARV_DEVICE_STATUS_SUCCESS;
 	device->priv->status_message = NULL;
@@ -683,8 +772,6 @@ arv_device_class_init (ArvDeviceClass *device_class)
 	parent_class = g_type_class_peek_parent (device_class);
 
 	object_class->finalize = arv_device_finalize;
-
-	device_class->get_genicam_xml = _get_genicam_xml;
 
 	/**
 	 * ArvDevice::control-lost:

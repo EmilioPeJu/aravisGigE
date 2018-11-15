@@ -23,8 +23,13 @@
 #ifndef ARV_CAMERA_H
 #define ARV_CAMERA_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
 #include <arvstream.h>
+#include <arvgvstream.h>
 
 G_BEGIN_DECLS
 
@@ -66,10 +71,16 @@ const char *	arv_camera_get_device_id	(ArvCamera *camera);
 void 		arv_camera_get_sensor_size 	(ArvCamera *camera, gint *width, gint *height);
 void		arv_camera_set_region		(ArvCamera *camera, gint x, gint y, gint width, gint height);
 void		arv_camera_get_region		(ArvCamera *camera, gint *x, gint *y, gint *width, gint *height);
+void		arv_camera_get_x_offset_bounds	(ArvCamera *camera, gint *min, gint *max);
+void		arv_camera_get_y_offset_bounds	(ArvCamera *camera, gint *min, gint *max);
 void		arv_camera_get_width_bounds	(ArvCamera *camera, gint *min, gint *max);
 void		arv_camera_get_height_bounds	(ArvCamera *camera, gint *min, gint *max);
 void		arv_camera_set_binning		(ArvCamera *camera, gint dx, gint dy);
 void		arv_camera_get_binning		(ArvCamera *camera, gint *dx, gint *dy);
+void		arv_camera_get_x_binning_bounds	(ArvCamera *camera, gint *min, gint *max);
+void		arv_camera_get_y_binning_bounds	(ArvCamera *camera, gint *min, gint *max);
+
+gboolean	arv_camera_is_binning_available (ArvCamera *camera);
 
 void 		arv_camera_set_pixel_format 				(ArvCamera *camera, ArvPixelFormat format);
 void		arv_camera_set_pixel_format_from_string 		(ArvCamera *camera, const char * format);
@@ -85,18 +96,26 @@ void		arv_camera_start_acquisition		(ArvCamera *camera);
 void		arv_camera_stop_acquisition		(ArvCamera *camera);
 void		arv_camera_abort_acquisition		(ArvCamera *camera);
 
+ArvBuffer *	arv_camera_acquisition			(ArvCamera *camera, guint64 timeout);
+
 void			arv_camera_set_acquisition_mode 	(ArvCamera *camera, ArvAcquisitionMode value);
 ArvAcquisitionMode 	arv_camera_get_acquisition_mode 	(ArvCamera *camera);
+
+void 		arv_camera_set_frame_count	(ArvCamera *camera, gint64 frame_count);
+gint64		arv_camera_get_frame_count	(ArvCamera *camera);
+void		arv_camera_get_frame_count_bounds	(ArvCamera *camera, gint64 *min, gint64 *max);
 
 gboolean 	arv_camera_is_frame_rate_available 	(ArvCamera *camera);
 
 void		arv_camera_set_frame_rate		(ArvCamera *camera, double frame_rate);
 double 		arv_camera_get_frame_rate 		(ArvCamera *camera);
-void		arv_camera_get_frame_rate_bounds 	(ArvCamera * camera, double *min, double *max);
+void		arv_camera_get_frame_rate_bounds 	(ArvCamera *camera, double *min, double *max);
 void		arv_camera_set_trigger			(ArvCamera *camera, const char *source);
 void 		arv_camera_set_trigger_source		(ArvCamera *camera, const char *source);
 const char *	arv_camera_get_trigger_source		(ArvCamera *camera);
-
+const char **	arv_camera_get_available_trigger_sources(ArvCamera *camera, guint *n_sources);
+const char**    arv_camera_get_available_triggers       (ArvCamera *camera, guint *n_triggers);
+void            arv_camera_clear_triggers               (ArvCamera* camera);
 void 		arv_camera_software_trigger 		(ArvCamera *camera);
 
 gboolean 	arv_camera_is_exposure_time_available	(ArvCamera *camera);
@@ -134,7 +153,18 @@ int 		arv_camera_gv_get_current_stream_channel(ArvCamera *camera);
 void		arv_camera_gv_set_packet_delay		(ArvCamera *camera, gint64 delay_ns);
 gint64 		arv_camera_gv_get_packet_delay 		(ArvCamera *camera);
 void 		arv_camera_gv_set_packet_size 		(ArvCamera *camera, gint packet_size);
-gint		arv_camera_gv_get_packet_size		(ArvCamera *camera);
+guint		arv_camera_gv_get_packet_size		(ArvCamera *camera);
+guint		arv_camera_gv_auto_packet_size		(ArvCamera *camera);
+
+void 		arv_camera_gv_set_stream_options 	(ArvCamera *camera, ArvGvStreamOption options);
+
+/* USB3Vision specific API */
+
+gboolean        arv_camera_is_uv_device                 	(ArvCamera *camera);
+gboolean        arv_camera_uv_is_bandwidth_control_available 	(ArvCamera *camera);
+void            arv_camera_uv_set_bandwidth             	(ArvCamera *camera, guint bandwidth);
+guint           arv_camera_uv_get_bandwidth             	(ArvCamera *camera);
+void            arv_camera_uv_get_bandwidth_bounds      	(ArvCamera *camera, guint* min, guint* max);
 
 /* Chunk data */
 

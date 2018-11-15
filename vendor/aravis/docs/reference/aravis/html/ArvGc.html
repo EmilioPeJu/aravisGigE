@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ArvGc: Aravis Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Aravis Reference Manual">
 <link rel="up" href="ch05.html" title="Genicam">
 <link rel="prev" href="ch05.html" title="Genicam">
 <link rel="next" href="ArvGcNode.html" title="ArvGcNode">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.28 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -34,7 +34,7 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="ArvGc.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -85,7 +85,7 @@
 </div>
 <div class="refsect1">
 <a name="ArvGc.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -98,7 +98,7 @@
 </div>
 <div class="refsect1">
 <a name="ArvGc.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
     <span class="lineart">╰──</span> <a class="link" href="ArvDomNode.html" title="ArvDomNode">ArvDomNode</a>
         <span class="lineart">╰──</span> <a class="link" href="ArvDomDocument.html" title="ArvDomDocument">ArvDomDocument</a>
             <span class="lineart">╰──</span> ArvGc
@@ -128,7 +128,7 @@ arv_gc_get_node (<em class="parameter"><code><a class="link" href="ArvGc.html" t
 <p>Retrieves a genicam node by name.</p>
 <div class="refsect3">
 <a name="arv-gc-get-node.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -150,7 +150,7 @@ arv_gc_get_node (<em class="parameter"><code><a class="link" href="ArvGc.html" t
 </div>
 <div class="refsect3">
 <a name="arv-gc-get-node.returns"></a><h4>Returns</h4>
-<p> a <a class="link" href="ArvGcNode.html" title="ArvGcNode"><span class="type">ArvGcNode</span></a>, null if not found. </p>
+<p>a <a class="link" href="ArvGcNode.html" title="ArvGcNode"><span class="type">ArvGcNode</span></a>, null if not found. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
@@ -162,7 +162,7 @@ arv_gc_get_device (<em class="parameter"><code><a class="link" href="ArvGc.html"
 <p>Retrieves the device handled by this genicam interface. The device is used for register access.</p>
 <div class="refsect3">
 <a name="arv-gc-get-device.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -177,7 +177,7 @@ arv_gc_get_device (<em class="parameter"><code><a class="link" href="ArvGc.html"
 </div>
 <div class="refsect3">
 <a name="arv-gc-get-device.returns"></a><h4>Returns</h4>
-<p> a <a class="link" href="ArvDevice.html" title="ArvDevice"><span class="type">ArvDevice</span></a>. </p>
+<p>a <a class="link" href="ArvDevice.html" title="ArvDevice"><span class="type">ArvDevice</span></a>. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
@@ -189,7 +189,7 @@ arv_gc_get_buffer (<em class="parameter"><code><a class="link" href="ArvGc.html"
 <p>Retrieves the binded buffer.</p>
 <div class="refsect3">
 <a name="arv-gc-get-buffer.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -204,7 +204,7 @@ arv_gc_get_buffer (<em class="parameter"><code><a class="link" href="ArvGc.html"
 </div>
 <div class="refsect3">
 <a name="arv-gc-get-buffer.returns"></a><h4>Returns</h4>
-<p> a <a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a>. </p>
+<p>a <a class="link" href="ArvBuffer.html" title="ArvBuffer"><span class="type">ArvBuffer</span></a>. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
@@ -225,6 +225,6 @@ arv_gc_set_buffer (<em class="parameter"><code><a class="link" href="ArvGc.html"
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.28</div>
 </body>
 </html>

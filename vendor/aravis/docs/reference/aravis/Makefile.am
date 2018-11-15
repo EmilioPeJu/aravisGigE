@@ -65,8 +65,19 @@ IGNORE_HFILES=\
 	arvconfig.h			\
 	arvbufferprivate.h		\
 	arvchunkparserprivate.h		\
+	arvinterfaceprivate.h		\
 	arvdeviceprivate.h		\
 	arvstreamprivate.h		\
+	arvgvstreamprivate.h		\
+	arvgvinterfaceprivate.h		\
+	arvgvdeviceprivate.h		\
+	arvvvstreamprivate.h		\
+	arvuvinterfaceprivate.h		\
+	arvuvdeviceprivate.h		\
+	arvuvstreamprivate.h		\
+	arvfakeinterfaceprivate.h	\
+	arvfakedeviceprivate.h		\
+	arvfakestreamprivate.h		\
 	arvrealtimeprivate.h		\
 	arv.h
 

@@ -1,10 +1,139 @@
-Release 0.4.1
+Release 0.5.13
+==============
+
+  * usb3vision: chunk data support (Emmanuel)
+  * camera: matrix vision device support (Nils)
+  * camera: PointGrey / FLIR renaming support (Nils)
+  * i18n: czech and slovak translations (Multiflexi)
+  * build: remove libcap-ng dependency (Nils)
+
+Release 0.5.12
+==============
+
+  * gigevision: disable GVSP extended id mode
+  * genicam: fix for signedness of register nodes
+  * genicam: add support for optional ROUND parameter (Aleksandr)
+  * add man page (Chiara)
+
+Release 0.5.11
+==============
+
+  * camera: ensure binning feature is present before using it (thecaptury)
+  * viewer: don't overwrite buffers still used by gstreamer (Tim)
+  * usb3vision: improve streaming reliability (Tim, Emmanuel)
+  * buid instruction update (Raphie, Rehno)
+  * translation updates (Rafael)
+
+Release 0.5.10
+==============
+
+  * camera: fix for PointGrey cmeras using AcquisitionFrameRateEnabled (Emmanuel)
+  * genicam: correctly implement integer mode of IntSwissKnife (Emmanuel)
+  * genicam: implementtion of pIndex, ValueIndexed, ValueDefault (Emmanuel)
+  * genicam: add Expression and Constant support to Converter and IntConverter (Emmanuel)
+  * evaluator: implement ROUND function (Emmanuel)
+  * evaluator: fix '~' precedence and associativity (Emmanuel)
+  * gigevision: protocol fixes (Emmanuel)
+  * gigevision: improve connection stability under high pressure (Michael)
+  * gigevision: avoid using the same port twice (Emmanuel)
+  * gvdevice: implement packet-resend-ration limit (Emmanuel)
+  * usb3vision: transfer size configuration fixes (Konstantin)
+  * build: improve OSX and Windows support (Emmanuel)
+  * build: improve build outside of source directory (Janito)
+  * viewer: improve Pixel format to GstCaps conversion (Emmanuel)
+  * viewer: disable gtkglsink for now to avoid a crash when switching views (Emmanuel)
+  * QA: extended code coverage (Emmanuel)
+  * QA: make travis build on OSX (Emmanuel)
+
+Release 0.5.9
 =============
 
-  * camera: improve Basler camera support
-  * genicam: support for Converter min/max and unit
-  * tool: show feature unit
-  * build fixes
+  * gige/usb3vision: device detection fixes (Nils)
+  * stream: allow to handle circular buffer from callback (Nils)
+  * build: OSX documentation fix (Mark)
+  * viewer: latency improvements (Emmanuel)
+  * viewer: show protocol in camera list view (Emmanuel)
+  * gigevision: faster connection to devices (Emmanuel)
+  * gigevision: PENDING ACK support (Emmanuel)
+  * gige/usb3vision: use vendor aliases for default device id (Emmanuel)
+
+Release 0.5.8
+=============
+
+  * buffer: save local system time in buffer metadate (Konstantin)
+  * usb3vision: better handling of unexpected answers (Emmanuel)
+  * stream: fix for self joining receiving thread issue (Michael)
+  * fake: new class for instantiation of fake cameras (Emmanuel)
+  * tests: new fakegv test that exercizes GigEVision protocol (Emmanuel
+  * build system update (code-coverage, address sanitizer and valgrind support) (Emmanuel)
+  * miscellaneous fixes for bug discovered vie the update build system (Emmanuel)
+
+Release 0.5.7
+=============
+
+  * usb3vision: Ximea camera support (Steve)
+  * usb3vision: TheImagingSource camera support (emmanuel)
+  * usb3vision: Bandwith control (Steve)
+  * usb3vision: USB endpoint detection improvments (Steve, Emmanuel)
+  * fake_camera: miscellaneous fixes (Michael)
+  * genicam: raw data support (Steve)
+  * camera: multiframe acquisition mode (Lee)
+  * camera: extension of the trigger API (Steve)
+  * gigevision: instantiation by IP address or hostname (Blaz, Arkadius)
+  * build: fix compilation with old glib (Blaz)
+  * build: intructions and compilation fix for OSX (Christoffer, Fernando)
+  * build: Travis and Coverity support on github (Emmanuel)
+
+Release 0.5.6
+=============
+
+  * genicam: implement Expression and Constant nodes for [Int]SwissKnife
+  * API: add ARAVIS_CHECK_VERSION macro
+  * API: forbid direct inclusion of headers other than arv.h
+  * usb3vision: PENDING_ACK support
+
+Release 0.5.5
+=============
+
+  * build: fix library detection needed for packet socket support (Hubert)
+  * gigevision: new API for automatic stream packet size (Emmanuel)
+
+Release 0.5.4
+=============
+
+  * gigevision: support of packet socket in stream thread (Emmanuel)
+
+Release 0.5.3
+=============
+
+  * usb3vision: fix USB3 device scan (Emmanuel)
+
+Release 0.5.2
+=============
+
+  * viewer: only show compatbile pixel format in selector
+  * viewer: fix binning setting on some cameras
+  * viewer: add a fallback to autovideosink if gtk[gl]sink are not available
+  * viewer: fix video position issue
+  * usb3vision: avoid unnecessary memory during video data transfer
+  * usb3vision: better handling of device disconnection
+  * gigevision: compile time selection of fast heartbeat mode (Michele)
+  * camera: helper function for single image acquisition
+
+Release 0.5.1
+=============
+
+  * viewer: new design with support for region settings
+  * usb3vision improvements
+  * camera: improve Basler support for exposure and frame rate
+  * camera: add support for x/y_offset and binning bounds
+  * interface: add vendor, model and serial getters
+  * genicam: implement min/max support for Converter elements
+
+Release 0.5.0
+=============
+
+  * usb3vision initial support
 
 Release 0.4.0
 =============

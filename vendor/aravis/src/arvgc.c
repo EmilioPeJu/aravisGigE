@@ -33,7 +33,7 @@
 #include <arvgcnode.h>
 #include <arvgcpropertynode.h>
 #include <arvgcindexnode.h>
-#include <arvgcvariablenode.h>
+#include <arvgcvalueindexednode.h>
 #include <arvgcinvalidatornode.h>
 #include <arvgcregisterdescriptionnode.h>
 #include <arvgcgroupnode.h>
@@ -172,7 +172,15 @@ arv_gc_create_element (ArvDomDocument *document, const char *tag_name)
 	else if (strcmp (tag_name, "pPort") == 0)
 		node = arv_gc_property_node_new_p_port ();
 	else if (strcmp (tag_name, "pVariable") == 0)
-		node = arv_gc_variable_node_new ();
+		node = arv_gc_property_node_new_p_variable ();
+	else if (strcmp (tag_name, "ValueIndexed") == 0)
+		node = arv_gc_value_indexed_node_new ();
+	else if (strcmp (tag_name, "pValueIndexed") == 0)
+		node = arv_gc_p_value_indexed_node_new ();
+	else if (strcmp (tag_name, "ValueDefault") == 0)
+		node = arv_gc_property_node_new_value_default ();
+	else if (strcmp (tag_name, "pValueDefault") == 0)
+		node = arv_gc_property_node_new_p_value_default ();
 	else if (strcmp (tag_name, "Formula") == 0)
 		node = arv_gc_property_node_new_formula ();
 	else if (strcmp (tag_name, "FormulaTo") == 0)

@@ -468,6 +468,12 @@
 		<pFeature>TestRegister</pFeature>
 	</Category>
 
+	<Boolean Name="TestBoolean" NameSpace="Custom">
+		<pValue>TestRegister</pValue>
+		<OnValue>321</OnValue>
+		<OffValue>123</OffValue>
+	</Boolean>
+
 	<IntReg Name="TestRegister" NameSpace="Custom">
 		<Address>0x1f0</Address>
 		<Length>4</Length>
@@ -500,6 +506,13 @@
 			<Bit>15</Bit>
 		</StructEntry>
 	</StructReg>
+
+	<StringReg Name="TestStringReg" NameSpace="Custom">
+		<Address>0x200</Address>
+		<Length>32</Length>
+		<AccessMode>RW</AccessMode>
+		<pPort>Device</pPort>
+	</StringReg>
 
 	<!-- Port -->
 

@@ -23,6 +23,10 @@
 #ifndef ARV_EVALUATOR_H
 #define ARV_EVALUATOR_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
 
 G_BEGIN_DECLS
@@ -52,6 +56,10 @@ GType arv_evaluator_get_type (void);
 ArvEvaluator *	arv_evaluator_new			(const char *expression);
 void 		arv_evaluator_set_expression		(ArvEvaluator *evaluator, const char *expression);
 const char *	arv_evaluator_get_expression		(ArvEvaluator *evaluator);
+void		arv_evaluator_set_sub_expression	(ArvEvaluator *evaluator, const char *name, const char *expression);
+const char *	arv_evaluator_get_sub_expression	(ArvEvaluator *evaluator, const char *name);
+void		arv_evaluator_set_constant		(ArvEvaluator *evaluator, const char *name, const char *constant);
+const char *	arv_evaluator_get_constant		(ArvEvaluator *evaluator, const char *name);
 double		arv_evaluator_evaluate_as_double	(ArvEvaluator *evaluator, GError **error);
 gint64		arv_evaluator_evaluate_as_int64		(ArvEvaluator *evaluator, GError **error);
 void		arv_evaluator_set_double_variable	(ArvEvaluator *evaluator, const char *name, double v_double);

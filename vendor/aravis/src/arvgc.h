@@ -23,6 +23,10 @@
 #ifndef ARV_GC_H
 #define ARV_GC_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
 #include <arvdomdocument.h>
 
@@ -35,7 +39,9 @@ GQuark 		arv_gc_error_quark 		(void);
 typedef enum {
 	ARV_GC_ERROR_PROPERTY_NOT_DEFINED,
 	ARV_GC_ERROR_PVALUE_NOT_DEFINED,
-	ARV_GC_ERROR_INVALID_PVALUE
+	ARV_GC_ERROR_INVALID_PVALUE,
+	ARV_GC_ERROR_EMPTY_ENUMERATION,
+	ARV_GC_ERROR_OUT_OF_RANGE
 } ArvGcError;
 
 #define ARV_TYPE_GC             (arv_gc_get_type ())

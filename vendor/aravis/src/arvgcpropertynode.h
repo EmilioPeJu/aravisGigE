@@ -23,6 +23,10 @@
 #ifndef ARV_GC_PROPERTY_NODE_H
 #define ARV_GC_PROPERTY_NODE_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
 #include <arvgcnode.h>
 
@@ -57,6 +61,8 @@ typedef enum {
 	ARV_GC_PROPERTY_NODE_TYPE_BIT,
 	ARV_GC_PROPERTY_NODE_TYPE_COMMAND_VALUE,
 	ARV_GC_PROPERTY_NODE_TYPE_CHUNK_ID,
+	ARV_GC_PROPERTY_NODE_TYPE_VALUE_INDEXED,
+	ARV_GC_PROPERTY_NODE_TYPE_VALUE_DEFAULT,
 
 	ARV_GC_PROPERTY_NODE_TYPE_P_UNKNONW	= 1000,
 	ARV_GC_PROPERTY_NODE_TYPE_P_FEATURE,
@@ -73,7 +79,9 @@ typedef enum {
 	ARV_GC_PROPERTY_NODE_TYPE_P_PORT,
 	ARV_GC_PROPERTY_NODE_TYPE_P_VARIABLE,
 	ARV_GC_PROPERTY_NODE_TYPE_P_INVALIDATOR,
-	ARV_GC_PROPERTY_NODE_TYPE_P_COMMAND_VALUE
+	ARV_GC_PROPERTY_NODE_TYPE_P_COMMAND_VALUE,
+	ARV_GC_PROPERTY_NODE_TYPE_P_VALUE_INDEXED,
+	ARV_GC_PROPERTY_NODE_TYPE_P_VALUE_DEFAULT
 } ArvGcPropertyNodeType;
 
 #define ARV_TYPE_GC_PROPERTY_NODE             (arv_gc_property_node_get_type ())
@@ -90,6 +98,8 @@ struct _ArvGcPropertyNode {
 	ArvGcNode base;
 
 	ArvGcPropertyNodeType	type;
+
+	char *name;
 
 	gboolean value_data_up_to_date;
 	char *value_data;
@@ -124,6 +134,7 @@ ArvGcNode * 	arv_gc_property_node_new_p_is_locked	 	(void);
 ArvGcNode * 	arv_gc_property_node_new_length			(void);
 ArvGcNode * 	arv_gc_property_node_new_p_length		(void);
 ArvGcNode * 	arv_gc_property_node_new_p_port 		(void);
+ArvGcNode * 	arv_gc_property_node_new_p_variable 		(void);
 ArvGcNode * 	arv_gc_property_node_new_formula		(void);
 ArvGcNode * 	arv_gc_property_node_new_formula_to		(void);
 ArvGcNode * 	arv_gc_property_node_new_formula_from		(void);
@@ -140,6 +151,10 @@ ArvGcNode * 	arv_gc_property_node_new_bit			(void);
 ArvGcNode * 	arv_gc_property_node_new_command_value		(void);
 ArvGcNode * 	arv_gc_property_node_new_p_command_value	(void);
 ArvGcNode * 	arv_gc_property_node_new_chunk_id 		(void);
+ArvGcNode * 	arv_gc_property_node_new_value_default 		(void);
+ArvGcNode * 	arv_gc_property_node_new_p_value_default	(void);
+
+const char *		arv_gc_property_node_get_name		(ArvGcPropertyNode *node);
 
 const char * 		arv_gc_property_node_get_string 	(ArvGcPropertyNode *node, GError **error);
 void	 		arv_gc_property_node_set_string 	(ArvGcPropertyNode *node, const char *string, GError **error);

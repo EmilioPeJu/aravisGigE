@@ -96,8 +96,7 @@ arv_statistic_new (unsigned int n_histograms, unsigned n_bins, unsigned int bin_
 	g_return_val_if_fail (n_bins > 0, NULL);
 	g_return_val_if_fail (bin_step > 0, NULL);
 
-	statistic = g_new (ArvStatistic, 1);
-	g_return_val_if_fail (statistic != NULL, NULL);
+	statistic = g_new0 (ArvStatistic, 1);
 
 	statistic->n_histograms = n_histograms;
 	statistic->n_bins = n_bins;
@@ -105,20 +104,10 @@ arv_statistic_new (unsigned int n_histograms, unsigned n_bins, unsigned int bin_
 	statistic->offset = offset;
 
 	statistic->histograms = g_new (ArvHistogram, n_histograms);
-	if (statistic->histograms == NULL) {
-		_arv_statistic_free (statistic);
-		g_warning ("[ArvStatistic::new] failed to allocate histogram memory");
-		return NULL;
-	}
 
 	for (i = 0; i < statistic->n_histograms; i++) {
 		statistic->histograms[i].name = NULL;
 		statistic->histograms[i].bins = g_new (guint64, statistic->n_bins);
-		if (statistic->histograms[i].bins == NULL) {
-			arv_statistic_free (statistic);
-			g_warning ("[TolmStatistic::new] failed to allocate bin memory");
-			return NULL;
-		}
 	}
 
 	arv_statistic_reset (statistic);
@@ -602,30 +591,37 @@ ArvGstCapsInfos arv_gst_caps_infos[] = {
 	{
 		ARV_PIXEL_FORMAT_MONO_8,
 		"video/x-raw, format=(string)GRAY8",
-		"video/x-raw", "GRAY8",
+		"video/x-raw", 		"GRAY8",
 		"video/x-raw-gray, bpp=(int)8, depth=(int)8",
 		"video/x-raw-gray",	8,	8,	0
 	},
 	{
-		ARV_PIXEL_FORMAT_MONO_10,
+		ARV_PIXEL_FORMAT_MONO_16,
 		"video/x-raw, format=(string)GRAY16_LE",
-		"video/x-raw", 	"GRAY16_LE",
-		"video/x-raw-gray, bpp=(int)16, depth=(int)10",
-		"video/x-raw-gray",	16,	10,	0
+		"video/x-raw",		"GRAY16_LE",
+		"video/x-raw-gray, bpp=(int)16, depth=(int)16",
+		"video/x-raw-gray",	16,	16,	0
 	},
 	{
 		ARV_PIXEL_FORMAT_MONO_12,
 		"video/x-raw, format=(string)GRAY16_LE",
-		"video/x-raw",	"GRAY16_LE",
+		"video/x-raw",		"GRAY16_LE",
 		"video/x-raw-gray, bpp=(int)16, depth=(int)12",
 		"video/x-raw-gray",	16,	12,	0
 	},
 	{
-		ARV_PIXEL_FORMAT_MONO_16,
+		ARV_PIXEL_FORMAT_MONO_12_PACKED,
 		"video/x-raw, format=(string)GRAY16_LE",
-		"video/x-raw",	"GRAY16_LE",
-		"video/x-raw-gray, bpp=(int)16, depth=(int)16",
-		"video/x-raw-gray",	16,	16,	0
+		"video/x-raw",		"GRAY16_LE",
+		"video/x-raw-gray, bpp=(int)12, depth=(int)12",
+		"video/x-raw-gray",	12,	12,	0
+	},
+	{
+		ARV_PIXEL_FORMAT_MONO_10,
+		"video/x-raw, format=(string)GRAY16_LE",
+		"video/x-raw", 		"GRAY16_LE",
+		"video/x-raw-gray, bpp=(int)16, depth=(int)10",
+		"video/x-raw-gray",	16,	10,	0
 	},
 	{
 		ARV_PIXEL_FORMAT_BAYER_GR_8,
@@ -662,27 +658,28 @@ ArvGstCapsInfos arv_gst_caps_infos[] = {
 	{
 		ARV_PIXEL_FORMAT_YUV_422_PACKED,
 		"video/x-raw, format=(string)UYVY",
-		"video/x-raw",	"UYVY",
+		"video/x-raw",		"UYVY",
 		"video/x-raw-yuv, format=(fourcc)UYVY",
 		"video/x-raw-yuv",	0,	0,	ARV_MAKE_FOURCC ('U','Y','V','Y')
 	},
 	{
 		ARV_PIXEL_FORMAT_YUV_422_YUYV_PACKED,
 		"video/x-raw, format=(string)YUY2",
+		"video/x-raw", 		"YUY2",
 		"video/x-raw-yuv, format=(fourcc)YUYU2",
 		"video/x-raw-yuv",	0,	0,	ARV_MAKE_FOURCC ('Y','U','Y','2')
 	},
 	{
 		ARV_PIXEL_FORMAT_RGB_8_PACKED,
 		"video/x-raw, format=(string)RGB",
-		"video/x-raw",	"RGB",
+		"video/x-raw",		"RGB",
 		"video/x-raw-rgb, format=(string)RGB, bpp=(int)24, depth=(int)24",
 		"video/x-raw-rgb",	24,	24,	0
 	},
 	{
 		ARV_PIXEL_FORMAT_CUSTOM_YUV_422_YUYV_PACKED,
 		"video/x-raw, format=(string)YUY2",
-		"video/x-raw",	"YUY2",
+		"video/x-raw",		"YUY2",
 		"video/x-raw-yuv, format=(fourcc)YUYU2",
 		"video/x-raw-yuv",	0,	0,	ARV_MAKE_FOURCC ('Y','U','Y','2')
 	}
@@ -715,23 +712,25 @@ arv_pixel_format_to_gst_caps_string (ArvPixelFormat pixel_format)
 }
 
 ArvPixelFormat
-arv_pixel_format_from_gst_caps (const char *name, const char *format)
+arv_pixel_format_from_gst_caps (const char *name, const char *format, int bpp, int depth)
 {
 	unsigned int i;
 
 	g_return_val_if_fail (name != NULL, 0);
 
 	for (i = 0; i < G_N_ELEMENTS (arv_gst_caps_infos); i++) {
-		if (strcmp (name, arv_gst_caps_infos[i].name) != 0)
+		if (strcmp (name, arv_gst_caps_infos[i].name) != 0 ||
+		    (depth > 0 && depth != arv_gst_caps_infos[i].depth) ||
+		    (bpp > 0 && bpp != arv_gst_caps_infos[i].bpp))
 			continue;
 
 		if (strcmp (name, "video/x-raw") == 0 &&
 		    strcmp (format, arv_gst_caps_infos[i].format) == 0)
 			return arv_gst_caps_infos[i].pixel_format;
-		
+
 		if (strcmp (name, "video/x-bayer") == 0 &&
 		    strcmp (format, arv_gst_caps_infos[i].format) == 0)
-			return arv_gst_caps_infos[i].pixel_format;		
+			return arv_gst_caps_infos[i].pixel_format;
 	}
 
 	return 0;
@@ -769,14 +768,46 @@ arv_pixel_format_from_gst_0_10_caps (const char *name, int bpp, int depth, guint
 			continue;
 
 		if (strcmp (name, "video/x-raw-yuv") == 0 &&
-		    fourcc == arv_gst_caps_infos[i].fourcc)
+		    (fourcc <= 0 || fourcc == arv_gst_caps_infos[i].fourcc))
 			return arv_gst_caps_infos[i].pixel_format;
 
-		if (depth == arv_gst_caps_infos[i].depth &&
-		    bpp == arv_gst_caps_infos[i].bpp &&
+		if ((depth <= 0 || depth == arv_gst_caps_infos[i].depth) &&
+		    (bpp <= 0 || bpp == arv_gst_caps_infos[i].bpp) &&
 		    fourcc == arv_gst_caps_infos[i].fourcc)
 			return arv_gst_caps_infos[i].pixel_format;
 	}
 
 	return 0;
+}
+
+static struct {
+	const char *vendor;
+	const char *alias;
+} vendor_aliases[] = {
+	{ "The Imaging Source Europe GmbH",		"TIS"},
+	{ "Point Grey Research",			"PointGrey"}
+};
+
+/**
+ * arv_vendor_alias_lookup:
+ * @vendor: a vendor string
+ *
+ * Returns: vendor alias string if found, or @vendor if not found.
+ *
+ * Since: 0.6.0
+ */
+
+const char *
+arv_vendor_alias_lookup	(const char *vendor)
+{
+	int i;
+
+	if (vendor == NULL)
+		return NULL;
+
+	for (i = 0; i < G_N_ELEMENTS (vendor_aliases); i++)
+		if (g_strcmp0 (vendor_aliases[i].vendor, vendor) == 0)
+			return vendor_aliases[i].alias;
+
+	return vendor;
 }

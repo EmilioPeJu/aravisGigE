@@ -1,6 +1,6 @@
 /* Aravis - Digital camera library
  *
- * Copyright © 2009-2010 Emmanuel Pacaud
+ * Copyright © 2009-2016 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,13 +23,14 @@
 #ifndef ARV_FAKE_INTERFACE_H
 #define ARV_FAKE_INTERFACE_H
 
+#if !defined (ARV_H_INSIDE) && !defined (ARAVIS_COMPILATION)
+#error "Only <arv.h> can be included directly."
+#endif
+
 #include <arvtypes.h>
 #include <arvinterface.h>
 
 G_BEGIN_DECLS
-
-#define ARV_FAKE_INTERFACE_DISCOVERY_TIMEOUT_MS	1000
-#define ARV_FAKE_INTERFACE_SOCKET_BUFFER_SIZE	1024
 
 #define ARV_TYPE_FAKE_INTERFACE             (arv_fake_interface_get_type ())
 #define ARV_FAKE_INTERFACE(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), ARV_TYPE_FAKE_INTERFACE, ArvFakeInterface))
@@ -38,23 +39,9 @@ G_BEGIN_DECLS
 #define ARV_IS_FAKE_INTERFACE_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), ARV_TYPE_FAKE_INTERFACE))
 #define ARV_FAKE_INTERFACE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), ARV_TYPE_FAKE_INTERFACE, ArvFakeInterfaceClass))
 
-typedef struct _ArvFakeInterfacePrivate ArvFakeInterfacePrivate;
-typedef struct _ArvFakeInterfaceClass ArvFakeInterfaceClass;
-
-struct _ArvFakeInterface {
-	ArvInterface	interface;
-
-	ArvFakeInterfacePrivate *priv;
-};
-
-struct _ArvFakeInterfaceClass {
-	ArvInterfaceClass parent_class;
-};
-
 GType arv_fake_interface_get_type (void);
 
 ArvInterface * 		arv_fake_interface_get_instance 		(void);
-void 			arv_fake_interface_destroy_instance 		(void);
 
 G_END_DECLS
 

@@ -24,7 +24,7 @@
   SOFTWARE.
 ***/
 
-#include <../src/arvrealtimeprivate.h>
+#include <arv.h>
 
 #include <sched.h>
 #include <stdio.h>
@@ -33,6 +33,9 @@
 #include <errno.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+
+#define ARAVIS_COMPILATION
+#include <../src/arvrealtimeprivate.h>
 
 #ifndef SCHED_RESET_ON_FORK
 #define SCHED_RESET_ON_FORK 0x40000000
@@ -43,6 +46,7 @@
 #endif
 
 static void print_status(const char *t) {
+#ifndef __APPLE__
 	int ret;
 
 	if ((ret = sched_getscheduler(0)) < 0) {
@@ -77,6 +81,9 @@ static void print_status(const char *t) {
 
 	} else
 		fprintf(stderr, "Neither SCHED_RR nor SCHED_OTHER.\n");
+#else
+	printf ("SCHED API not supported on OSX\n");
+#endif
 }
 
 int main(int argc, char *argv[]) {

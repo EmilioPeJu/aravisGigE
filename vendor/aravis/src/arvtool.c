@@ -132,25 +132,30 @@ arv_tool_execute_command (int argc, char **argv, const char *device_name)
 
 					switch (value_type) {
 						case G_TYPE_INT64:
-							min_int64 = arv_gc_integer_get_min (ARV_GC_INTEGER (feature), NULL);
-							max_int64 = arv_gc_integer_get_max (ARV_GC_INTEGER (feature), NULL);
-							unit = arv_gc_integer_get_unit (ARV_GC_INTEGER (feature), NULL);
-							
-							if (min_int64 != -G_MAXINT64 && max_int64 != G_MAXINT64)
-								printf ("%s = %" G_GINT64_FORMAT
-									"%s%s (min:%" G_GINT64_FORMAT 
-									";max:%" G_GINT64_FORMAT
-									")\n", tokens[0],
-									arv_gc_integer_get_value (ARV_GC_INTEGER (feature), NULL),
-									unit != NULL ? " ": "",
-									unit != NULL ? unit : "",
-									min_int64, max_int64);
-							else 
-								printf ("%s = %" G_GINT64_FORMAT "%s%s\n",
-									tokens[0],
-									arv_gc_integer_get_value (ARV_GC_INTEGER (feature), NULL),
-									unit != NULL ? " ": "",
-									unit != NULL ? unit : "");
+							if (ARV_IS_GC_ENUMERATION (feature)) {
+								printf ("%s = %s\n", tokens[0],
+									arv_gc_string_get_value (ARV_GC_STRING (feature), NULL));
+							} else {
+								min_int64 = arv_gc_integer_get_min (ARV_GC_INTEGER (feature), NULL);
+								max_int64 = arv_gc_integer_get_max (ARV_GC_INTEGER (feature), NULL);
+								unit = arv_gc_integer_get_unit (ARV_GC_INTEGER (feature), NULL);
+
+								if (min_int64 != -G_MAXINT64 && max_int64 != G_MAXINT64)
+									printf ("%s = %" G_GINT64_FORMAT
+										"%s%s (min:%" G_GINT64_FORMAT
+										";max:%" G_GINT64_FORMAT
+										")\n", tokens[0],
+										arv_gc_integer_get_value (ARV_GC_INTEGER (feature), NULL),
+										unit != NULL ? " ": "",
+										unit != NULL ? unit : "",
+										min_int64, max_int64);
+								else
+									printf ("%s = %" G_GINT64_FORMAT "%s%s\n",
+										tokens[0],
+										arv_gc_integer_get_value (ARV_GC_INTEGER (feature), NULL),
+										unit != NULL ? " ": "",
+										unit != NULL ? unit : "");
+							}
 							break;
 						case G_TYPE_DOUBLE:
 							min_double = arv_gc_float_get_min (ARV_GC_FLOAT (feature), NULL);
@@ -216,12 +221,15 @@ arv_tool_execute_command (int argc, char **argv, const char *device_name)
 }
 
 static char *arv_option_device_name = NULL;
+static char *arv_option_device_address = NULL;
 static char *arv_option_debug_domains = NULL;
 
 static const GOptionEntry arv_option_entries[] =
 {
 	{ "name",		'n', 0, G_OPTION_ARG_STRING,
 		&arv_option_device_name,	NULL, "<device_name>"},
+	{ "address",	'a', 0, G_OPTION_ARG_STRING,
+		&arv_option_device_address,	NULL, "<device_address>"},
 	{ "debug", 		'd', 0, G_OPTION_ARG_STRING,
 		&arv_option_debug_domains, 	NULL, "<category>[:<level>][,...]" },
 	{ NULL }
@@ -257,9 +265,6 @@ main (int argc, char **argv)
 	unsigned int i;
 	unsigned int count = 0;
 
-	arv_g_thread_init (NULL);
-	arv_g_type_init ();
-
 	context = g_option_context_new (" command <parameters>");
 	g_option_context_set_summary (context, "Small utility for basic control of a Genicam device.");
 	g_option_context_set_description (context, description_content);
@@ -279,18 +284,19 @@ main (int argc, char **argv)
 	arv_update_device_list ();
 	n_devices = arv_get_n_devices ();
 
-	if (arv_option_device_name != NULL)
+	if (arv_option_device_address != NULL)
+		pattern = g_pattern_spec_new (arv_option_device_address);
+	else if (arv_option_device_name != NULL)
 		pattern = g_pattern_spec_new (arv_option_device_name);
 	else
 		pattern = g_pattern_spec_new ("*");
 
 	for (i = 0; i < n_devices; i++) {
-		const char *device_id;
+		const char *device_id = arv_get_device_id (i);
+		const char *ip_address = arv_get_device_address (i);
 
-		device_id = arv_get_device_id (i);
-
-		if (g_pattern_match_string (pattern, device_id)) {
-			printf ("%s\n", device_id);
+		if (g_pattern_match_string (pattern, arv_option_device_address != NULL ? ip_address : device_id)) {
+			printf ("%s (%s)\n", device_id, ip_address);
 			if (argc >= 2)
 				arv_tool_execute_command (argc, argv, device_id);
 			count++;

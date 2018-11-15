@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ArvEvaluator: Aravis Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Aravis Reference Manual">
-<link rel="up" href="ch09.html" title="Utils">
+<link rel="up" href="ch10.html" title="Utils">
 <link rel="prev" href="aravis-ArvDebug.html" title="ArvDebug">
 <link rel="next" href="aravis-ArvGst.html" title="ArvGst">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.28 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -19,7 +19,7 @@
                   <a href="#ArvEvaluator.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<td><a accesskey="u" href="ch09.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="u" href="ch10.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="aravis-ArvDebug.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="aravis-ArvGst.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
@@ -34,7 +34,7 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="ArvEvaluator.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -64,6 +64,36 @@
 </td>
 </tr>
 <tr>
+<td class="function_type">const <span class="returnvalue">char</span> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvEvaluator.html#arv-evaluator-get-constant" title="arv_evaluator_get_constant ()">arv_evaluator_get_constant</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">char</span> *
+</td>
+<td class="function_name">
+<a class="link" href="ArvEvaluator.html#arv-evaluator-get-sub-expression" title="arv_evaluator_get_sub_expression ()">arv_evaluator_get_sub_expression</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="ArvEvaluator.html#arv-evaluator-set-constant" title="arv_evaluator_set_constant ()">arv_evaluator_set_constant</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="ArvEvaluator.html#arv-evaluator-set-sub-expression" title="arv_evaluator_set_sub_expression ()">arv_evaluator_set_sub_expression</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
 <td class="function_type">
 <span class="returnvalue">double</span>
 </td>
@@ -73,7 +103,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint64"><span class="returnvalue">gint64</span></a>
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint64"><span class="returnvalue">gint64</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="ArvEvaluator.html#arv-evaluator-evaluate-as-int64" title="arv_evaluator_evaluate_as_int64 ()">arv_evaluator_evaluate_as_int64</a> <span class="c_punctuation">()</span>
@@ -100,7 +130,7 @@
 </div>
 <div class="refsect1">
 <a name="ArvEvaluator.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -113,7 +143,7 @@
 </div>
 <div class="refsect1">
 <a name="ArvEvaluator.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
     <span class="lineart">╰──</span> ArvEvaluator
 </pre>
 </div>
@@ -129,7 +159,7 @@ arv_evaluator_new (<em class="parameter"><code>const <span class="type">char</sp
 <p>Creates a new <a class="link" href="ArvEvaluator.html" title="ArvEvaluator"><span class="type">ArvEvaluator</span></a> object. The syntax is described in the genicam standard specification.</p>
 <div class="refsect3">
 <a name="arv-evaluator-new.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -137,7 +167,7 @@ arv_evaluator_new (<em class="parameter"><code>const <span class="type">char</sp
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>expression</p></td>
-<td class="parameter_description"><p> an evaluator expression. </p></td>
+<td class="parameter_description"><p>an evaluator expression. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr></tbody>
 </table></div>
@@ -162,17 +192,166 @@ arv_evaluator_get_expression (<em class="parameter"><code><a class="link" href="
 </div>
 <hr>
 <div class="refsect2">
+<a name="arv-evaluator-get-constant"></a><h3>arv_evaluator_get_constant ()</h3>
+<pre class="programlisting">const <span class="returnvalue">char</span> *
+arv_evaluator_get_constant (<em class="parameter"><code><a class="link" href="ArvEvaluator.html" title="ArvEvaluator"><span class="type">ArvEvaluator</span></a> *evaluator</code></em>,
+                            <em class="parameter"><code>const <span class="type">char</span> *name</code></em>);</pre>
+<div class="refsect3">
+<a name="arv-evaluator-get-constant.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>evaluator</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvEvaluator.html" title="ArvEvaluator"><span class="type">ArvEvaluator</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>name</p></td>
+<td class="parameter_description"><p>constant name</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="arv-evaluator-get-constant.returns"></a><h4>Returns</h4>
+<p> The formula of the constant corresponding to <em class="parameter"><code>name</code></em>
+, <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not defined.</p>
+</div>
+<p class="since">Since: <a class="link" href="ix04.html#api-index-0.6.0">0.6.0</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-evaluator-get-sub-expression"></a><h3>arv_evaluator_get_sub_expression ()</h3>
+<pre class="programlisting">const <span class="returnvalue">char</span> *
+arv_evaluator_get_sub_expression (<em class="parameter"><code><a class="link" href="ArvEvaluator.html" title="ArvEvaluator"><span class="type">ArvEvaluator</span></a> *evaluator</code></em>,
+                                  <em class="parameter"><code>const <span class="type">char</span> *name</code></em>);</pre>
+<div class="refsect3">
+<a name="arv-evaluator-get-sub-expression.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>evaluator</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvEvaluator.html" title="ArvEvaluator"><span class="type">ArvEvaluator</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>name</p></td>
+<td class="parameter_description"><p>sub-expression name</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="arv-evaluator-get-sub-expression.returns"></a><h4>Returns</h4>
+<p> The formula of the sub-expression corresponding to <em class="parameter"><code>name</code></em>
+, <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not defined.</p>
+</div>
+<p class="since">Since: <a class="link" href="ix04.html#api-index-0.6.0">0.6.0</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-evaluator-set-constant"></a><h3>arv_evaluator_set_constant ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+arv_evaluator_set_constant (<em class="parameter"><code><a class="link" href="ArvEvaluator.html" title="ArvEvaluator"><span class="type">ArvEvaluator</span></a> *evaluator</code></em>,
+                            <em class="parameter"><code>const <span class="type">char</span> *name</code></em>,
+                            <em class="parameter"><code>const <span class="type">char</span> *constant</code></em>);</pre>
+<p>Assign a string to a constant. If <em class="parameter"><code>constant</code></em>
+ == <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, the constant previously assigned to <em class="parameter"><code>name</code></em>
+ will be removed.</p>
+<div class="refsect3">
+<a name="arv-evaluator-set-constant.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>evaluator</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvEvaluator.html" title="ArvEvaluator"><span class="type">ArvEvaluator</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>name</p></td>
+<td class="parameter_description"><p>constant name</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>constant</p></td>
+<td class="parameter_description"><p>constant as a string. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="ix04.html#api-index-0.6.0">0.6.0</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="arv-evaluator-set-sub-expression"></a><h3>arv_evaluator_set_sub_expression ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+arv_evaluator_set_sub_expression (<em class="parameter"><code><a class="link" href="ArvEvaluator.html" title="ArvEvaluator"><span class="type">ArvEvaluator</span></a> *evaluator</code></em>,
+                                  <em class="parameter"><code>const <span class="type">char</span> *name</code></em>,
+                                  <em class="parameter"><code>const <span class="type">char</span> *expression</code></em>);</pre>
+<p>Assign a formula to a sub-expression. If <em class="parameter"><code>expression</code></em>
+ == <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, the sub-expression previously assigned to <em class="parameter"><code>name</code></em>
+ will be removed.
+A sub-expression may not reference another sub-expression.</p>
+<div class="refsect3">
+<a name="arv-evaluator-set-sub-expression.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>evaluator</p></td>
+<td class="parameter_description"><p>a <a class="link" href="ArvEvaluator.html" title="ArvEvaluator"><span class="type">ArvEvaluator</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>name</p></td>
+<td class="parameter_description"><p>sub-expression name</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>expression</p></td>
+<td class="parameter_description"><p>sub-pexression formula. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="ix04.html#api-index-0.6.0">0.6.0</a></p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="arv-evaluator-evaluate-as-double"></a><h3>arv_evaluator_evaluate_as_double ()</h3>
 <pre class="programlisting"><span class="returnvalue">double</span>
 arv_evaluator_evaluate_as_double (<em class="parameter"><code><a class="link" href="ArvEvaluator.html" title="ArvEvaluator"><span class="type">ArvEvaluator</span></a> *evaluator</code></em>,
-                                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="arv-evaluator-evaluate-as-int64"></a><h3>arv_evaluator_evaluate_as_int64 ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint64"><span class="returnvalue">gint64</span></a>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint64"><span class="returnvalue">gint64</span></a>
 arv_evaluator_evaluate_as_int64 (<em class="parameter"><code><a class="link" href="ArvEvaluator.html" title="ArvEvaluator"><span class="type">ArvEvaluator</span></a> *evaluator</code></em>,
-                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -188,7 +367,7 @@ arv_evaluator_set_double_variable (<em class="parameter"><code><a class="link" h
 <pre class="programlisting"><span class="returnvalue">void</span>
 arv_evaluator_set_int64_variable (<em class="parameter"><code><a class="link" href="ArvEvaluator.html" title="ArvEvaluator"><span class="type">ArvEvaluator</span></a> *evaluator</code></em>,
                                   <em class="parameter"><code>const <span class="type">char</span> *name</code></em>,
-                                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint64"><span class="type">gint64</span></a> v_int64</code></em>);</pre>
+                                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> v_int64</code></em>);</pre>
 </div>
 </div>
 <div class="refsect1">
@@ -200,6 +379,6 @@ arv_evaluator_set_int64_variable (<em class="parameter"><code><a class="link" hr
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.28</div>
 </body>
 </html>
