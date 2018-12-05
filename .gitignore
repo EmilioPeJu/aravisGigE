@@ -2,6 +2,7 @@
 #configure/*.local
 O.*/
 /bin/
+/cmake-build-debug/
 /lib/
 /dbd/
 /db/
