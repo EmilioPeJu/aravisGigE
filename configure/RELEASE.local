@@ -1,7 +1,7 @@
 SUPPORT=/dls_sw/prod/R3.14.12.7/support
 
 ASYN=         $(SUPPORT)/asyn/4-34
-ADCORE=         $(SUPPORT)/ADCore/3-3-2dls1
+ADCORE=         $(SUPPORT)/ADCore/3-4dls1
 
 # comment this out if glib is installed in a standard place
 # you need at least glib 2.28
