@@ -873,6 +873,7 @@
     <keyword type="member" name="ArvGvcpHeader.id" link="aravis-ArvGvcp.html#ArvGvcpHeader.id"/>
     <keyword type="member" name="ArvGvcpPacket.header" link="aravis-ArvGvcp.html#ArvGvcpPacket.header"/>
     <keyword type="member" name="ArvGvcpPacket.data" link="aravis-ArvGvcp.html#ArvGvcpPacket.data"/>
+    <keyword type="member" name="ArvGvspDataLeader.flags" link="aravis-ArvGvsp.html#ArvGvspDataLeader.flags"/>
     <keyword type="member" name="ArvGvspDataLeader.payload-type" link="aravis-ArvGvsp.html#ArvGvspDataLeader.payload-type"/>
     <keyword type="member" name="ArvGvspDataLeader.timestamp-high" link="aravis-ArvGvsp.html#ArvGvspDataLeader.timestamp-high"/>
     <keyword type="member" name="ArvGvspDataLeader.timestamp-low" link="aravis-ArvGvsp.html#ArvGvspDataLeader.timestamp-low"/>
