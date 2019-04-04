@@ -345,7 +345,6 @@ aravisCamera::aravisCamera(const char *portName, const char *cameraName,
     
     /* Enable the fake camera for simulations */
     arv_enable_interface ("Fake");
-
     /* Connect to the camera */
     this->featureIndex = 0;
     this->connectToCamera();
@@ -455,10 +454,14 @@ asynStatus aravisCamera::makeCameraObject() {
         return asynError;
     }
     if (ARV_IS_GV_DEVICE(this->device)) {
-        // Automatically determine optimum packet size
-        arv_gv_device_auto_packet_size(ARV_GV_DEVICE(this->device));
+        // Uncomment this line to automatically determine optimum packet size
+        //arv_gv_device_auto_packet_size(ARV_GV_DEVICE(this->device));
+
         // Uncomment this line to set jumbo packets
         //arv_gv_device_set_packet_size(ARV_GV_DEVICE(this->device), 9000);
+
+        // Set to the original default of 1500
+        arv_gv_device_set_packet_size(ARV_GV_DEVICE(this->device), 1500);
     }
     /* Store genicam */
     this->genicam = arv_device_get_genicam (this->device);
