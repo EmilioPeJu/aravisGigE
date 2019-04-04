@@ -38,6 +38,7 @@
  * </example>
  */
 
+#include <arvconfig.h>
 #include <arvcamera.h>
 #include <arvsystem.h>
 #include <arvgvinterface.h>
@@ -919,7 +920,7 @@ arv_camera_set_frame_rate (ArvCamera *camera, double frame_rate)
 			if (camera->priv->has_acquisition_frame_rate_enabled)
 				arv_device_set_integer_feature_value (camera->priv->device, "AcquisitionFrameRateEnabled", 1);
 			else
-				arv_device_set_integer_feature_value (camera->priv->device, "AcquisitionFrameRateEnable", 1);
+				arv_device_set_boolean_feature_value (camera->priv->device, "AcquisitionFrameRateEnable", 1);
 			arv_device_set_string_feature_value (camera->priv->device, "AcquisitionFrameRateAuto", "Off");
 			arv_device_set_float_feature_value (camera->priv->device, "AcquisitionFrameRate", frame_rate);
 			break;
@@ -2322,7 +2323,9 @@ arv_camera_class_init (ArvCameraClass *camera_class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (camera_class);
 
+#if !GLIB_CHECK_VERSION(2,38,0)
 	g_type_class_add_private (camera_class, sizeof (ArvCameraPrivate));
+#endif
 
 	parent_class = g_type_class_peek_parent (camera_class);
 
@@ -2340,4 +2343,8 @@ arv_camera_class_init (ArvCameraClass *camera_class)
 							      G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 }
 
+#if !GLIB_CHECK_VERSION(2,38,0)
 G_DEFINE_TYPE (ArvCamera, arv_camera, G_TYPE_OBJECT)
+#else
+G_DEFINE_TYPE_WITH_CODE (ArvCamera, arv_camera, G_TYPE_OBJECT, G_ADD_PRIVATE (ArvCamera))
+#endif

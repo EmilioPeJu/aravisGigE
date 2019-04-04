@@ -51,7 +51,7 @@ struct _ArvUvDevicePrivate {
 
 	ArvGc *genicam;
 
-	const char *genicam_xml;
+	char *genicam_xml;
 	size_t genicam_xml_size;
 
 	guint16 packet_id;
@@ -525,7 +525,7 @@ _bootstrap (ArvUvDevice *uv_device)
 											 zip_filename,
 											 &uv_device->priv->genicam_xml_size);
 
-					arv_debug_device ("zip file = %s", zip_filename);
+					arv_debug_device ("zip file =                 %s", zip_filename);
 
 #if 0
 					string = g_string_new ("");
@@ -726,11 +726,12 @@ arv_uv_device_finalize (GObject *object)
 {
 	ArvUvDevice *uv_device = ARV_UV_DEVICE (object);
 
-	g_object_unref (uv_device->priv->genicam);
+	g_clear_object (&uv_device->priv->genicam);
 
 	g_clear_pointer (&uv_device->priv->vendor, g_free);
 	g_clear_pointer (&uv_device->priv->product, g_free);
 	g_clear_pointer (&uv_device->priv->serial_nbr, g_free);
+	g_clear_pointer (&uv_device->priv->genicam_xml, g_free);
 	if (uv_device->priv->usb_device != NULL) {
 		libusb_release_interface (uv_device->priv->usb_device, uv_device->priv->control_interface);
 		libusb_release_interface (uv_device->priv->usb_device, uv_device->priv->data_interface);
@@ -747,7 +748,9 @@ arv_uv_device_class_init (ArvUvDeviceClass *uv_device_class)
 	GObjectClass *object_class = G_OBJECT_CLASS (uv_device_class);
 	ArvDeviceClass *device_class = ARV_DEVICE_CLASS (uv_device_class);
 
+#if !GLIB_CHECK_VERSION(2,38,0)
 	g_type_class_add_private (uv_device_class, sizeof (ArvUvDevicePrivate));
+#endif
 
 	parent_class = g_type_class_peek_parent (uv_device_class);
 
@@ -762,4 +765,8 @@ arv_uv_device_class_init (ArvUvDeviceClass *uv_device_class)
 	device_class->write_register = arv_uv_device_write_register;
 }
 
+#if !GLIB_CHECK_VERSION(2,38,0)
 G_DEFINE_TYPE (ArvUvDevice, arv_uv_device, ARV_TYPE_DEVICE)
+#else
+G_DEFINE_TYPE_WITH_CODE (ArvUvDevice, arv_uv_device, ARV_TYPE_DEVICE, G_ADD_PRIVATE (ArvUvDevice))
+#endif
