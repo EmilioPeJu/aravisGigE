@@ -37,7 +37,7 @@ class aravisCamera(AsynPort):
         ID      = Simple('Cam ip address, hostname, MAC address, or ID <manufacturer>-<serial>, (e.g. Prosilica-02-2166A-06844)', str),
         CLASS   = Choice('Camera class for custom commands',
                          ["AVT_Manta_1_42", "AVT_Manta_1_44", "AVT_Manta_1_44_4", "AVT_Manta_G895B",
-                          "AVT_Mako_1_52", "AVT_Mako_G234C", "Prosilica_GC", "Baumer_TXG",
+                          "AVT_Mako_1_52", "AVT_Mako_G234C","AVT_Prosilica_GT5120", "Prosilica_GC", "Baumer_TXG",
                           "JAI_6740", "JAI_CM140", "PGR_Flea3", "Sony_CVC_EH6300",
                           "Baumer_HXG20", "PSL_SCMOS", "PGR_Blackfly_13E4C-CS",
                           "Basler_piA640_210gm", "SVS_evo4050",
