@@ -5,8 +5,8 @@ CALC         = $(SUPPORT)/calc/3-7
 BUSY         = $(SUPPORT)/busy/1-7dls1
 SSCAN        = $(SUPPORT)/sscan/2-11
 AUTOSAVE     = $(SUPPORT)/autosave/5-9dls1
-DEVIOCSTATS  = $(SUPPORT)/devIocStats/3-1-14dls3-0
-ADCORE=         $(SUPPORT)/ADCore/3-4dls2
+DEVIOCSTATS  = $(SUPPORT)/devIocStats/3-1-14dls3-1
+ADCORE=         $(SUPPORT)/ADCore/3-6dls1
 
 EPICS_BASE=/dls_sw/epics/R3.14.12.7/base
 
